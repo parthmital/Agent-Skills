@@ -1,0 +1,6 @@
+interface:
+  display_name: "Jupyter Notebook Guardian"
+  short_description: "Safe Jupyter notebook editing"
+  default_prompt: "Use $jupyter-notebook-guardian to safely inspect, edit, and validate this Jupyter notebook."
+policy:
+  allow_implicit_invocation: true

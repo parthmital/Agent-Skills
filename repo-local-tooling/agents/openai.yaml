@@ -1,0 +1,6 @@
+interface:
+  display_name: "Repo Local Tooling"
+  short_description: "Keep tooling and caches repo-local"
+  default_prompt: "Use $repo-local-tooling to keep all tooling, dependencies, scripts, caches, and temporary files local to this repository."
+policy:
+  allow_implicit_invocation: true

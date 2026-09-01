@@ -1,0 +1,6 @@
+interface:
+  display_name: "Codebase Architecture"
+  short_description: "Harden and simplify codebases"
+  default_prompt: "Use $codebase-architecture to harden, clean up, deduplicate, and improve this codebase architecture with verified production-readiness checks."
+policy:
+  allow_implicit_invocation: true

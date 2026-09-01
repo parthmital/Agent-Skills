@@ -1,0 +1,6 @@
+interface:
+  display_name: "README Generator"
+  short_description: "Verified project README generation"
+  default_prompt: "Use $readme-generator to create or update this repository README.md."
+policy:
+  allow_implicit_invocation: true

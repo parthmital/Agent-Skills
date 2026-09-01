@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frontend Design"
+  short_description: "Custom, minimal frontend UI and UX"
+  default_prompt: "Use $frontend-design to build a clean, minimal, functional frontend UI with custom accessible components that does not look vibe coded or template-like."
+policy:
+  allow_implicit_invocation: true

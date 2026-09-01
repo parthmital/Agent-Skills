@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Local App End to End"
+  short_description: "Test local apps with disposable Playwright"
+  default_prompt: "Use $test-local-app-end-to-end to run this local app with disposable Playwright, test it end to end, inspect logs, fix reproducible issues, and verify the fixes."
+policy:
+  allow_implicit_invocation: true

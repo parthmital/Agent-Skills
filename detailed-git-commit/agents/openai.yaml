@@ -1,0 +1,6 @@
+interface:
+  display_name: "Detailed Git Commit"
+  short_description: "Create detailed commits with hyphenated body lines"
+  default_prompt: "Use $detailed-git-commit to create a detailed commit for the current changes."
+policy:
+  allow_implicit_invocation: true
