@@ -2,7 +2,7 @@
 
 ## Skills
 
-Always review the global custom skills and use all relevant ones whenever applicable. Use `/repo-local-tooling` every single time, religiously.
+Always review the global custom skills and use all relevant ones whenever applicable.
 
 ## Communication
 
@@ -69,7 +69,6 @@ Before completing:
 
 - ☐ Request understood
 - ☐ Relevant global custom skills reviewed and used
-- ☐ `/repo-local-tooling` used
 - ☐ Assumptions identified
 - ☐ Simplest adequate solution chosen
 - ☐ Only necessary changes made
