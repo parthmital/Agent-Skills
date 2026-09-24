@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Clean, minimal, functional frontend, UI, and UX design guidance for websites, web apps, dashboards, landing pages, components, custom component systems, visual redesigns, CSS styling, typography, layout, colour palettes, responsive polish, interaction design, usability, accessibility, user flows, information architecture, and non-template user-facing product design. Use automatically whenever the user asks to build, redesign, restyle, modernise, polish, improve, simplify, declutter, or visually implement a frontend UI, UX flow, page, component, site, app, game, dashboard, or design system, especially when the result must use custom components, avoid browser-native looking controls, or avoid looking vibe coded, AI generated, generic, or template-like.
+description: Clean, minimal, functional frontend UI and UX design for websites, web apps, dashboards, landing pages, components, and design systems, covering layout, typography, colour, custom accessible components, interaction states, responsive behaviour, and copy. Use automatically when the user asks to build, redesign, restyle, polish, or simplify a user-facing page, component, app, game, or dashboard. Every visible control, popup, and piece of feedback must be a custom component with no browser-native UI, and the result must not look generic, templated, or AI generated.
 ---
 
 # Frontend Design
@@ -12,11 +12,12 @@ Design and build the actual usable experience the user asked for. Prioritise cla
 - Infer a concrete subject, user, and primary job when the brief is vague. Ask only when a wrong assumption would make the work unusable.
 - Follow any existing design system, component library, brand tokens, routing, data model, and interaction pattern before adding new conventions.
 - Prefer a restrained, complete product surface over a decorative mockup. Dashboards and tools should prioritise density, scanning, and repeat use without overcrowding the screen. Games and expressive sites can carry more motion and visual character only when it helps users understand or enjoy the interaction.
-- Use real, searched, provided, or generated bitmap assets when visual assets are needed. Do not rely on generic gradients, abstract blobs, or decorative SVGs as the main visual signal.
+- When visual assets are needed, use assets provided by the user or already in the repository first. Use other assets only when their source and licence are clear, and otherwise leave a clearly marked placeholder. Do not rely on generic gradients, abstract blobs, or decorative SVGs as the main visual signal.
 - Keep all design decisions grounded in the product domain, not in trend words.
+- When the `ui-ux-pro-max`, `ui-styling`, or `design-system` skills are available, use them as references for palettes, font pairings, UX guidelines, tokens, and stack-specific guidance. Treat its results as suggestions. This skill's rules take precedence, including no browser-native UI and avoiding generic styles such as glassmorphism, random gradients, and floating cards.
 - Remove interface elements that do not help users navigate, decide, enter data, understand state, or complete the primary task.
 - Make the user-facing side feel product-native and intentional. Avoid obvious AI defaults: fake metrics, generic SaaS cards, placeholder testimonials, vague feature copy, stock-looking layouts, oversized empty heroes, random gradients, repeated icon tiles, and decorative elements that could belong to any product.
-- Use a consistent custom component system for the user-facing UI. Do not expose raw browser-default controls such as unstyled buttons, selects, date inputs, file inputs, checkboxes, radios, range sliders, dialogs, tooltips, or scrollbars. Native elements may be used underneath for semantics, autofill, mobile keyboards, and form behaviour, but their visible presentation must be custom, consistent, and accessible.
+- Use one consistent custom component system for the whole user-facing UI. Nothing the user sees or interacts with may be browser-native. See No Browser-Native UI below.
 
 ## Design Process
 
@@ -29,7 +30,34 @@ Design and build the actual usable experience the user asked for. Prioritise cla
    - Signature: at most one memorable visual or interaction idea tied to the subject.
 3. Critique the plan before implementation. Remove clutter first. Revise anything that could fit almost any unrelated brief, especially cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, decorative orbs, generic numbered sections, boilerplate hero layouts, and fake dashboards.
 4. Implement the plan exactly, using repository conventions and stable responsive constraints.
-5. Verify the finished UI in realistic desktop and mobile viewports when tools are available. Check screenshots rather than trusting the first render.
+5. Verify the finished UI in realistic desktop and mobile viewports when browser or screenshot tools are available. Check screenshots rather than trusting the first render. If no such tools are available, say that the visual result was not verified.
+
+## No Browser-Native UI
+
+Everything visible must be custom so the look and behaviour are consistent across browsers and fully under the product's control. Browser defaults differ between Chrome, Safari, Firefox, and mobile browsers, so any native UI left in place breaks consistency.
+
+Replace, never ship:
+
+- `alert()`, `confirm()`, and `prompt()`: use custom modal dialogs and toasts.
+- Native `<select>` dropdowns and `<datalist>` suggestions: use a custom listbox, menu, or combobox.
+- `<input type="date">`, `time`, `datetime-local`, `month`, `week`, and `color` pickers: use custom date, time, and colour pickers.
+- `title` attribute tooltips: use custom tooltips.
+- Native form validation bubbles: set `novalidate` on forms and show custom inline errors.
+- Default checkbox, radio, range, file, number spinner, search clear button, `<progress>`, and `<meter>` appearance: set `appearance: none` or hide the element, and render a custom control.
+- Default `<details>` and `<summary>` markers: use a custom disclosure or accordion.
+- Default `<dialog>` and popover presentation: use a custom modal or popover component with its own backdrop, animation, and focus trap.
+- Default focus rings, text selection colour, caret colour, placeholder styling, and autofill background: style them all explicitly.
+- Default scrollbars: style them to match the product, including in scrollable panels, menus, and code blocks.
+- Default browser fonts and user-agent spacing: set a CSS reset or normalise layer and explicit font stacks.
+- Default drag previews and file picker triggers: use a custom drop zone and button, and open the file picker from code.
+
+Allowed only as invisible plumbing:
+
+- Real `<input>` and `<textarea>` elements for typing text. Rebuilding text editing breaks IME, autofill, spell check, password managers, and mobile keyboards. They must be fully restyled so no default appearance remains.
+- Hidden native elements that give custom controls their semantics or form value, such as a visually hidden checkbox or file input.
+- The operating system file chooser, share sheet, and permission prompts, which web pages cannot replace. Trigger them from custom controls.
+
+Every custom replacement must keep native-level behaviour: keyboard support, focus management, ARIA roles and states, screen-reader labels, escape and outside-click handling, touch targets, and mobile usability. If the repository has a headless accessible component library, build on it rather than hand-rolling behaviour.
 
 ## Interface Standards
 
@@ -61,7 +89,7 @@ Design and build the actual usable experience the user asked for. Prioritise cla
 - Use animation only when it clarifies state, hierarchy, direct manipulation, or the subject's character.
 - Avoid building extra panels, metrics, filters, tabs, charts, onboarding text, empty decoration, or settings unless the user asked for them or the workflow clearly needs them.
 - Before adding a section or component, identify the user decision or action it supports. If it only makes the page look fuller, remove it.
-- For 3D scenes, use Three.js and verify the canvas is nonblank, framed, moving or interactive as intended, and usable on mobile.
+- For 3D or canvas scenes, use the repository's existing rendering library where one exists, and verify the canvas is nonblank, framed, moving or interactive as intended, and usable on mobile.
 
 ## Final Verification
 
@@ -71,6 +99,7 @@ Before finalising, check:
 - Primary workflows are reachable and controls have clear states.
 - The screen has a clear hierarchy and users are not forced to parse competing panels or actions.
 - Nothing visible reads as placeholder, fake, AI generated, or copied from a generic template.
+- No browser-native UI remains: search the code for `alert(`, `confirm(`, `prompt(`, `title=`, `<select`, `<datalist`, `type="date"` and other native picker types, `<details`, `<dialog`, `<progress`, `<meter`, and forms without `novalidate`, and check focus, selection, autofill, and scrollbar styling in the rendered UI.
 - Visual assets load and are relevant to the product or subject.
 - The palette does not read as a one-colour theme unless the brief requires it.
 - Console, build, lint, and test checks pass where available.

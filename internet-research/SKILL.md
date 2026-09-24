@@ -9,7 +9,7 @@ Use this skill when external context can materially improve the answer. Search b
 
 ## Rules
 
-- Browse the internet before making claims that are current, niche, source-dependent, or likely to have changed.
+- Browse the internet before making claims that are current, niche, source-dependent, or likely to have changed. If no web access tool is available, say so, answer only from known information, and mark claims that may be outdated.
 - Prefer primary sources: official docs, repositories, release notes, standards, academic papers, vendor docs, changelogs, and source code.
 - Use social sources such as Reddit, Hacker News, issues, Discord mirrors, and forums as anecdotal signals. Label them as anecdotal.
 - Cite links for claims based on external sources. Do not cite a source that was not opened and checked.
@@ -44,7 +44,7 @@ Use this skill when external context can materially improve the answer. Search b
 
 Use the shortest format that supports the decision:
 
-- Research scope: what was searched and what was not.
+- Research scope: what was searched, what was not, and the date the search was done.
 - Strong signals: findings that appeared across reliable sources.
 - Weak or anecdotal signals: social discussion, isolated reports, or unverified claims.
 - Recommendation: the best current path and why.

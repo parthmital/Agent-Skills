@@ -1,4 +1,4 @@
-# Codex Skills
+# Agent Skills
 
 ## Table Of Contents
 
@@ -28,7 +28,7 @@
 
 ## Quick Start
 
-This repository stores local Codex skills. It is not a web application, API service, Python package, or Node package.
+This repository stores reusable agent skills that are intended to be model and harness neutral. It is not a web application, API service, Python package, or Node package.
 
 Run all commands in this section from the repository root.
 
@@ -52,7 +52,7 @@ Get-ChildItem -Directory | Where-Object { $_.Name -ne ".git" }
 
 What it does: lists the top level skill folders.
 
-Expected result: the command shows 8 skill folders, including `readme-generator` and `jupyter-notebook-guardian`.
+Expected result: the command shows 14 skill folders, including `readme-generator` and `jupyter-notebook-guardian`.
 
 Common error: if only `.git` or unrelated folders are shown, the shell is in the wrong directory.
 
@@ -77,7 +77,7 @@ python .\jupyter-notebook-guardian\scripts\notebook_doctor.py --help
 
 What it does: runs the notebook helper in help mode and avoids creating `__pycache__` files.
 
-Expected result: the command prints usage text and these subcommands: `inspect`, `validate`, `repair`, `clean`, `export-code`, and `diff`.
+Expected result: the command prints usage text and these subcommands: `inspect`, `validate`, `repair`, `clean`, `export-code`, `check-kaggle`, and `diff`.
 
 Common errors:
 
@@ -89,41 +89,56 @@ Common errors:
 
 ## Project Overview
 
-This repository contains reusable Codex skills. A skill is a folder with a `SKILL.md` file that explains when and how Codex should handle a class of tasks.
+This repository contains reusable agent skills. A skill is a folder with a `SKILL.md` file that explains when and how an agent should handle a class of tasks. The `SKILL.md` files avoid depending on any one model or harness.
 
-Each skill in this repository also includes an `agents/openai.yaml` metadata file. That file provides:
+Each skill in this repository also includes an optional `agents/openai.yaml` metadata file for harnesses that read it. Harnesses that do not use it ignore it. That file provides:
 
 - `display_name`
 - `short_description`
 - `default_prompt`
 - `allow_implicit_invocation`
 
-One skill, `jupyter-notebook-guardian`, also includes a Python helper script for safe notebook inspection, validation, repair, cleaning, export, and semantic diff.
+Seven skills are third-party skills installed from [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill). See [Licence](#licence) for their origin and local changes.
+
+One first-party skill, `jupyter-notebook-guardian`, also includes a Python helper script for safe notebook inspection, validation, repair, cleaning, export, Kaggle convention checks, and semantic diff.
 
 ## Skills In This Repository
 
-| Skill                       | Purpose                                                                                                               | Main files                                                                                                                                                                             |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `codebase-architecture`     | Reviews, plans, hardens, cleans up, deduplicates, and documents codebase structure.                                   | [codebase-architecture/SKILL.md](codebase-architecture/SKILL.md), [codebase-architecture/agents/openai.yaml](codebase-architecture/agents/openai.yaml)                                 |
-| `detailed-git-commit`       | Creates factual Git commits with inspected changes and strict commit message formatting.                              | [detailed-git-commit/SKILL.md](detailed-git-commit/SKILL.md), [detailed-git-commit/agents/openai.yaml](detailed-git-commit/agents/openai.yaml)                                         |
-| `frontend-design`           | Guides clean, functional frontend UI and UX work with custom accessible components.                                   | [frontend-design/SKILL.md](frontend-design/SKILL.md), [frontend-design/agents/openai.yaml](frontend-design/agents/openai.yaml)                                                         |
-| `internet-research`         | Guides current, source based research, comparison, validation, and recommendation work.                               | [internet-research/SKILL.md](internet-research/SKILL.md), [internet-research/agents/openai.yaml](internet-research/agents/openai.yaml)                                                 |
-| `jupyter-notebook-guardian` | Protects Jupyter notebook edits from JSON corruption, hidden state, noisy diffs, and execution order errors.          | [jupyter-notebook-guardian/SKILL.md](jupyter-notebook-guardian/SKILL.md), [jupyter-notebook-guardian/scripts/notebook_doctor.py](jupyter-notebook-guardian/scripts/notebook_doctor.py) |
-| `readme-generator`          | Generates or updates a verified repository README from inspected repository facts.                                    | [readme-generator/SKILL.md](readme-generator/SKILL.md), [readme-generator/agents/openai.yaml](readme-generator/agents/openai.yaml)                                                     |
-| `repo-local-tooling`        | Keeps task tools, dependency caches, helper scripts, downloads, and generated artifacts inside the target repository. | [repo-local-tooling/SKILL.md](repo-local-tooling/SKILL.md), [repo-local-tooling/agents/openai.yaml](repo-local-tooling/agents/openai.yaml)                                             |
-| `test-local-app-end-to-end` | Guides local web application testing with Playwright, disposable browser sessions, logs, and retesting.               | [test-local-app-end-to-end/SKILL.md](test-local-app-end-to-end/SKILL.md), [test-local-app-end-to-end/agents/openai.yaml](test-local-app-end-to-end/agents/openai.yaml)                 |
+| Skill                       | Purpose                                                                                                                                        | Main files                                                                                                                                                                             |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `banner-design`             | Designs banners for social media, ads, website heroes, and print, with several art direction options. Third-party, MIT.                        | [banner-design/SKILL.md](banner-design/SKILL.md)                                                                                                                                       |
+| `brand`                     | Brand voice, visual identity, messaging frameworks, asset management, and brand consistency checks. Third-party, MIT.                          | [brand/SKILL.md](brand/SKILL.md), [brand/scripts/](brand/scripts/)                                                                                                                     |
+| `codebase-architecture`     | Reviews, plans, hardens, cleans up, deduplicates, and documents codebase structure.                                                            | [codebase-architecture/SKILL.md](codebase-architecture/SKILL.md), [codebase-architecture/agents/openai.yaml](codebase-architecture/agents/openai.yaml)                                 |
+| `design`                    | Brand identity, logos, corporate identity programs, icons, social images, slides, and banners. Optional AI image generation. Third-party, MIT. | [design/SKILL.md](design/SKILL.md), [design/scripts/](design/scripts/)                                                                                                                 |
+| `design-system`             | Three-layer design tokens, component specifications, token validation, and slide generation. Third-party, MIT.                                 | [design-system/SKILL.md](design-system/SKILL.md), [design-system/scripts/](design-system/scripts/)                                                                                     |
+| `detailed-git-commit`       | Creates factual Git commits with inspected changes and strict commit message formatting.                                                       | [detailed-git-commit/SKILL.md](detailed-git-commit/SKILL.md), [detailed-git-commit/agents/openai.yaml](detailed-git-commit/agents/openai.yaml)                                         |
+| `frontend-design`           | Guides clean, functional frontend UI and UX work with fully custom components and no browser-native UI.                                        | [frontend-design/SKILL.md](frontend-design/SKILL.md), [frontend-design/agents/openai.yaml](frontend-design/agents/openai.yaml)                                                         |
+| `internet-research`         | Guides current, source based research, comparison, validation, and recommendation work.                                                        | [internet-research/SKILL.md](internet-research/SKILL.md), [internet-research/agents/openai.yaml](internet-research/agents/openai.yaml)                                                 |
+| `jupyter-notebook-guardian` | Safe notebook editing, with Kaggle GPU T4 x2 as the default runtime and rules for documentation, progress, metrics, and output zips.           | [jupyter-notebook-guardian/SKILL.md](jupyter-notebook-guardian/SKILL.md), [jupyter-notebook-guardian/scripts/notebook_doctor.py](jupyter-notebook-guardian/scripts/notebook_doctor.py) |
+| `readme-generator`          | Generates or updates a verified repository README from inspected repository facts.                                                             | [readme-generator/SKILL.md](readme-generator/SKILL.md), [readme-generator/agents/openai.yaml](readme-generator/agents/openai.yaml)                                                     |
+| `repo-local-tooling`        | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                              | [repo-local-tooling/SKILL.md](repo-local-tooling/SKILL.md), [repo-local-tooling/agents/openai.yaml](repo-local-tooling/agents/openai.yaml)                                             |
+| `slides`                    | Strategic HTML presentations with Chart.js, design tokens, and copywriting formulas. Third-party, MIT.                                         | [slides/SKILL.md](slides/SKILL.md)                                                                                                                                                     |
+| `ui-styling`                | shadcn/ui components, Tailwind CSS styling, and canvas-based visual designs. Third-party, Apache 2.0.                                          | [ui-styling/SKILL.md](ui-styling/SKILL.md), [ui-styling/scripts/](ui-styling/scripts/)                                                                                                 |
+| `ui-ux-pro-max`             | Searchable UI/UX design data: styles, palettes, font pairings, UX guidelines, charts, and stack guidance. Third-party, MIT.                    | [ui-ux-pro-max/SKILL.md](ui-ux-pro-max/SKILL.md), [ui-ux-pro-max/scripts/search.py](ui-ux-pro-max/scripts/search.py)                                                                   |
 
 ## Repository Structure
 
 ```text
 .
 |-- .gitattributes
+|-- .gitignore
+|-- .prettierignore
 |-- .prettierrc.json
+|-- AGENTS.md
 |-- README.md
+|-- banner-design/            third-party: SKILL.md, LICENSE, agents/, references/
+|-- brand/                    third-party: SKILL.md, LICENSE, agents/, references/, scripts/, templates/
 |-- codebase-architecture/
 |   |-- SKILL.md
 |   `-- agents/
 |       `-- openai.yaml
+|-- design/                   third-party: SKILL.md, LICENSE, agents/, data/, references/, scripts/
+|-- design-system/            third-party: SKILL.md, LICENSE, agents/, data/, references/, scripts/, templates/
 |-- detailed-git-commit/
 |   |-- SKILL.md
 |   `-- agents/
@@ -153,44 +168,56 @@ One skill, `jupyter-notebook-guardian`, also includes a Python helper script for
 |   |-- SKILL.md
 |   `-- agents/
 |       `-- openai.yaml
-`-- test-local-app-end-to-end/
+|-- slides/                   third-party: SKILL.md, LICENSE, agents/, references/
+|-- ui-styling/               third-party: SKILL.md, LICENSE.txt, agents/, canvas-fonts/, references/, scripts/
+`-- ui-ux-pro-max/
+    |-- LICENSE
     |-- SKILL.md
-    `-- agents/
-        `-- openai.yaml
+    |-- agents/
+    |   `-- openai.yaml
+    |-- data/           design data CSV and JSON files
+    |-- references/     quick-reference.md and pro-rules.md
+    `-- scripts/        search.py, core.py, design_system.py, and tests/
 ```
 
 Important paths:
 
-- `.gitattributes`: enables automatic text file normalisation through Git.
+- `.gitattributes`: enables automatic text file normalisation, pins `ui-ux-pro-max/data/` CSV and JSON files to LF so their stored hashes match, and marks fonts and images as binary.
+- `.gitignore`: keeps local folders (`.agent-local/`, `.venv/`, `.cache/`), Python and Node.js artefacts, notebook helper backups, secrets files, logs, and editor files out of Git.
+- `.prettierignore`: stops Prettier from reformatting the third-party skills, which are kept identical to upstream apart from the listed local changes.
 - `.prettierrc.json`: stores formatter preferences for tabs and tab width.
+- `AGENTS.md`: stores general coding and response guidelines for agents working in this repository.
 - `*/SKILL.md`: stores the main instructions for each skill.
-- `*/agents/openai.yaml`: stores display and invocation metadata for each skill.
+- `*/agents/openai.yaml`: stores optional display and invocation metadata for harnesses that read it.
 - `jupyter-notebook-guardian/README.md`: gives short setup notes for the notebook skill.
 - `jupyter-notebook-guardian/references/precommit.md`: documents optional notebook Git protection commands.
 - `jupyter-notebook-guardian/scripts/notebook_doctor.py`: provides the notebook maintenance command line tool.
+- `ui-ux-pro-max/scripts/search.py`: searches the bundled design data. It uses only the Python standard library and makes no network calls.
+- `*/LICENSE` and `ui-styling/LICENSE.txt`: licences for the third-party skills.
 
 ## Technology Stack
 
-| Technology             | Version                       | Purpose                                                       | Where used                                              | Notes                                                      |
-| ---------------------- | ----------------------------- | ------------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------- |
-| Markdown               | Not declared                  | Stores skill instructions and documentation.                  | `README.md`, `SKILL.md`, and reference files.           | Codex reads skill behaviour from Markdown files.           |
-| YAML                   | Not declared                  | Stores skill metadata.                                        | `agents/openai.yaml` files.                             | Each metadata file enables implicit invocation.            |
-| Python                 | Exact version not declared    | Runs the notebook helper script.                              | `jupyter-notebook-guardian/scripts/notebook_doctor.py`. | The script uses Python 3 syntax and a Python 3 shebang.    |
-| `nbformat`             | Exact version not declared    | Reads, writes, converts, normalises, and validates notebooks. | Imported by `notebook_doctor.py`.                       | The script exits with an install message if it is missing. |
-| Git                    | Exact version not declared    | Tracks repository changes and applies `.gitattributes`.       | `.git`, `.gitattributes`.                               | The current folder is a Git work tree.                     |
-| Prettier configuration | Prettier version not declared | Defines formatting preferences.                               | `.prettierrc.json`.                                     | The file sets `useTabs` to `true` and `tabWidth` to `2`.   |
+| Technology             | Version                       | Purpose                                                       | Where used                                    | Notes                                                      |
+| ---------------------- | ----------------------------- | ------------------------------------------------------------- | --------------------------------------------- | ---------------------------------------------------------- |
+| Markdown               | Not declared                  | Stores skill instructions and documentation.                  | `README.md`, `SKILL.md`, and reference files. | Agents read skill behaviour from Markdown files.           |
+| YAML                   | Not declared                  | Stores skill metadata.                                        | `agents/openai.yaml` files.                   | Each metadata file enables implicit invocation.            |
+| Python                 | Exact version not declared    | Runs the notebook helper and the third-party skill scripts.   | `*/scripts/*.py`.                             | `ui-styling` requires Python 3.10 or later.                |
+| Node.js                | Exact version not declared    | Runs the `.cjs` scripts in `brand` and `design-system`.       | `brand/scripts/`, `design-system/scripts/`.   | `ui-styling` notes Node.js 18 or later for shadcn/ui.      |
+| `nbformat`             | Exact version not declared    | Reads, writes, converts, normalises, and validates notebooks. | Imported by `notebook_doctor.py`.             | The script exits with an install message if it is missing. |
+| Git                    | Exact version not declared    | Tracks repository changes and applies `.gitattributes`.       | `.git`, `.gitattributes`.                     | The current folder is a Git work tree.                     |
+| Prettier configuration | Prettier version not declared | Defines formatting preferences.                               | `.prettierrc.json`.                           | The file sets `useTabs` to `true` and `tabWidth` to `2`.   |
 
-No root package manager manifest is present. There is no `package.json`, `pyproject.toml`, `requirements.txt`, lock file, or setup file.
+No root package manager manifest is present. There is no root `package.json`, `pyproject.toml`, `requirements.txt`, lock file, or setup file. `ui-styling/scripts/requirements.txt` lists only test dependencies.
 
 ## Prerequisites
 
-| Prerequisite                        | Required for                            | Version                         | Verification                                                                                           |
-| ----------------------------------- | --------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Codex skills compatible environment | Using these folders as Codex skills.    | Not declared in the repository. | The repository contains skill folders with `SKILL.md`.                                                 |
-| Git                                 | Repository maintenance.                 | Not declared in the repository. | `git rev-parse --is-inside-work-tree` returns `true`.                                                  |
-| Python 3                            | Running `notebook_doctor.py`.           | Exact version not declared.     | The script has a Python 3 shebang and uses Python 3 syntax.                                            |
-| `nbformat`                          | Notebook helper commands.               | Exact version not declared.     | The script imports `nbformat` and the help command runs when it is installed.                          |
-| Jupyter `nbconvert`                 | Fresh kernel notebook execution checks. | Not declared in the repository. | The command is documented in `jupyter-notebook-guardian/SKILL.md`, but no dependency file declares it. |
+| Prerequisite                      | Required for                                   | Version                         | Verification                                                                  |
+| --------------------------------- | ---------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------- |
+| Skill compatible agent or harness | Using these folders as skills.                 | Not declared in the repository. | The repository contains skill folders with `SKILL.md`.                        |
+| Git                               | Repository maintenance.                        | Not declared in the repository. | `git rev-parse --is-inside-work-tree` returns `true`.                         |
+| Python 3                          | Running `notebook_doctor.py`.                  | Exact version not declared.     | The script has a Python 3 shebang and uses Python 3 syntax.                   |
+| `nbformat`                        | Notebook helper commands.                      | Exact version not declared.     | The script imports `nbformat` and the help command runs when it is installed. |
+| Node.js                           | `.cjs` scripts in `brand` and `design-system`. | Not declared.                   | `node --version`.                                                             |
 
 ## Local Installation
 
@@ -199,12 +226,12 @@ There is no repository level install script.
 To use a skill locally:
 
 1. Keep this repository in a stable folder.
-2. Copy the required skill folder into your Codex skills directory.
+2. Copy the required skill folder into the skills directory used by your agent or harness.
 3. Preserve the folder name.
 4. Preserve the `SKILL.md` file.
 5. Preserve any supporting files in that skill folder, such as `scripts/`, `references/`, and `agents/`.
 
-The repository does not declare the exact Codex skills directory path because that depends on the local Codex setup.
+The repository does not declare an exact skills directory path because that depends on the agent or harness in use.
 
 ## Dependency Installation
 
@@ -231,12 +258,12 @@ These dependency setup commands were not executed while preparing this README be
 Optional notebook repository protection tools are documented in [jupyter-notebook-guardian/references/precommit.md](jupyter-notebook-guardian/references/precommit.md):
 
 ```powershell
-python -m pip install nbformat nbstripout nbdime
-nbdime config-git --enable
-nbstripout --install
+.\.venv\Scripts\python -m pip install nbformat nbstripout nbdime
+.\.venv\Scripts\nbdime config-git --enable
+.\.venv\Scripts\nbstripout --install
 ```
 
-Those optional commands modify local Python or Git configuration depending on the active environment. They were not executed while preparing this README.
+Those optional commands install into the local virtual environment and write to the repository `.git/config`. They were not executed while preparing this README.
 
 ## Running Commands
 
@@ -244,12 +271,12 @@ There is no long running application to start.
 
 Useful repository commands:
 
-| Command                                                                | Purpose                               | Expected result                                                          |
-| ---------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------ |
-| `rg --files -g '!.git'`                                                | List repository files outside `.git`. | Prints 20 tracked or working tree files in the current repository state. |
-| `Get-ChildItem -Directory                                              | Where-Object { $_.Name -ne ".git" }`  | List skill folders.                                                      | Prints 8 skill folders. |
-| `Get-Content .\readme-generator\SKILL.md`                              | Read the README generator skill.      | Prints the selected skill instructions.                                  |
-| `python .\jupyter-notebook-guardian\scripts\notebook_doctor.py --help` | Run the notebook helper help command. | Prints usage text and 6 subcommands.                                     |
+| Command                                                                | Purpose                               | Expected result                                                           |
+| ---------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
+| `rg --files -g '!.git'`                                                | List repository files outside `.git`. | Prints 274 tracked or working tree files in the current repository state. |
+| `Get-ChildItem -Directory \| Where-Object { $_.Name -ne ".git" }`      | List skill folders.                   | Prints 14 skill folders.                                                  |
+| `Get-Content .\readme-generator\SKILL.md`                              | Read the README generator skill.      | Prints the selected skill instructions.                                   |
+| `python .\jupyter-notebook-guardian\scripts\notebook_doctor.py --help` | Run the notebook helper help command. | Prints usage text and 7 subcommands.                                      |
 
 ## Notebook Utility
 
@@ -257,14 +284,15 @@ The notebook helper is [jupyter-notebook-guardian/scripts/notebook_doctor.py](ju
 
 Available subcommands:
 
-| Subcommand    | Purpose                                                                                                   |
-| ------------- | --------------------------------------------------------------------------------------------------------- |
-| `inspect`     | Prints notebook metadata, cell counts, output size, cell ID health, execution count health, and warnings. |
-| `validate`    | Validates notebook structure through `nbformat` and checks duplicate cell IDs.                            |
-| `repair`      | Converts the notebook to format 4, normalises it, and repairs missing or duplicate cell IDs.              |
-| `clean`       | Clears code cell outputs and execution counts, with optional widget metadata removal.                     |
-| `export-code` | Exports code cells to a Python file with cell index and cell ID markers.                                  |
-| `diff`        | Prints a semantic diff between two notebooks based on cell source, type, outputs, and execution counts.   |
+| Subcommand     | Purpose                                                                                                                                                                                                                                            |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `inspect`      | Prints notebook metadata, cell counts, output size, cell ID health, execution count health, and warnings.                                                                                                                                          |
+| `validate`     | Validates notebook structure through `nbformat` and checks duplicate cell IDs.                                                                                                                                                                     |
+| `repair`       | Converts the notebook to format 4, normalises it, and repairs missing or duplicate cell IDs.                                                                                                                                                       |
+| `clean`        | Clears code cell outputs and execution counts, with optional widget metadata removal.                                                                                                                                                              |
+| `export-code`  | Exports code cells to a Python file with cell index and cell ID markers.                                                                                                                                                                           |
+| `check-kaggle` | Statically checks Kaggle notebook conventions: markdown overview first, markdown before every code cell, code syntax, tqdm use, `/kaggle/working` outputs, no machine-specific paths, and a final zip cell with a `FileLink`. Nothing is executed. |
+| `diff`         | Prints a semantic diff between two notebooks based on cell source, type, outputs, and execution counts.                                                                                                                                            |
 
 Examples:
 
@@ -275,29 +303,27 @@ python .\jupyter-notebook-guardian\scripts\notebook_doctor.py repair path\to\not
 python .\jupyter-notebook-guardian\scripts\notebook_doctor.py clean path\to\notebook.ipynb --backup
 python .\jupyter-notebook-guardian\scripts\notebook_doctor.py clean path\to\notebook.ipynb --backup --drop-widgets
 python .\jupyter-notebook-guardian\scripts\notebook_doctor.py export-code path\to\notebook.ipynb --output path\to\notebook_cells.py
+python .\jupyter-notebook-guardian\scripts\notebook_doctor.py check-kaggle path\to\notebook.ipynb
 python .\jupyter-notebook-guardian\scripts\notebook_doctor.py diff before.ipynb after.ipynb
 ```
 
-The notebook skill also documents this fresh kernel execution check:
+When `--backup` is used inside a Git repository, backups are written to `<repo>/.agent-local/backups/`. Outside a repository, they are written next to the notebook.
 
-```bash
-jupyter nbconvert \
-  --to notebook \
-  --execute notebook.ipynb \
-  --output notebook.executed.ipynb \
-  --ExecutePreprocessor.timeout=600 \
-  --ExecutePreprocessor.kernel_name=python3
-```
-
-This command was not executed while preparing this README because the repository does not contain a notebook file and does not declare Jupyter as a dependency.
+Notebooks are not executed locally. The skill targets Kaggle, so runtime behaviour is verified only by running the notebook on Kaggle.
 
 ## Environment Configuration
 
-No environment variables are read by the current repository files.
+The first-party skills read no environment variables. Some scripts in the third-party skills read these optional variables:
 
-| Variable name | Required | Purpose        | Expected format | Safe example value | Default value  | Security notes                                   |
-| ------------- | -------- | -------------- | --------------- | ------------------ | -------------- | ------------------------------------------------ |
-| None found    | No       | Not applicable | Not applicable  | Not applicable     | Not applicable | No secret values are required by the repository. |
+| Variable name                | Required | Purpose                                                                         | Expected format | Safe example value | Default value             | Security notes                              |
+| ---------------------------- | -------- | ------------------------------------------------------------------------------- | --------------- | ------------------ | ------------------------- | ------------------------------------------- |
+| `GEMINI_API_KEY`             | Optional | Gemini image generation in `design` logo, icon, and corporate identity scripts. | API key string  | `your-key-here`    | None                      | Secret. Keep it out of scripts and logs.    |
+| `GOOGLE_API_KEY`             | Optional | Alternative name for the Gemini key in `design` scripts.                        | API key string  | `your-key-here`    | None                      | Secret. Keep it out of scripts and logs.    |
+| `ATLASCLOUD_API_KEY`         | Optional | Atlas Cloud image generation in `design/scripts/logo/generate.py`.              | API key string  | `your-key-here`    | None                      | Secret. Sends prompts to api.atlascloud.ai. |
+| `MUAPI_API_KEY`              | Optional | MuAPI image generation in `design/scripts/logo/generate.py`.                    | API key string  | `your-key-here`    | None                      | Secret. Sends prompts to api.muapi.ai.      |
+| `DESIGN_SYSTEM_PROJECT_ROOT` | Optional | Overrides the project root used by `design-system` scripts.                     | Absolute path   | `D:\projects\app`  | Current working directory | Not secret.                                 |
+
+Without these keys, the image generation features in `design` do not run. All other scripts work without network access or keys.
 
 ## Input Validation And Error Handling
 
@@ -318,7 +344,25 @@ No API input validation exists because the repository contains no API server.
 
 ## Testing And Verification
 
-No automated test files are present.
+The third-party skills include pytest and unittest test modules:
+
+| Skill           | Test modules | Tests | Result |
+| --------------- | ------------ | ----- | ------ |
+| `brand`         | 1            | 15    | Passed |
+| `design`        | 1            | 12    | Passed |
+| `design-system` | 1            | 2     | Passed |
+| `ui-styling`    | 2            | 64    | Passed |
+| `ui-ux-pro-max` | 9            | 133   | Passed |
+
+`banner-design` and `slides` have no tests. No tests exist for `notebook_doctor.py`.
+
+Run them with pytest from a repository local virtual environment. The `brand` tests also need Node.js because they run the `.cjs` scripts.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python -m pip install pytest pytest-mock --cache-dir .cache\pip
+.\.venv\Scripts\python -m pytest -q -p no:cacheprovider brand design design-system ui-styling ui-ux-pro-max
+```
 
 Verification run while preparing this README:
 
@@ -327,7 +371,7 @@ $env:PYTHONDONTWRITEBYTECODE = "1"
 python .\jupyter-notebook-guardian\scripts\notebook_doctor.py --help
 ```
 
-Result: passed. The command printed usage text and listed 6 subcommands.
+Result: passed. The command printed usage text and listed 7 subcommands.
 
 Other verification checks were performed by repository inspection:
 
@@ -358,18 +402,28 @@ The repository contains this Prettier configuration:
 }
 ```
 
-The repository also contains `.gitattributes`:
+`.prettierignore` excludes the seven third-party skill folders and the local `.agent-local/`, `.venv/`, and `.cache/` folders. Check formatting with a repository local npm cache:
 
-```text
-# Auto detect text files and perform LF normalization
-* text=auto
+```powershell
+$env:npm_config_cache = "$PWD\.cache\npm"
+npx --yes prettier@3 --check "**/*.{md,json,yaml}"
 ```
+
+Result when this README was updated: all matched files use Prettier code style.
+
+Check the third-party design data with the bundled validator:
+
+```powershell
+python .\ui-ux-pro-max\scripts\validate_data.py
+```
+
+Result when this README was updated: `OK: validated 12 domain files, 22 stack files, and ui-reasoning.csv`.
 
 No formatter script, lint script, type check script, precommit configuration file, or automated test command is declared at the repository root.
 
 ## Build, Deployment, And CI
 
-There is no build process. The repository contains Markdown, YAML, and one Python helper script.
+There is no build process. The repository contains Markdown, YAML, CSV and JSON data, fonts, and Python and Node.js helper scripts.
 
 The repository does not contain:
 
@@ -384,34 +438,34 @@ The repository does not contain:
 
 ## Repository Metrics
 
-| Metric name                           | Verified value                          | Source file or command used for verification                                                 | Notes                                                                             |
-| ------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Git work tree                         | Yes                                     | `git rev-parse --is-inside-work-tree`                                                        | Returned `true`.                                                                  |
-| Top level skill directories           | 8                                       | `Get-ChildItem -Force -Directory` filtered to exclude `.git`                                 | Counts current working tree folders.                                              |
-| Skill definition files                | 8                                       | `rg --files -g '!.git' -g 'SKILL.md'`                                                        | Files named `SKILL.md`.                                                           |
-| Agent metadata files                  | 8                                       | `rg --files -g '!.git'` filtered for `agents\openai.yaml`                                    | One metadata file per skill.                                                      |
-| Repository files outside `.git`       | 20                                      | `rg --files -g '!.git'`                                                                      | Includes root files, skill docs, metadata, reference docs, and the Python script. |
-| Markdown files                        | 11                                      | `rg --files -g '!.git'` filtered for `.md`                                                   | Includes this README and all skill Markdown files.                                |
-| YAML files                            | 8                                       | `rg --files -g '!.git'` filtered for `.yaml`                                                 | Agent metadata files only.                                                        |
-| Python scripts                        | 1                                       | `rg --files -g '!.git'` filtered for `.py`                                                   | `notebook_doctor.py`.                                                             |
-| Notebook helper subcommands           | 6                                       | `python .\jupyter-notebook-guardian\scripts\notebook_doctor.py --help`                       | `inspect`, `validate`, `repair`, `clean`, `export-code`, and `diff`.              |
-| Package manifests                     | 0                                       | Search for `package.json`, `pyproject.toml`, `requirements.txt`, setup files, and lock files | No package manager metadata found.                                                |
-| API endpoints                         | 0                                       | Search for common route and server patterns                                                  | No API server code found.                                                         |
-| Environment variables                 | 0                                       | Search for common environment access patterns                                                | No environment reads found.                                                       |
-| Database models                       | 0                                       | Repository file inspection                                                                   | No database files found.                                                          |
-| Test files                            | 0                                       | Search for `*test*`, `*.spec.*`, and `*.test.*`                                              | No automated tests found.                                                         |
-| CI or deployment files                | 0                                       | Search for common CI, Docker, compose, and hosting files                                     | No deployment pipeline found.                                                     |
-| Default ports                         | 0                                       | Repository file inspection                                                                   | No server or port configuration found.                                            |
-| Notebook output warning threshold     | 5 MiB                                   | `jupyter-notebook-guardian/scripts/notebook_doctor.py`                                       | Used by the `inspect` command.                                                    |
-| Documented notebook execution timeout | 600 seconds                             | `jupyter-notebook-guardian/SKILL.md`                                                         | Used in the documented `jupyter nbconvert` command.                               |
-| Test coverage percentage              | Not measured in the current repository. | No coverage report found                                                                     | Coverage cannot be verified.                                                      |
+| Metric name                       | Verified value                          | Source file or command used for verification                                                 | Notes                                                                            |
+| --------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Git work tree                     | Yes                                     | `git rev-parse --is-inside-work-tree`                                                        | Returned `true`.                                                                 |
+| Top level skill directories       | 14                                      | `Get-ChildItem -Force -Directory` filtered to exclude `.git`                                 | Counts current working tree folders.                                             |
+| Skill definition files            | 14                                      | `rg --files -g '!.git' -g 'SKILL.md'`                                                        | Files named `SKILL.md`.                                                          |
+| Agent metadata files              | 14                                      | `rg --files -g '!.git'` filtered for `agents\openai.yaml`                                    | One metadata file per skill.                                                     |
+| Repository files outside `.git`   | 274                                     | `rg --files -g '!.git'`                                                                      | 255 are in the seven third-party skills, mostly data, fonts, and references.     |
+| Markdown files                    | 70                                      | `rg --files -g '!.git' -g '*.md'`                                                            | Includes this README and all skill Markdown files.                               |
+| YAML files                        | 14                                      | `rg --files -g '!.git' -g '*.yaml'`                                                          | Agent metadata files only.                                                       |
+| Python scripts                    | 36                                      | `git ls-files -co --exclude-standard` filtered for `.py`                                     | Includes 14 test modules.                                                        |
+| Node.js scripts                   | 7                                       | `git ls-files -co --exclude-standard` filtered for `.cjs`                                    | In `brand/scripts/` and `design-system/scripts/`.                                |
+| Notebook helper subcommands       | 7                                       | `python .\jupyter-notebook-guardian\scripts\notebook_doctor.py --help`                       | `inspect`, `validate`, `repair`, `clean`, `export-code`, `check-kaggle`, `diff`. |
+| Package manifests                 | 0                                       | Search for `package.json`, `pyproject.toml`, `requirements.txt`, setup files, and lock files | No package manager metadata found.                                               |
+| API endpoints                     | 0                                       | Search for common route and server patterns                                                  | No API server code found.                                                        |
+| Environment variables             | 5                                       | Search for common environment access patterns                                                | All optional and in third-party skills. See Environment Configuration.           |
+| Database models                   | 0                                       | Repository file inspection                                                                   | No database files found.                                                         |
+| Test files                        | 14                                      | `git ls-files -co --exclude-standard` filtered for `test_*.py`                               | All in the third-party skills. 226 tests passed.                                 |
+| CI or deployment files            | 0                                       | Search for common CI, Docker, compose, and hosting files                                     | No deployment pipeline found.                                                    |
+| Default ports                     | 0                                       | Repository file inspection                                                                   | No server or port configuration found.                                           |
+| Notebook output warning threshold | 5 MiB                                   | `jupyter-notebook-guardian/scripts/notebook_doctor.py`                                       | Used by the `inspect` command.                                                   |
+| Test coverage percentage          | Not measured in the current repository. | No coverage report found                                                                     | Coverage cannot be verified.                                                     |
 
 ## Security Notes
 
 - No secrets, tokens, passwords, private keys, or connection strings were found during README inspection.
-- No environment variables are required by repository code.
+- No environment variables are required. The optional API keys for `design` image generation are secrets and send prompts to external services when set.
 - Notebook outputs can contain sensitive data. The notebook skill instructs users to check for secrets and machine specific paths before finalising notebook work.
-- `notebook_doctor.py` can create backups when `--backup` is passed to `repair` or `clean`.
+- `notebook_doctor.py` can create backups when `--backup` is passed to `repair` or `clean`. Inside a Git repository they go to `.agent-local/backups/`.
 - `notebook_doctor.py` is not a secret scanner. Review notebooks manually before sharing them.
 
 ## Maintenance Notes
@@ -423,7 +477,7 @@ The repository does not contain:
 - Update the matching `agents/openai.yaml` when a skill name, description, default prompt, or invocation policy changes.
 - Add a dependency manifest if more Python dependencies are introduced.
 - Add tests if `notebook_doctor.py` gains more behaviour.
-- Do not commit local dependency folders such as `.venv` or `.cache`.
+- Do not commit local folders such as `.venv`, `.cache`, or `.agent-local`.
 
 ## Troubleshooting
 
@@ -433,7 +487,6 @@ The repository does not contain:
 | `notebook_doctor.py` reports missing `nbformat`.                      | The active Python environment does not have `nbformat`.                     | `python -m pip show nbformat`                                                                   | Install `nbformat` in a repository local virtual environment.                                                            |
 | The notebook path is not found.                                       | The command uses a placeholder path or the shell is in the wrong directory. | `Get-Location`                                                                                  | Run the command from the repository root or pass the correct notebook path.                                              |
 | A notebook is reported as invalid.                                    | The file has invalid JSON, invalid notebook schema, or duplicate cell IDs.  | `python .\jupyter-notebook-guardian\scripts\notebook_doctor.py validate path\to\notebook.ipynb` | Inspect the error. If structure repair is appropriate, run `repair` with `--backup`.                                     |
-| `jupyter nbconvert` is unavailable.                                   | Jupyter is not installed in the active Python environment.                  | `python -m pip show jupyter nbconvert`                                                          | Install the required Jupyter tools in a local virtual environment before running execution checks.                       |
 | New `.venv` or `.cache` folders appear after dependency installation. | Local dependency setup was run.                                             | `git status --short`                                                                            | Keep those folders local and do not commit them unless the repository intentionally adds tooling configuration for them. |
 
 ## Known Limitations
@@ -441,14 +494,14 @@ The repository does not contain:
 - There is no root package manifest.
 - Dependency versions are not pinned.
 - The exact supported Python version is not declared.
-- There is no automated test suite.
+- There is no automated test suite for the first-party skills.
 - There is no coverage report.
 - There is no lint, type check, or format script.
 - There is no CI or CD setup.
 - There is no deployment configuration.
 - There is no API service or database layer.
-- There is no repository level `.gitignore` for local virtual environments or caches.
-- `jupyter-notebook-guardian` is the only skill with an executable helper script.
+- Third-party skills are copies. Upstream updates must be merged manually, and the local changes listed under Licence must be reapplied.
+- `notebook_doctor.py` has no automated tests.
 
 ## Contribution Guidelines
 
@@ -465,7 +518,25 @@ Use these repository rules for changes:
 
 ## Licence
 
-No repository level licence file is present. Licence terms cannot be verified from the current files.
+No repository level licence file is present. Licence terms for the repository as a whole cannot be verified from the current files.
+
+Seven skills are third-party code from [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): `banner-design`, `brand`, `design`, `design-system`, `slides`, `ui-styling`, and `ui-ux-pro-max`.
+
+- Six are under the upstream MIT licence. A copy is kept in each folder as `LICENSE`.
+- `ui-styling` ships its own Apache 2.0 licence as `ui-styling/LICENSE.txt`. Its `canvas-fonts/` folder includes an OFL licence file for each font family.
+
+They were copied from upstream commit `dcc40ff` (version 2.13.0, 21 September 2026), folder `.claude/skills/`, with these local changes:
+
+- `ui-ux-pro-max/SKILL.md` script commands use `<skill-dir>/scripts/search.py` instead of the Claude Code plugin path `${CLAUDE_PLUGIN_ROOT}/.claude/skills/ui-ux-pro-max/scripts/search.py`.
+- Harness-specific wording was made neutral: references to the `AskUserQuestion` tool now say to ask the user, subagent use is conditional on harness support, the note about Claude Code reporting the skill base directory now refers to agent harnesses in general, and the `/slides:create` and `/brand:update` slash command examples were replaced with plain requests.
+- The `design-system` reference to an upstream example file that is not shipped (`assets/designs/slides/claudekit-pitch-251223.html`) was removed.
+- Four `ui-ux-pro-max` test modules and their fixtures were removed because they test the upstream repository layout: `test_catalog_refresh.py`, `test_catalog_summary_line_endings.py`, `test_relevance_evaluator.py`, and `test_skill_script_paths.py`.
+- The committed coverage database `ui-styling/scripts/.coverage` was not copied.
+- `LICENSE` files (except in `ui-styling`) and `agents/openai.yaml` files were added.
+
+Other upstream folders, such as the `cli/` installer, `src/` templates, `docs/`, `gallery/`, `preview/`, and `screenshots/`, are upstream project tooling and marketing material, not skills, and were not copied.
+
+The skills refer to each other with relative paths such as `../design-system/scripts/generate-tokens.cjs`, so keep them as sibling folders when copying them elsewhere.
 
 ## Support
 

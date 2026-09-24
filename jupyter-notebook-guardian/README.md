@@ -1,17 +1,20 @@
-# IPYNB Guardian Codex skill
+# Jupyter Notebook Guardian skill
 
-Copy this folder into your Codex skills directory, preserving the folder name and `SKILL.md`.
+Copy this folder into the skills directory used by your agent or harness, preserving the folder name and `SKILL.md`.
 
-Typical locations depend on your Codex setup. Repository-embedded skills may be kept in the project and committed with the codebase.
+The skills directory location depends on the harness. Repository-embedded skills may be kept in the project and committed with the codebase.
 
-Dependency:
+Dependency (install into a project-local virtual environment, not the system interpreter):
 
 ```bash
-python -m pip install nbformat
+python -m venv .venv
+./.venv/bin/python -m pip install nbformat
 ```
+
+On Windows, use `.\.venv\Scripts\python` instead of `./.venv/bin/python`.
 
 Smoke test:
 
 ```bash
-python scripts/notebook_doctor.py --help
+./.venv/bin/python scripts/notebook_doctor.py --help
 ```

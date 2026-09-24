@@ -1,12 +1,16 @@
 # Recommended repository protections
 
-Install:
+Install into the project-local virtual environment:
 
 ```bash
-python -m pip install nbformat nbstripout nbdime
-nbdime config-git --enable
-nbstripout --install
+./.venv/bin/python -m pip install nbformat nbstripout nbdime
+./.venv/bin/nbdime config-git --enable
+./.venv/bin/nbstripout --install
 ```
+
+On Windows, use `.\.venv\Scripts\` instead of `./.venv/bin/`.
+
+Both `config-git --enable` and `nbstripout --install` write to the repository's `.git/config` by default. Do not pass `--global` or `--system` unless the user explicitly asks.
 
 Example `.pre-commit-config.yaml`:
 

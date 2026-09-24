@@ -23,6 +23,18 @@ Write the README so it is:
 
 If a `README.md` already exists, update or replace it as needed while preserving accurate project-specific information that remains useful. Remove stale, unverifiable, duplicated, or misleading claims.
 
+If the user asks only for an audit or review, report findings and proposed changes without writing to `README.md` unless they ask for the update.
+
+## Depth
+
+Match the README depth to the project. A longer README is not a better README.
+
+- Small project, script, library, or content repository: title, overview, quick start, usage, repository structure, and only the other sections a new developer actually needs.
+- Standard application: add configuration, testing, build, deployment, and troubleshooting as supported by the repository.
+- Large or multi-service system: use the full candidate section list where each section carries real information.
+
+If the user asks for a specific depth or length, follow it.
+
 ## Repository Inspection
 
 First, inspect the repository before drafting the README. Build a fact ledger from files and command output so claims can be traced back to evidence. Review:
@@ -85,7 +97,7 @@ Include the following sections where they are relevant and supported by reposito
 37. Licence
 38. Support and contact information
 
-Do not include a section merely to satisfy this list. If a section is not applicable, omit it unless the absence itself is useful to readers.
+Do not include a section merely to satisfy this list. If a section is not applicable, omit it unless the absence itself is useful to readers. Do not add empty tables or sections whose only content is "none found".
 
 ## Quick Start
 
@@ -152,7 +164,7 @@ Use only routes, payloads, status codes, and validation rules that can be verifi
 
 ## Repository Metrics
 
-Quantify values that help readers understand the repository and can be verified from files or commands. This may include:
+Include a metrics section only when the values help readers understand or operate the project. Quantify values that can be verified from files or commands. This may include:
 
 - Number of features
 - Number of modules
@@ -258,7 +270,7 @@ Before finalising the README:
 11. Confirm that the document uses simple Indian English.
 12. Confirm that no unsupported claim has been added.
 
-Write the final output directly to the repository root as:
+Unless the user asked for an audit only, write the final output directly to the repository root as:
 
 ```text
 README.md

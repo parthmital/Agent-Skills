@@ -1,0 +1,6 @@
+interface:
+  display_name: "Slides"
+  short_description: "Strategic HTML presentations"
+  default_prompt: "Use $slides to create a strategic HTML presentation with design tokens and charts."
+policy:
+  allow_implicit_invocation: true

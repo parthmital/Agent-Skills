@@ -1,0 +1,6 @@
+interface:
+  display_name: "Brand"
+  short_description: "Brand voice, identity, and consistency"
+  default_prompt: "Use $brand to define, review, or apply this brand's voice, visual identity, and guidelines."
+policy:
+  allow_implicit_invocation: true

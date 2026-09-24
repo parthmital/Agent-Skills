@@ -19,7 +19,8 @@ try:
     from nbformat.validator import NotebookValidationError
 except ImportError as exc:
     raise SystemExit(
-        "Missing dependency: install with `python -m pip install nbformat`."
+        "Missing dependency: install nbformat in a project-local virtual environment, "
+        "for example `.venv/bin/python -m pip install nbformat`."
     ) from exc
 
 
@@ -32,20 +33,37 @@ def load_notebook(path: Path):
         raise SystemExit(f"Unable to read {path}: {exc}") from exc
 
 
+def raw_cell_ids(path: Path) -> list[Any]:
+    """Read cell IDs from disk, because nbformat.read silently repairs them."""
+    with path.open(encoding="utf-8") as handle:
+        return [cell.get("id") for cell in json.load(handle).get("cells", [])]
+
+
+def backup_dir(path: Path) -> Path:
+    """Use <repo>/.agent-local/backups when inside a Git repo, else the notebook folder."""
+    for parent in path.resolve().parents:
+        if (parent / ".git").exists():
+            target = parent / ".agent-local" / "backups"
+            target.mkdir(parents=True, exist_ok=True)
+            return target
+    return path.resolve().parent
+
+
 def backup_file(path: Path) -> Path:
-    candidate = path.with_suffix(path.suffix + ".bak")
+    folder = backup_dir(path)
+    candidate = folder / (path.name + ".bak")
     index = 1
     while candidate.exists():
-        candidate = path.with_suffix(path.suffix + f".bak.{index}")
+        candidate = folder / (path.name + f".bak.{index}")
         index += 1
     shutil.copy2(path, candidate)
     return candidate
 
 
 def atomic_write(nb, path: Path) -> None:
+    nbformat.validate(nb)
     tmp = path.with_suffix(path.suffix + ".tmp")
     nbformat.write(nb, tmp)
-    nbformat.validate(nb)
     tmp.replace(path)
 
 
@@ -56,7 +74,7 @@ def source_text(cell: Any) -> str:
 
 def inspect_notebook(path: Path) -> int:
     nb = load_notebook(path)
-    ids = [cell.get("id") for cell in nb.cells]
+    ids = raw_cell_ids(path)
     counts = [
         cell.get("execution_count") for cell in nb.cells if cell.cell_type == "code"
     ]
@@ -124,7 +142,7 @@ def validate_notebook(path: Path) -> int:
     except NotebookValidationError as exc:
         print(f"INVALID: {path}\n{exc}", file=sys.stderr)
         return 1
-    ids = [cell.get("id") for cell in nb.cells]
+    ids = raw_cell_ids(path)
     duplicates = [value for value, n in Counter(ids).items() if value and n > 1]
     if duplicates:
         print(f"INVALID: duplicate cell IDs: {duplicates}", file=sys.stderr)
@@ -138,7 +156,8 @@ def repair_notebook(path: Path, make_backup: bool) -> int:
     if make_backup:
         print(f"Backup: {backup_file(path)}")
     nb = nbformat.convert(nb, 4)
-    nbformat.validator.normalize(nb)
+    _, normalized = nbformat.validator.normalize(nb)
+    nb = nbformat.from_dict(normalized)
     seen: set[str] = set()
     for cell in nb.cells:
         cell_id = cell.get("id")
@@ -183,6 +202,61 @@ def export_code(path: Path, output: Path) -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(chunks), encoding="utf-8")
     print(f"Exported {len(chunks)} code cells to {output}")
+    return 0
+
+
+def mask_magics(source: str) -> str | None:
+    """Replace IPython magics and shell escapes so the rest can be parsed as Python."""
+    if source.lstrip().startswith("%%"):
+        return None
+    lines = []
+    for line in source.splitlines():
+        stripped = line.lstrip()
+        if stripped.startswith(("!", "%")):
+            lines.append(line[: len(line) - len(stripped)] + "pass")
+        else:
+            lines.append(line)
+    return "\n".join(lines)
+
+
+def check_kaggle(path: Path) -> int:
+    """Static checks for the Kaggle notebook conventions. Nothing is executed."""
+    nb = load_notebook(path)
+    cells = nb.cells
+    problems: list[str] = []
+    if not cells or cells[0].cell_type != "markdown":
+        problems.append("first cell is not a markdown overview")
+    code_indices = [i for i, cell in enumerate(cells) if cell.cell_type == "code"]
+    for index in code_indices:
+        previous = cells[index - 1] if index > 0 else None
+        if previous is None or previous.cell_type != "markdown" or not source_text(previous).strip():
+            problems.append(f"cell {index}: code cell without an explanatory markdown cell before it")
+        masked = mask_magics(source_text(cells[index]))
+        if masked is None:
+            continue
+        try:
+            ast.parse(masked)
+        except SyntaxError as exc:
+            problems.append(f"cell {index}: syntax error on line {exc.lineno}: {exc.msg}")
+    all_code = "\n".join(source_text(cells[i]) for i in code_indices)
+    if "tqdm" not in all_code:
+        problems.append("tqdm is never used")
+    if "/kaggle/working" not in all_code:
+        problems.append("/kaggle/working is never referenced as the output location")
+    for marker in ("C:\\", "/Users/", "/home/"):
+        if marker in all_code:
+            problems.append(f"machine-specific path found: {marker}")
+    last_code = source_text(cells[code_indices[-1]]) if code_indices else ""
+    if not any(token in last_code for token in ("zipfile", "make_archive")):
+        problems.append("final code cell does not create the output zip")
+    if "FileLink" not in last_code:
+        problems.append("final code cell does not display a FileLink download link")
+    if problems:
+        print(f"KAGGLE CHECK FAILED: {path}")
+        for problem in problems:
+            print(f"  - {problem}")
+        return 1
+    print(f"KAGGLE CHECK PASSED: {path}")
     return 0
 
 
@@ -234,6 +308,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("notebook", type=Path)
     p.add_argument("--output", type=Path, required=True)
 
+    p = sub.add_parser("check-kaggle")
+    p.add_argument("notebook", type=Path)
+
     p = sub.add_parser("diff")
     p.add_argument("before", type=Path)
     p.add_argument("after", type=Path)
@@ -252,6 +329,8 @@ def main() -> int:
         return clean_notebook(args.notebook, args.backup, args.drop_widgets)
     if args.command == "export-code":
         return export_code(args.notebook, args.output)
+    if args.command == "check-kaggle":
+        return check_kaggle(args.notebook)
     if args.command == "diff":
         return diff_notebooks(args.before, args.after)
     return 2

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Banner Design"
+  short_description: "Banners for social, ads, heroes, and print"
+  default_prompt: "Use $banner-design to design banners for this campaign with several art direction options."
+policy:
+  allow_implicit_invocation: true

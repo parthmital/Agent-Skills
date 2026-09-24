@@ -1,0 +1,41 @@
+# Local agent work area: helper scripts, logs, outputs, backups, vendor clones
+.agent-local/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Tool caches
+.cache/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Notebook helper artefacts
+*.ipynb.bak
+*.ipynb.bak.*
+*.ipynb.tmp
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
