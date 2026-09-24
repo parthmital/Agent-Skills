@@ -52,7 +52,7 @@ Get-ChildItem -Directory | Where-Object { $_.Name -ne ".git" }
 
 What it does: lists the top level skill folders.
 
-Expected result: the command shows 14 skill folders, including `readme-generator` and `kaggle-jupyter-notebooks`.
+Expected result: the command shows 16 skill folders, including `readme-generator` and `kaggle-jupyter-notebooks`.
 
 Common error: if only `.git` or unrelated folders are shown, the shell is in the wrong directory.
 
@@ -100,26 +100,28 @@ Each skill in this repository also includes an optional `agents/openai.yaml` met
 
 Seven skills are third-party skills installed from [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill). See [Licence](#licence) for their origin and local changes.
 
-One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper script for safe notebook inspection, validation, repair, cleaning, export, Kaggle convention checks, and semantic diff.
+One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper script for safe notebook inspection, validation, repair, cleaning, export, Kaggle convention checks, and semantic diff. Another, `resume-tailoring`, bundles a single-page LaTeX resume template.
 
 ## Skills In This Repository
 
-| Skill                      | Purpose                                                                                                                                        | Main files                                                                                                                                                                         |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `banner-design`            | Designs banners for social media, ads, website heroes, and print, with several art direction options. Third-party, MIT.                        | [banner-design/SKILL.md](banner-design/SKILL.md)                                                                                                                                   |
-| `brand-guidelines`         | Brand voice, visual identity, messaging frameworks, asset management, and brand consistency checks. Third-party, MIT.                          | [brand-guidelines/SKILL.md](brand-guidelines/SKILL.md), [brand-guidelines/scripts/](brand-guidelines/scripts/)                                                                     |
-| `codebase-architecture`    | Reviews, plans, hardens, cleans up, deduplicates, and documents codebase structure.                                                            | [codebase-architecture/SKILL.md](codebase-architecture/SKILL.md), [codebase-architecture/agents/openai.yaml](codebase-architecture/agents/openai.yaml)                             |
-| `design-system`            | Three-layer design tokens, component specifications, token validation, and slide generation. Third-party, MIT.                                 | [design-system/SKILL.md](design-system/SKILL.md), [design-system/scripts/](design-system/scripts/)                                                                                 |
-| `frontend-design`          | Guides clean, functional frontend UI and UX work with fully custom components and no browser-native UI.                                        | [frontend-design/SKILL.md](frontend-design/SKILL.md), [frontend-design/agents/openai.yaml](frontend-design/agents/openai.yaml)                                                     |
-| `git-commit-and-push`      | Creates factual Git commits with inspected changes and strict commit message formatting.                                                       | [git-commit-and-push/SKILL.md](git-commit-and-push/SKILL.md), [git-commit-and-push/agents/openai.yaml](git-commit-and-push/agents/openai.yaml)                                     |
-| `graphic-design`           | Brand identity, logos, corporate identity programs, icons, social images, slides, and banners. Optional AI image generation. Third-party, MIT. | [graphic-design/SKILL.md](graphic-design/SKILL.md), [graphic-design/scripts/](graphic-design/scripts/)                                                                             |
-| `html-presentations`       | Strategic HTML presentations with Chart.js, design tokens, and copywriting formulas. Third-party, MIT.                                         | [html-presentations/SKILL.md](html-presentations/SKILL.md)                                                                                                                         |
-| `internet-research`        | Guides current, source based research, comparison, validation, and recommendation work.                                                        | [internet-research/SKILL.md](internet-research/SKILL.md), [internet-research/agents/openai.yaml](internet-research/agents/openai.yaml)                                             |
-| `kaggle-jupyter-notebooks` | Safe notebook editing, with Kaggle GPU T4 x2 as the default runtime and rules for documentation, progress, metrics, and output zips.           | [kaggle-jupyter-notebooks/SKILL.md](kaggle-jupyter-notebooks/SKILL.md), [kaggle-jupyter-notebooks/scripts/notebook_doctor.py](kaggle-jupyter-notebooks/scripts/notebook_doctor.py) |
-| `readme-generator`         | Generates or updates a verified repository README from inspected repository facts.                                                             | [readme-generator/SKILL.md](readme-generator/SKILL.md), [readme-generator/agents/openai.yaml](readme-generator/agents/openai.yaml)                                                 |
-| `repo-local-workspace`     | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                              | [repo-local-workspace/SKILL.md](repo-local-workspace/SKILL.md), [repo-local-workspace/agents/openai.yaml](repo-local-workspace/agents/openai.yaml)                                 |
-| `shadcn-tailwind-ui`       | shadcn/ui components, Tailwind CSS styling, and canvas-based visual designs. Third-party, Apache 2.0.                                          | [shadcn-tailwind-ui/SKILL.md](shadcn-tailwind-ui/SKILL.md), [shadcn-tailwind-ui/scripts/](shadcn-tailwind-ui/scripts/)                                                             |
-| `ui-ux-design-reference`   | Searchable UI/UX design data: styles, palettes, font pairings, UX guidelines, charts, and stack guidance. Third-party, MIT.                    | [ui-ux-design-reference/SKILL.md](ui-ux-design-reference/SKILL.md), [ui-ux-design-reference/scripts/search.py](ui-ux-design-reference/scripts/search.py)                           |
+| Skill                          | Purpose                                                                                                                                        | Main files                                                                                                                                                                         |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `banner-design`                | Designs banners for social media, ads, website heroes, and print, with several art direction options. Third-party, MIT.                        | [banner-design/SKILL.md](banner-design/SKILL.md)                                                                                                                                   |
+| `brand-guidelines`             | Brand voice, visual identity, messaging frameworks, asset management, and brand consistency checks. Third-party, MIT.                          | [brand-guidelines/SKILL.md](brand-guidelines/SKILL.md), [brand-guidelines/scripts/](brand-guidelines/scripts/)                                                                     |
+| `codebase-architecture`        | Reviews, plans, hardens, cleans up, deduplicates, and documents codebase structure.                                                            | [codebase-architecture/SKILL.md](codebase-architecture/SKILL.md), [codebase-architecture/agents/openai.yaml](codebase-architecture/agents/openai.yaml)                             |
+| `design-system`                | Three-layer design tokens, component specifications, token validation, and slide generation. Third-party, MIT.                                 | [design-system/SKILL.md](design-system/SKILL.md), [design-system/scripts/](design-system/scripts/)                                                                                 |
+| `frontend-design`              | Guides clean, functional frontend UI and UX work with fully custom components and no browser-native UI.                                        | [frontend-design/SKILL.md](frontend-design/SKILL.md), [frontend-design/agents/openai.yaml](frontend-design/agents/openai.yaml)                                                     |
+| `git-commit-and-push`          | Creates factual Git commits with inspected changes and strict commit message formatting.                                                       | [git-commit-and-push/SKILL.md](git-commit-and-push/SKILL.md), [git-commit-and-push/agents/openai.yaml](git-commit-and-push/agents/openai.yaml)                                     |
+| `graphic-design`               | Brand identity, logos, corporate identity programs, icons, social images, slides, and banners. Optional AI image generation. Third-party, MIT. | [graphic-design/SKILL.md](graphic-design/SKILL.md), [graphic-design/scripts/](graphic-design/scripts/)                                                                             |
+| `html-presentations`           | Strategic HTML presentations with Chart.js, design tokens, and copywriting formulas. Third-party, MIT.                                         | [html-presentations/SKILL.md](html-presentations/SKILL.md)                                                                                                                         |
+| `internet-research`            | Guides current, source based research, comparison, validation, and recommendation work.                                                        | [internet-research/SKILL.md](internet-research/SKILL.md), [internet-research/agents/openai.yaml](internet-research/agents/openai.yaml)                                             |
+| `kaggle-jupyter-notebooks`     | Safe notebook editing, with Kaggle GPU T4 x2 as the default runtime and rules for documentation, progress, metrics, and output zips.           | [kaggle-jupyter-notebooks/SKILL.md](kaggle-jupyter-notebooks/SKILL.md), [kaggle-jupyter-notebooks/scripts/notebook_doctor.py](kaggle-jupyter-notebooks/scripts/notebook_doctor.py) |
+| `linkedin-project-description` | Turns a project README into a LinkedIn project description of at most 1000 characters, using only supported claims.                            | [linkedin-project-description/SKILL.md](linkedin-project-description/SKILL.md), [linkedin-project-description/agents/openai.yaml](linkedin-project-description/agents/openai.yaml) |
+| `readme-generator`             | Generates or updates a verified repository README from inspected repository facts.                                                             | [readme-generator/SKILL.md](readme-generator/SKILL.md), [readme-generator/agents/openai.yaml](readme-generator/agents/openai.yaml)                                                 |
+| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                              | [repo-local-workspace/SKILL.md](repo-local-workspace/SKILL.md), [repo-local-workspace/agents/openai.yaml](repo-local-workspace/agents/openai.yaml)                                 |
+| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                              | [resume-tailoring/SKILL.md](resume-tailoring/SKILL.md), [resume-tailoring/assets/Resume.tex](resume-tailoring/assets/Resume.tex)                                                   |
+| `shadcn-tailwind-ui`           | shadcn/ui components, Tailwind CSS styling, and canvas-based visual designs. Third-party, Apache 2.0.                                          | [shadcn-tailwind-ui/SKILL.md](shadcn-tailwind-ui/SKILL.md), [shadcn-tailwind-ui/scripts/](shadcn-tailwind-ui/scripts/)                                                             |
+| `ui-ux-design-reference`       | Searchable UI/UX design data: styles, palettes, font pairings, UX guidelines, charts, and stack guidance. Third-party, MIT.                    | [ui-ux-design-reference/SKILL.md](ui-ux-design-reference/SKILL.md), [ui-ux-design-reference/scripts/search.py](ui-ux-design-reference/scripts/search.py)                           |
 
 ## Repository Structure
 
@@ -161,6 +163,10 @@ One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper
 |   |   `-- precommit.md
 |   `-- scripts/
 |       `-- notebook_doctor.py
+|-- linkedin-project-description/
+|   |-- SKILL.md
+|   `-- agents/
+|       `-- openai.yaml
 |-- readme-generator/
 |   |-- SKILL.md
 |   `-- agents/
@@ -169,6 +175,12 @@ One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper
 |   |-- SKILL.md
 |   `-- agents/
 |       `-- openai.yaml
+|-- resume-tailoring/
+|   |-- SKILL.md
+|   |-- agents/
+|   |   `-- openai.yaml
+|   `-- assets/
+|       `-- Resume.tex
 |-- shadcn-tailwind-ui/        third-party: SKILL.md, LICENSE.txt, agents/, canvas-fonts/, references/, scripts/
 `-- ui-ux-design-reference/
     |-- LICENSE
@@ -273,8 +285,8 @@ Useful repository commands:
 
 | Command                                                               | Purpose                               | Expected result                                                           |
 | --------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
-| `rg --files -g '!.git'`                                               | List repository files outside `.git`. | Prints 274 tracked or working tree files in the current repository state. |
-| `Get-ChildItem -Directory \| Where-Object { $_.Name -ne ".git" }`     | List skill folders.                   | Prints 14 skill folders.                                                  |
+| `rg --files -g '!.git'`                                               | List repository files outside `.git`. | Prints 279 tracked or working tree files in the current repository state. |
+| `Get-ChildItem -Directory \| Where-Object { $_.Name -ne ".git" }`     | List skill folders.                   | Prints 16 skill folders.                                                  |
 | `Get-Content .\readme-generator\SKILL.md`                             | Read the README generator skill.      | Prints the selected skill instructions.                                   |
 | `python .\kaggle-jupyter-notebooks\scripts\notebook_doctor.py --help` | Run the notebook helper help command. | Prints usage text and 7 subcommands.                                      |
 
@@ -441,12 +453,12 @@ The repository does not contain:
 | Metric name                       | Verified value                          | Source file or command used for verification                                                 | Notes                                                                            |
 | --------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | Git work tree                     | Yes                                     | `git rev-parse --is-inside-work-tree`                                                        | Returned `true`.                                                                 |
-| Top level skill directories       | 14                                      | `Get-ChildItem -Force -Directory` filtered to exclude `.git`                                 | Counts current working tree folders.                                             |
-| Skill definition files            | 14                                      | `rg --files -g '!.git' -g 'SKILL.md'`                                                        | Files named `SKILL.md`.                                                          |
-| Agent metadata files              | 14                                      | `rg --files -g '!.git'` filtered for `agents\openai.yaml`                                    | One metadata file per skill.                                                     |
-| Repository files outside `.git`   | 274                                     | `rg --files -g '!.git'`                                                                      | 255 are in the seven third-party skills, mostly data, fonts, and references.     |
-| Markdown files                    | 70                                      | `rg --files -g '!.git' -g '*.md'`                                                            | Includes this README and all skill Markdown files.                               |
-| YAML files                        | 14                                      | `rg --files -g '!.git' -g '*.yaml'`                                                          | Agent metadata files only.                                                       |
+| Top level skill directories       | 16                                      | `Get-ChildItem -Force -Directory` filtered to exclude `.git`                                 | Counts current working tree folders.                                             |
+| Skill definition files            | 16                                      | `rg --files -g '!.git' -g 'SKILL.md'`                                                        | Files named `SKILL.md`.                                                          |
+| Agent metadata files              | 16                                      | `rg --files -g '!.git'` filtered for `agents\openai.yaml`                                    | One metadata file per skill.                                                     |
+| Repository files outside `.git`   | 279                                     | `rg --files -g '!.git'`                                                                      | 255 are in the seven third-party skills, mostly data, fonts, and references.     |
+| Markdown files                    | 72                                      | `rg --files -g '!.git' -g '*.md'`                                                            | Includes this README and all skill Markdown files.                               |
+| YAML files                        | 16                                      | `rg --files -g '!.git' -g '*.yaml'`                                                          | Agent metadata files only.                                                       |
 | Python scripts                    | 36                                      | `git ls-files -co --exclude-standard` filtered for `.py`                                     | Includes 14 test modules.                                                        |
 | Node.js scripts                   | 7                                       | `git ls-files -co --exclude-standard` filtered for `.cjs`                                    | In `brand-guidelines/scripts/` and `design-system/scripts/`.                     |
 | Notebook helper subcommands       | 7                                       | `python .\kaggle-jupyter-notebooks\scripts\notebook_doctor.py --help`                        | `inspect`, `validate`, `repair`, `clean`, `export-code`, `check-kaggle`, `diff`. |

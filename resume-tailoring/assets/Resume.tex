@@ -1,0 +1,190 @@
+\documentclass[letterpaper,11pt]{article}
+
+% Packages
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+
+\input{glyphtounicode}
+
+% Page setup
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+
+\pdfgentounicode=1
+
+% Section formatting
+\titleformat{\section}
+  {\vspace{-4pt}\scshape\raggedright\large\bfseries}
+  {}{0em}{}
+  [\color{black}\titlerule \vspace{-5pt}]
+
+% Resume data placeholders
+\newcommand{\CandidateName}{First Last}
+\newcommand{\CandidateLocation}{City, State, Country}
+\newcommand{\CandidateEmail}{email@example.com}
+\newcommand{\CandidateLinkedIn}{linkedin.com/in/username}
+\newcommand{\CandidateLinkedInURL}{https://linkedin.com/in/username}
+\newcommand{\CandidateGitHub}{github.com/username}
+\newcommand{\CandidateGitHubURL}{https://github.com/username}
+\newcommand{\CandidatePortfolio}{portfolio.example.com}
+\newcommand{\CandidatePortfolioURL}{https://portfolio.example.com}
+
+\newcommand{\CompanyOneURL}{https://example.com/company-one}
+\newcommand{\CompanyTwoURL}{https://example.com/company-two}
+\newcommand{\ProjectOneURL}{https://github.com/username/project-one}
+\newcommand{\ProjectTwoURL}{https://github.com/username/project-two}
+
+% Resume commands
+\newcommand{\resumeItem}[1]{
+  \item \small{#1 \vspace{-2pt}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+  \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & \textbf{\small #2} \\
+    \textit{\small #3} & \textit{\small #4} \\
+  \end{tabular*}
+  \vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+    \small #1 & \textbf{\small #2} \\
+  \end{tabular*}
+  \vspace{-18pt}
+}
+
+\newcommand{\resumeProject}[4]{
+  \resumeProjectHeading
+    {\textbf{\href{#1}{\underline{\faGithub\ #2}}}}{\emph{#3}}
+  \resumeItemListStart
+  #4
+  \resumeItemListEnd
+}
+
+\newcommand{\skillCategory}[2]{\textbf{#1}: #2 \\}
+\newcommand{\resumeProjectGap}{\vspace{-15pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+% Document
+\begin{document}
+
+% Header
+\begin{center}
+{\LARGE \textbf{\CandidateName}} \\[2pt]
+\small
+\faMapMarker* \ \CandidateLocation{} \quad
+\faEnvelope \ \href{mailto:\CandidateEmail}{\CandidateEmail} \quad
+\faLinkedin \ \href{\CandidateLinkedInURL}{\CandidateLinkedIn} \\[2pt]
+\faGithub \ \href{\CandidateGitHubURL}{\CandidateGitHub} \quad
+\faGlobe \ \href{\CandidatePortfolioURL}{\CandidatePortfolio}
+\end{center}
+
+% Education
+\section{Education \& Certifications}
+\resumeSubHeadingListStart
+\resumeSubheading
+  {University Name}{Year -- Year}
+  {Degree in Major (GPA / Honors)}{Location}
+\resumeSubheading
+  {Professional Certification Name}{Month Year}
+  {Issuing Body / Organization; Credential ID: XXXXXXXX}{Validity / Details}
+\resumeSubHeadingListEnd
+
+% Experience
+\section{Experience}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+  {\href{\CompanyOneURL}{\underline{Company / Organization Name}}}{Month Year -- Month Year}
+  {Job Title / Role}{Location}
+\resumeItemListStart
+\resumeItem{Engineered scalable system architecture using primary stack; \textbf{optimized performance by 45\%} and eliminated operational bottlenecks across core services.}
+\resumeItem{Partnered directly with cross-functional stakeholders to \textbf{consolidate fragmented workflows into unified platforms}, automating critical operational pipelines.}
+\resumeItem{Secured production infrastructure with role-based access control, automated rate limiting, and \textbf{scheduled AES-256 encrypted offsite backups} with 30-day retention.}
+\resumeItem{Implemented test suites with \textbf{95\% automated test coverage across 100+ endpoints}, supporting 50K+ active users with zero unplanned downtime.}
+\resumeItemListEnd
+
+\resumeSubheading
+  {\href{\CompanyTwoURL}{\underline{Company / Organization Name}}}{Month Year -- Month Year}
+  {Job Title / Role}{Location}
+\resumeItemListStart
+\resumeItem{Architected client-facing application modules; delivered \textbf{sub-millisecond latency improvements} and streamlined state synchronization across platforms.}
+\resumeItem{Trained and quantized lightweight machine learning models, \textbf{reducing parameter footprint by 80\%} with \textbf{sub-5ms on-device inference latency}.}
+\resumeItem{Fine-tuned computer vision and NLP models; integrated automated preprocessing to \textbf{reduce noise by 15\%} while boosting downstream task accuracy.}
+\resumeItem{Designed high-throughput parsing pipelines, \textbf{extracting 10K+ structured records daily} without GPU bottlenecks.}
+\resumeItem{Collaborated with leadership to deploy \textbf{autonomous generation workflows across production systems}, enforcing automated validation gates and accessibility checks.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+\resumeProjectGap
+
+% Projects & Research
+\section{Projects \& Research}
+\vspace{-5pt}
+\resumeSubHeadingListStart
+
+\resumeProject
+  {\ProjectOneURL}
+  {Project Name: Primary Descriptive Subtitle}
+  {Core Technologies, Frameworks, Tools}
+  {
+    \resumeItem{Benchmarked \textbf{multiple deep learning / system architectures} across benchmark datasets; co-authored technical documentation and research findings.}
+    \resumeItem{Trained high-accuracy detection and classification models, \textbf{eliminating cross-dataset data leakage} via perceptual hashing and deduplication.}
+    \resumeItem{Evaluated volumetric 3D segmentation models; deployed compact architectures reaching \textbf{state-of-the-art Dice scores} with minimal parameter overhead.}
+    \resumeItem{Developed full-stack production platform for \textbf{interactive visualization, API endpoints, \& automated diagnostic report generation}.}
+  }
+
+\resumeSubHeadingListEnd
+\resumeProjectGap
+
+% Skills
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+\small{\item{
+\skillCategory{Languages}{Python, TypeScript, JavaScript, C++, SQL, Bash, Go}
+\skillCategory{Frameworks \& Libraries}{React, Next.js, Node.js, FastAPI, PyTorch, Tailwind CSS}
+\skillCategory{Cloud, DevOps \& Databases}{PostgreSQL, Redis, Docker, Git, GitHub Actions, AWS, Linux, CI/CD}
+\skillCategory{Tools \& Methodologies}{RESTful APIs, GraphQL, Agile, Microservices, Vitest, Playwright, Jest}
+\textbf{Coursework}: Data Structures \& Algorithms, Operating Systems, Database Systems, Computer Networks, Software Engineering, Distributed Systems, Machine Learning
+}}
+\end{itemize}
+\resumeProjectGap
+
+\end{document}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Resume Tailoring"
+  short_description: "Single-page LaTeX resume from ground-truth docs"
+  default_prompt: "Use $resume-tailoring to update Resume.tex from the ground-truth files in this workspace."
+policy:
+  allow_implicit_invocation: true
