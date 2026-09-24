@@ -1,0 +1,6 @@
+interface:
+  display_name: "Repo Local Workspace"
+  short_description: "Keep all tooling and task files in the repo"
+  default_prompt: "Use $repo-local-workspace to keep all tooling, dependencies, scripts, logs, outputs, caches, and temporary files inside this repository."
+policy:
+  allow_implicit_invocation: true

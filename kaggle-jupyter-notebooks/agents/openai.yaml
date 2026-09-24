@@ -1,0 +1,6 @@
+interface:
+  display_name: "Kaggle Jupyter Notebooks"
+  short_description: "Kaggle T4 x2 notebooks, edited safely"
+  default_prompt: "Use $kaggle-jupyter-notebooks to create or safely edit this Kaggle Jupyter notebook."
+policy:
+  allow_implicit_invocation: true

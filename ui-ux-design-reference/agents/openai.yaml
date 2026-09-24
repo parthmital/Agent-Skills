@@ -1,0 +1,6 @@
+interface:
+  display_name: "UI/UX Design Reference"
+  short_description: "Searchable UI/UX design data and guidelines"
+  default_prompt: "Use $ui-ux-design-reference to search design systems, palettes, font pairings, UX guidelines, and stack-specific UI guidance for this interface."
+policy:
+  allow_implicit_invocation: true

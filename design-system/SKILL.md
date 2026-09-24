@@ -103,10 +103,10 @@ node scripts/validate-tokens.cjs --dir src/
 
 ## Integration
 
-**With brand:** Extract primitives from brand colors/typography
-**With ui-styling:** Component tokens → Tailwind config
+**With brand-guidelines:** Extract primitives from brand colors/typography
+**With shadcn-tailwind-ui:** Component tokens → Tailwind config
 
-**Skill Dependencies:** brand, ui-styling
+**Skill Dependencies:** brand-guidelines, shadcn-tailwind-ui
 **Primary Agents:** ui-ux-designer, frontend-developer
 
 ## Slide System
@@ -227,7 +227,7 @@ font-family: 'Space Grotesk';
 
 ### Creating A Deck
 
-To build a full presentation, use the sibling `slides` skill, for example with the request "create a 10-slide investor pitch".
+To build a full presentation, use the sibling `html-presentations` skill, for example with the request "create a 10-slide investor pitch".
 
 ## Best Practices
 

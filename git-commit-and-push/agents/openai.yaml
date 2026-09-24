@@ -1,0 +1,6 @@
+interface:
+  display_name: "Git Commit And Push"
+  short_description: "Detailed commits with hyphenated body lines, then push"
+  default_prompt: "Use $git-commit-and-push to create a detailed commit for the current changes and push it."
+policy:
+  allow_implicit_invocation: true

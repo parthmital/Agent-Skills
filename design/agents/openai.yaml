@@ -1,6 +1,0 @@
-interface:
-  display_name: "Design"
-  short_description: "Logos, identity, icons, slides, and banners"
-  default_prompt: "Use $design to create brand identity, logo, icon, corporate identity, or presentation designs."
-policy:
-  allow_implicit_invocation: true

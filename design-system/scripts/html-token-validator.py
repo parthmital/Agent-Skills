@@ -19,21 +19,22 @@ import os
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
+
 # The skill can be installed outside the project it operates on (user-level
 # ~/.claude/skills/, or as a plugin), so the project root cannot be derived from
 # this file's location. Resolve it from the working directory instead -- the same
 # convention generate-tokens.cjs and validate-tokens.cjs already use via
 # process.cwd(). DESIGN_SYSTEM_PROJECT_ROOT overrides it explicitly.
 def _find_project_root():
-    override = os.environ.get('DESIGN_SYSTEM_PROJECT_ROOT')
+    override = os.environ.get("DESIGN_SYSTEM_PROJECT_ROOT")
     if override:
         return Path(override).resolve()
     start = Path.cwd().resolve()
     markers = (
-        Path('assets') / 'design-tokens.json',
-        Path('assets') / 'design-tokens.css',
-        Path('package.json'),
-        Path('.git'),
+        Path("assets") / "design-tokens.json",
+        Path("assets") / "design-tokens.css",
+        Path("package.json"),
+        Path(".git"),
     )
     for candidate in (start, *start.parents):
         if any((candidate / marker).exists() for marker in markers):
@@ -48,51 +49,57 @@ PROJECT_ROOT = _find_project_root()
 # src/ui-ux-pro-max/scripts/search.py.
 import io
 
-if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-if sys.stderr.encoding and sys.stderr.encoding.lower() != 'utf-8':
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
-TOKENS_JSON_PATH = PROJECT_ROOT / 'assets' / 'design-tokens.json'
-TOKENS_CSS_PATH = PROJECT_ROOT / 'assets' / 'design-tokens.css'
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+if sys.stderr.encoding and sys.stderr.encoding.lower() != "utf-8":
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8")
+TOKENS_JSON_PATH = PROJECT_ROOT / "assets" / "design-tokens.json"
+TOKENS_CSS_PATH = PROJECT_ROOT / "assets" / "design-tokens.css"
 
 # Asset directories to validate
 ASSET_DIRS = {
-    'slides': PROJECT_ROOT / 'assets' / 'designs' / 'slides',
-    'infographics': PROJECT_ROOT / 'assets' / 'infographics',
+    "slides": PROJECT_ROOT / "assets" / "designs" / "slides",
+    "infographics": PROJECT_ROOT / "assets" / "infographics",
 }
 
 # Patterns that indicate hardcoded values (should use tokens)
 FORBIDDEN_PATTERNS = [
-    (r'#[0-9A-Fa-f]{3,8}\b', 'hex color'),
-    (r'rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)', 'rgb color'),
-    (r'rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*[\d.]+\s*\)', 'rgba color'),
-    (r'hsl\([^)]+\)', 'hsl color'),
-    (r"font-family:\s*'[^v][^a][^r][^']*',", 'hardcoded font'),  # Exclude var()
-    (r'font-family:\s*"[^v][^a][^r][^"]*",', 'hardcoded font'),
+    (r"#[0-9A-Fa-f]{3,8}\b", "hex color"),
+    (r"rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)", "rgb color"),
+    (r"rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*[\d.]+\s*\)", "rgba color"),
+    (r"hsl\([^)]+\)", "hsl color"),
+    (r"font-family:\s*'[^v][^a][^r][^']*',", "hardcoded font"),  # Exclude var()
+    (r'font-family:\s*"[^v][^a][^r][^"]*",', "hardcoded font"),
 ]
 
 # Allowed rgba patterns (brand colors with transparency - CSS limitation)
 # These are derived from brand tokens but need rgba for transparency
 ALLOWED_RGBA_PATTERNS = [
-    r'rgba\(\s*59\s*,\s*130\s*,\s*246',    # --color-primary (#3B82F6)
-    r'rgba\(\s*245\s*,\s*158\s*,\s*11',    # --color-secondary (#F59E0B)
-    r'rgba\(\s*16\s*,\s*185\s*,\s*129',    # --color-accent (#10B981)
-    r'rgba\(\s*20\s*,\s*184\s*,\s*166',    # --color-accent alt (#14B8A6)
-    r'rgba\(\s*0\s*,\s*0\s*,\s*0',         # black transparency (common)
-    r'rgba\(\s*255\s*,\s*255\s*,\s*255',   # white transparency (common)
-    r'rgba\(\s*15\s*,\s*23\s*,\s*42',      # --color-surface (#0F172A)
-    r'rgba\(\s*7\s*,\s*11\s*,\s*20',       # --color-background (#070B14)
+    r"rgba\(\s*59\s*,\s*130\s*,\s*246",  # --color-primary (#3B82F6)
+    r"rgba\(\s*245\s*,\s*158\s*,\s*11",  # --color-secondary (#F59E0B)
+    r"rgba\(\s*16\s*,\s*185\s*,\s*129",  # --color-accent (#10B981)
+    r"rgba\(\s*20\s*,\s*184\s*,\s*166",  # --color-accent alt (#14B8A6)
+    r"rgba\(\s*0\s*,\s*0\s*,\s*0",  # black transparency (common)
+    r"rgba\(\s*255\s*,\s*255\s*,\s*255",  # white transparency (common)
+    r"rgba\(\s*15\s*,\s*23\s*,\s*42",  # --color-surface (#0F172A)
+    r"rgba\(\s*7\s*,\s*11\s*,\s*20",  # --color-background (#070B14)
 ]
 
 # Allowed exceptions (external images, etc.)
 ALLOWED_EXCEPTIONS = [
-    'pexels.com', 'unsplash.com', 'youtube.com', 'ytimg.com',
-    'googlefonts', 'fonts.googleapis.com', 'fonts.gstatic.com',
+    "pexels.com",
+    "unsplash.com",
+    "youtube.com",
+    "ytimg.com",
+    "googlefonts",
+    "fonts.googleapis.com",
+    "fonts.gstatic.com",
 ]
 
 
 class ValidationResult:
     """Validation result for a single file."""
+
     def __init__(self, file_path: Path):
         self.file_path = file_path
         self.errors: List[str] = []
@@ -113,12 +120,14 @@ def load_css_variables() -> Dict[str, str]:
     if TOKENS_CSS_PATH.exists():
         content = TOKENS_CSS_PATH.read_text()
         # Extract --var-name: value patterns
-        for match in re.finditer(r'(--[\w-]+):\s*([^;]+);', content):
+        for match in re.finditer(r"(--[\w-]+):\s*([^;]+);", content):
             variables[match.group(1)] = match.group(2).strip()
     return variables
 
 
-def is_inside_block(content: str, match_pos: int, open_tag: str, close_tag: str) -> bool:
+def is_inside_block(
+    content: str, match_pos: int, open_tag: str, close_tag: str
+) -> bool:
     """Check if position is inside a specific HTML block."""
     pre = content[:match_pos]
     tag_open = pre.rfind(open_tag)
@@ -144,7 +153,9 @@ def get_context(content: str, pos: int, chars: int = 100) -> str:
     return content[start:end]
 
 
-def validate_html(content: str, file_path: Path, verbose: bool = False) -> ValidationResult:
+def validate_html(
+    content: str, file_path: Path, verbose: bool = False
+) -> ValidationResult:
     """
     Validate HTML content for design token compliance.
 
@@ -157,7 +168,7 @@ def validate_html(content: str, file_path: Path, verbose: bool = False) -> Valid
     result = ValidationResult(file_path)
 
     # 1. Check for design-tokens.css import
-    if 'design-tokens.css' not in content:
+    if "design-tokens.css" not in content:
         result.add_error("Missing design-tokens.css import")
 
     # 2. Check for forbidden patterns in CSS
@@ -168,7 +179,7 @@ def validate_html(content: str, file_path: Path, verbose: bool = False) -> Valid
             context = get_context(content, match_pos)
 
             # Skip if in <script> block (Chart.js allowed)
-            if is_inside_block(content, match_pos, '<script', '</script>'):
+            if is_inside_block(content, match_pos, "<script", "</script>"):
                 if verbose:
                     result.add_warning(f"Allowed in <script>: {match_text}")
                 continue
@@ -180,36 +191,40 @@ def validate_html(content: str, file_path: Path, verbose: bool = False) -> Valid
                 continue
 
             # Skip rgba using brand colors (needed for transparency effects)
-            if description == 'rgba color' and is_allowed_rgba(match_text):
+            if description == "rgba color" and is_allowed_rgba(match_text):
                 if verbose:
                     result.add_warning(f"Allowed brand rgba: {match_text}")
                 continue
 
             # Skip if part of var() reference (false positive)
-            if 'var(' in context and match_text in context:
+            if "var(" in context and match_text in context:
                 # Check if it's a fallback value in var()
-                var_pattern = rf'var\([^)]*{re.escape(match_text)}[^)]*\)'
+                var_pattern = rf"var\([^)]*{re.escape(match_text)}[^)]*\)"
                 if re.search(var_pattern, context):
                     continue
 
             # Error if in <style> or inline style
-            if is_inside_block(content, match_pos, '<style', '</style>'):
+            if is_inside_block(content, match_pos, "<style", "</style>"):
                 result.add_error(f"Hardcoded {description} in <style>: {match_text}")
             elif 'style="' in context:
-                result.add_error(f"Hardcoded {description} in inline style: {match_text}")
+                result.add_error(
+                    f"Hardcoded {description} in inline style: {match_text}"
+                )
 
     # 3. Check for required var() usage indicators
     token_patterns = [
-        r'var\(--color-',
-        r'var\(--primitive-',
-        r'var\(--typography-',
-        r'var\(--card-',
-        r'var\(--button-',
+        r"var\(--color-",
+        r"var\(--primitive-",
+        r"var\(--typography-",
+        r"var\(--card-",
+        r"var\(--button-",
     ]
     token_count = sum(len(re.findall(p, content)) for p in token_patterns)
 
     if token_count < 5:
-        result.add_warning(f"Low token usage ({token_count} var() references). Consider using more design tokens.")
+        result.add_warning(
+            f"Low token usage ({token_count} var() references). Consider using more design tokens."
+        )
 
     return result
 
@@ -229,7 +244,7 @@ def validate_directory(dir_path: Path, verbose: bool = False) -> List[Validation
     """Validate all HTML files in a directory."""
     results = []
     if dir_path.exists():
-        for html_file in sorted(dir_path.glob('*.html')):
+        for html_file in sorted(dir_path.glob("*.html")):
             results.append(validate_file(html_file, verbose))
     return results
 
@@ -283,7 +298,9 @@ def print_summary(all_results: Dict[str, List[ValidationResult]]):
     if total_errors == 0:
         print(f"✓ ALL PASSED: {total_passed}/{total_files} files valid")
     else:
-        print(f"✗ FAILED: {total_files - total_passed}/{total_files} files have issues ({total_errors} total errors)")
+        print(
+            f"✗ FAILED: {total_files - total_passed}/{total_files} files have issues ({total_errors} total errors)"
+        )
     print("-" * 60)
 
     return total_errors == 0
@@ -294,7 +311,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='Validate HTML assets for design token compliance',
+        description="Validate HTML assets for design token compliance",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -303,14 +320,23 @@ Examples:
   %(prog)s --type infographics       # Validate only infographics
   %(prog)s path/to/file.html         # Validate specific file
   %(prog)s --colors                  # Show brand colors from tokens
-"""
+""",
     )
-    parser.add_argument('files', nargs='*', help='Specific HTML files to validate')
-    parser.add_argument('-t', '--type', choices=['slides', 'infographics', 'all'],
-                        default='all', help='Asset type to validate')
-    parser.add_argument('-v', '--verbose', action='store_true', help='Show warnings')
-    parser.add_argument('--colors', action='store_true', help='Print CSS variables from tokens')
-    parser.add_argument('--fix', action='store_true', help='Auto-fix issues (experimental)')
+    parser.add_argument("files", nargs="*", help="Specific HTML files to validate")
+    parser.add_argument(
+        "-t",
+        "--type",
+        choices=["slides", "infographics", "all"],
+        default="all",
+        help="Asset type to validate",
+    )
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show warnings")
+    parser.add_argument(
+        "--colors", action="store_true", help="Print CSS variables from tokens"
+    )
+    parser.add_argument(
+        "--fix", action="store_true", help="Auto-fix issues (experimental)"
+    )
 
     args = parser.parse_args()
 
@@ -338,10 +364,10 @@ Examples:
                 result = ValidationResult(path)
                 result.add_error("File not found")
                 results.append(result)
-        all_results['specified'] = results
+        all_results["specified"] = results
     else:
         # Validate by type
-        types_to_check = ASSET_DIRS.keys() if args.type == 'all' else [args.type]
+        types_to_check = ASSET_DIRS.keys() if args.type == "all" else [args.type]
 
         for asset_type in types_to_check:
             if asset_type in ASSET_DIRS:
@@ -355,5 +381,5 @@ Examples:
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
