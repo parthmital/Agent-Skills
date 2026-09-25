@@ -1,54 +1,47 @@
 ---
 name: internet-research
-description: Research current or source-dependent facts, prior art, comparable products, repositories, libraries, docs, issues, discussions, benchmarks, pricing, legal or regulatory details, and implementation examples. Use automatically when the user asks to research, look up, verify, cite, benchmark, compare, find similar projects, find repos or apps, assess current options, validate assumptions with sources, or make a decision that benefits from external evidence.
+description: Research current or source-dependent facts, prior art, comparable products, repositories, libraries, docs, issues, discussions, benchmarks, pricing, legal or regulatory details, and implementation examples. Use when the user asks to research, look up, verify, cite, benchmark, compare, find similar projects, repos, or apps, assess current options, validate assumptions with sources, or make a decision that benefits from external evidence.
 ---
 
 # Internet Research
 
-Use this skill when external context can materially improve the answer. Search broadly enough to avoid a narrow answer, but keep each claim tied to source quality, date, and scope.
+Use external evidence where it materially improves the answer. Search broadly, but tie every claim to its source quality, date, and scope.
 
 ## Rules
 
-- Browse the internet before making claims that are current, niche, source-dependent, or likely to have changed. If no web access tool is available, say so, answer only from known information, and mark claims that may be outdated.
-- Prefer primary sources: official docs, repositories, release notes, standards, academic papers, vendor docs, changelogs, and source code.
-- Use social sources such as Reddit, Hacker News, issues, Discord mirrors, and forums as anecdotal signals. Label them as anecdotal.
-- Cite links for claims based on external sources. Do not cite a source that was not opened and checked.
-- Do not claim to have searched the complete internet. State the practical search scope instead.
-- Compare publication dates, release dates, and event dates. Mention absolute dates when recency matters.
-- Discard SEO pages, scraped summaries, and low-signal marketing posts unless the task is about market positioning.
-- Separate verified facts, informed inference, and opinion. Mark uncertainty instead of filling gaps.
-- Use the user's decision as the frame. Do not return a source dump when a recommendation or tradeoff analysis is needed.
+- Search before making claims that are current, niche, source-dependent, or likely to have changed. With no web tool, say so, answer from known information, and flag claims that may be outdated.
+- Prefer primary sources: official docs, repositories, release notes, standards, papers, vendor docs, changelogs, and source code.
+- Treat Reddit, Hacker News, issues, Discord mirrors, and forums as anecdotal, and label them so. Look for repeated complaints, workarounds, and edge cases rather than taking comments as fact.
+- Cite only sources you opened and checked.
+- State the practical search scope. Never claim to have searched the whole internet.
+- Compare publication, release, and event dates, and give absolute dates when recency matters.
+- Discard SEO pages, scraped summaries, and marketing posts unless the task is about market positioning.
+- Separate verified fact, inference, and opinion. Mark uncertainty instead of filling gaps.
+- Frame findings around the user's decision. Do not dump sources when a recommendation or tradeoff analysis is needed.
 
 ## Workflow
 
-1. Convert the user request into a research brief: decision to make, constraints, keywords, competitors, user segment, freshness requirement, and evidence needed.
-2. Search in layers:
-   - Official documentation, standards, and vendor pages.
-   - GitHub or GitLab repositories, package registries, examples, templates, and starter kits.
-   - Comparable apps, products, competitors, pricing pages, launch posts, and case studies.
-   - User discussions on Reddit, Hacker News, GitHub issues, Stack Overflow, forums, and community boards.
-   - Recent news, release notes, advisories, benchmarks, and changelogs when current context matters.
+1. Write a brief: the decision, constraints, keywords, competitors, user segment, freshness needed, and evidence needed.
+2. Search in layers: official docs and standards; repositories, package registries, examples, and starters; comparable products, competitors, pricing, launch posts, and case studies; user discussions on Reddit, Hacker News, GitHub issues, Stack Overflow, and forums; and, when current context matters, news, release notes, advisories, benchmarks, and changelogs.
 3. Open promising sources and verify details directly.
-4. Extract repeated patterns, tradeoffs, warnings, maintenance signals, adoption signals, and implementation details.
-5. Synthesize into actionable options. Explain what evidence supports each option and what evidence is missing.
+4. Extract repeated patterns, tradeoffs, warnings, maintenance and adoption signals, and implementation details.
+5. Synthesise into actionable options, each with its supporting and missing evidence.
 
-## Source Quality Checks
+## Source Checks
 
-- For repositories, check recent commits, releases, issues, documentation, licence, tests, examples, and dependency health. Stars alone are not evidence.
-- For libraries and frameworks, prefer official docs and source examples over tutorials.
-- For products, distinguish marketing claims from observable features, pricing, screenshots, docs, and user reports.
-- For Reddit and forums, look for repeated complaints, workarounds, and edge cases rather than treating comments as facts.
-- For benchmarks, check hardware, dataset, workload, version, date, and whether the benchmark matches the user's context.
+- Repositories: recent commits, releases, issues, docs, licence, tests, examples, and dependency health. Stars alone prove nothing.
+- Libraries and frameworks: official docs and source examples over tutorials.
+- Products: separate marketing claims from observable features, pricing, screenshots, docs, and user reports.
+- Benchmarks: hardware, dataset, workload, version, date, and fit with the user's context.
 
 ## Output
 
 Use the shortest format that supports the decision:
 
-- Research scope: what was searched, what was not, and the date the search was done.
-- Strong signals: findings that appeared across reliable sources.
-- Weak or anecdotal signals: social discussion, isolated reports, or unverified claims.
-- Recommendation: the best current path and why.
-- Alternatives: when another option is better under different constraints.
-- Sources: links grouped by source type.
+- Scope: what was and was not searched, and the search date.
+- Strong signals: findings repeated across reliable sources.
+- Weak or anecdotal signals.
+- Recommendation and why, plus alternatives that win under other constraints.
+- Sources, grouped by type.
 
-If the evidence is thin, say so directly and describe what would be needed to decide with higher confidence.
+If the evidence is thin, say so and describe what would raise confidence.
