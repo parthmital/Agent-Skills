@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security Hardening"
+  short_description: "Scan the whole repo for vulnerabilities and fix them"
+  default_prompt: "Use $security-hardening to scan this entire repository for vulnerabilities, fix every confirmed issue, and verify the fixes."
+policy:
+  allow_implicit_invocation: true

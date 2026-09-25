@@ -16,15 +16,16 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 
 | Skill                          | Purpose                                                                                                                          |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| `codebase-architecture`        | Reviews, plans, hardens, cleans up, deduplicates, and documents codebase structure.                                              |
 | `frontend-design`              | Clean, functional frontend UI and UX with fully custom components and no browser-native UI.                                      |
 | `git-commit-and-push`          | Factual commits from inspected changes, `.gitignore` upkeep, strict message format, and push.                                    |
 | `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                     |
 | `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip. |
 | `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 1000 characters, using only supported claims.                      |
+| `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, full modularity, and zero redundancy.                          |
 | `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.             |
 | `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                |
 | `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                |
+| `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                       |
 
 ## Installation
 
@@ -55,7 +56,7 @@ There is no install script. To use a skill, copy its whole folder into the skill
     `-- assets/Resume.tex             single-page LaTeX resume template
 ```
 
-`<skill>` stands for each of the 9 skill folders listed above.
+`<skill>` stands for each of the 10 skill folders listed above.
 
 ## Notebook Helper
 

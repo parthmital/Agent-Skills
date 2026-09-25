@@ -16,6 +16,7 @@ Create or update the repository root `README.md` from verified repository facts.
 - Add badges only when their URLs and values can be verified.
 - Valid Markdown: clear heading hierarchy, short paragraphs, ordered steps for procedures, tables for structured data, language-tagged code blocks, relative repository links, and a table of contents with working anchors.
 - When updating an existing README, keep accurate, useful project-specific content and remove stale, unverifiable, duplicated, or misleading claims.
+- Never duplicate other docs. When `ARCHITECTURE.md`, `SECURITY.md`, `CONTRIBUTING.md`, or similar files cover a topic, summarise it in a line or two and link to them.
 - For an audit or review request, report findings and proposed changes without writing to `README.md` unless the user asks.
 
 ## Inspect First

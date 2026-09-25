@@ -12,7 +12,7 @@ Before writing, silently identify: purpose and users, the 3 to 5 main technical 
 ## Requirements
 
 - At most 1000 characters including spaces and punctuation. Count before replying.
-- Output only the description, in one code block, with no title, intro, explanation, or citations.
+- Reply with the description in one code block. The description has no title, intro, explanation, or citations. Add nothing else, except one short line after the block when something needs the user's attention, such as a contradictory source or a claim left out because it was unsupported.
 - Open with one simple sentence on what was built and why, then 3 to 5 concise bullets starting with `•`.
 - Order: what was built, then how, then measurable impact.
 - Mention technologies, systems, scale, workflows, and metrics only when the source supports them, and do not turn it into a tech-stack list.

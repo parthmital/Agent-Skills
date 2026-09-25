@@ -1,0 +1,6 @@
+interface:
+  display_name: "Production Architecture"
+  short_description: "Re-architect for scale, modularity, and zero redundancy"
+  default_prompt: "Use $production-architecture to re-architect this repository so it is production ready, scalable, modular, and free of all redundancy."
+policy:
+  allow_implicit_invocation: true

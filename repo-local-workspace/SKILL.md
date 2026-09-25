@@ -27,7 +27,7 @@ repo/
                       maven, gradle, go-build, go-mod, cargo, nuget, huggingface
 ```
 
-If these folders are not already ignored in a Git repository, add `.venv/`, `.agent-local/`, and `.cache/` to `.git/info/exclude`, which keeps them untracked without editing a tracked file. Edit `.gitignore` instead only when the user wants the rule shared. Never ignore source, fixtures, required assets, lockfiles, or project config.
+If these folders are not already ignored in a Git repository, add `.venv/`, `.agent-local/`, and `.cache/` to the root `.gitignore`, following its grouping and comments. Never ignore source, fixtures, required assets, lockfiles, or project config.
 
 ## Workflow
 
