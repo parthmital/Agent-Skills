@@ -1,6 +1,6 @@
 ---
 name: readme-generator
-description: Generate, rewrite, audit, or update a repository README.md by inspecting the codebase and documenting verified setup, scripts, APIs, environment variables, testing, deployment, architecture, troubleshooting, security notes, and maintenance guidance. Use automatically when the user asks to create, generate, write, rewrite, improve, refresh, fix, audit, or update a project README, repository documentation, setup guide, developer onboarding guide, or README quality review for a software project.
+description: Generate, rewrite, audit, or update a repository README.md by inspecting the codebase and documenting verified setup, scripts, APIs, environment variables, testing, deployment, architecture, troubleshooting, security notes, and maintenance guidance. For repositories with Kaggle or Jupyter notebooks and downloaded outputs, explains every notebook cell by cell with all metrics and embeds every output image. Use automatically when the user asks to create, generate, write, rewrite, improve, refresh, fix, audit, or update a project README, repository documentation, setup guide, developer onboarding guide, or README quality review for a software project.
 ---
 
 # README Generator
@@ -35,6 +35,8 @@ Match the README depth to the project. A longer README is not a better README.
 
 If the user asks for a specific depth or length, follow it.
 
+Exception: a repository with Kaggle or Jupyter notebooks and their downloaded outputs always gets the full notebook walkthrough described in Notebook Repositories, however long it becomes.
+
 ## Repository Inspection
 
 First, inspect the repository before drafting the README. Build a fact ledger from files and command output so claims can be traced back to evidence. Review:
@@ -53,6 +55,32 @@ First, inspect the repository before drafting the README. Build a fact ledger fr
 - Docker, compose, server, and hosting files
 
 Use this analysis to ensure that the README accurately represents the current project.
+
+## Notebook Repositories
+
+Apply this section when the repository contains Kaggle or Jupyter notebooks (`.ipynb`) together with downloaded run outputs. Outputs usually sit in an `outputs/` folder or an extracted `outputs.zip`, often with subfolders such as `plots/`, `metrics/`, `logs/`, `predictions/`, and `weights/`. Saved cell outputs inside the `.ipynb` file also count as outputs.
+
+Inspect before writing:
+
+- Read every cell of every notebook, markdown and code, in order, including saved cell outputs.
+- List every file in the outputs folder. Read every metrics, log, CSV, and JSON file. Do not skip files because there are many of them.
+- Do not execute the notebooks. Use only the saved outputs and output files.
+
+The README must explain every notebook end to end, cell by cell:
+
+- Add one subsection per notebook, in execution order when there are several.
+- Inside it, walk through the cells in order. For each code cell, or a small group of consecutive cells that do one job, explain what it does, why it is needed, the key parameters and choices, and what it produced.
+- Include the actual results each cell printed or saved: dataset shapes, class counts, hyperparameters, training progress, per-epoch or per-fold scores, and final values. Quote exact numbers from saved outputs or output files.
+
+The README must present every result:
+
+- Add a results section with every metric found, in tables: metric name, value, split or fold, and the source file or cell it came from. Include per-class, per-fold, and per-epoch values where available, not only headline numbers.
+- Embed every image in the outputs folder using Markdown image syntax with relative paths, for example `![Confusion matrix](outputs/plots/confusion_matrix.png)`. Percent-encode spaces in paths as `%20`. Place each image next to the cell or result that produced it, with a caption explaining what it shows and what it says about the results. Images not tied to a specific cell go in the results section.
+- Describe prediction and submission files: what they contain, their shape, and the columns.
+- List weight and checkpoint files with their size and what they are for. Do not embed or inline them.
+- Before finalising, confirm that every image in the outputs folder is referenced in the README at least once, and that every metric in the output files appears in the README.
+
+Interpret results only as far as the numbers support, such as which model or fold scored best. Do not claim causes, generalisation, or real-world performance the outputs do not show. If a notebook has no saved outputs and no matching output files, say so in its subsection instead of describing results.
 
 ## Candidate Sections
 
@@ -269,6 +297,7 @@ Before finalising the README:
 10. Confirm that the Markdown structure is valid.
 11. Confirm that the document uses simple Indian English.
 12. Confirm that no unsupported claim has been added.
+13. For notebook repositories, confirm that every notebook cell is covered, every output image is embedded with a working relative path, and every output metric is reported.
 
 Unless the user asked for an audit only, write the final output directly to the repository root as:
 
