@@ -1,6 +1,0 @@
-interface:
-  display_name: "Graphic Design"
-  short_description: "Logos, identity, icons, social images, and banners"
-  default_prompt: "Use $graphic-design to create brand identity, logo, icon, corporate identity, social image, or banner designs."
-policy:
-  allow_implicit_invocation: true

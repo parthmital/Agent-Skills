@@ -52,7 +52,7 @@ Get-ChildItem -Directory | Where-Object { $_.Name -ne ".git" }
 
 What it does: lists the top level skill folders.
 
-Expected result: the command shows 16 skill folders, including `readme-generator` and `kaggle-jupyter-notebooks`.
+Expected result: the command shows 9 skill folders, including `readme-generator` and `kaggle-jupyter-notebooks`.
 
 Common error: if only `.git` or unrelated folders are shown, the shell is in the wrong directory.
 
@@ -98,30 +98,21 @@ Each skill in this repository also includes an optional `agents/openai.yaml` met
 - `default_prompt`
 - `allow_implicit_invocation`
 
-Seven skills are third-party skills installed from [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill). See [Licence](#licence) for their origin and local changes.
-
-One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper script for safe notebook inspection, validation, repair, cleaning, export, Kaggle convention checks, and semantic diff. Another, `resume-tailoring`, bundles a single-page LaTeX resume template.
+`kaggle-jupyter-notebooks` also includes a Python helper script for safe notebook inspection, validation, repair, cleaning, export, Kaggle convention checks, and semantic diff. Another, `resume-tailoring`, bundles a single-page LaTeX resume template.
 
 ## Skills In This Repository
 
-| Skill                          | Purpose                                                                                                                                        | Main files                                                                                                                                                                         |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `banner-design`                | Designs banners for social media, ads, website heroes, and print, with several art direction options. Third-party, MIT.                        | [banner-design/SKILL.md](banner-design/SKILL.md)                                                                                                                                   |
-| `brand-guidelines`             | Brand voice, visual identity, messaging frameworks, asset management, and brand consistency checks. Third-party, MIT.                          | [brand-guidelines/SKILL.md](brand-guidelines/SKILL.md), [brand-guidelines/scripts/](brand-guidelines/scripts/)                                                                     |
-| `codebase-architecture`        | Reviews, plans, hardens, cleans up, deduplicates, and documents codebase structure.                                                            | [codebase-architecture/SKILL.md](codebase-architecture/SKILL.md), [codebase-architecture/agents/openai.yaml](codebase-architecture/agents/openai.yaml)                             |
-| `design-system`                | Three-layer design tokens, component specifications, token validation, and slide generation. Third-party, MIT.                                 | [design-system/SKILL.md](design-system/SKILL.md), [design-system/scripts/](design-system/scripts/)                                                                                 |
-| `frontend-design`              | Guides clean, functional frontend UI and UX work with fully custom components and no browser-native UI.                                        | [frontend-design/SKILL.md](frontend-design/SKILL.md), [frontend-design/agents/openai.yaml](frontend-design/agents/openai.yaml)                                                     |
-| `git-commit-and-push`          | Creates factual Git commits with inspected changes and strict commit message formatting.                                                       | [git-commit-and-push/SKILL.md](git-commit-and-push/SKILL.md), [git-commit-and-push/agents/openai.yaml](git-commit-and-push/agents/openai.yaml)                                     |
-| `graphic-design`               | Brand identity, logos, corporate identity programs, icons, social images, slides, and banners. Optional AI image generation. Third-party, MIT. | [graphic-design/SKILL.md](graphic-design/SKILL.md), [graphic-design/scripts/](graphic-design/scripts/)                                                                             |
-| `html-presentations`           | Strategic HTML presentations with Chart.js, design tokens, and copywriting formulas. Third-party, MIT.                                         | [html-presentations/SKILL.md](html-presentations/SKILL.md)                                                                                                                         |
-| `internet-research`            | Guides current, source based research, comparison, validation, and recommendation work.                                                        | [internet-research/SKILL.md](internet-research/SKILL.md), [internet-research/agents/openai.yaml](internet-research/agents/openai.yaml)                                             |
-| `kaggle-jupyter-notebooks`     | Safe notebook editing, with Kaggle GPU T4 x2 as the default runtime and rules for documentation, progress, metrics, and output zips.           | [kaggle-jupyter-notebooks/SKILL.md](kaggle-jupyter-notebooks/SKILL.md), [kaggle-jupyter-notebooks/scripts/notebook_doctor.py](kaggle-jupyter-notebooks/scripts/notebook_doctor.py) |
-| `linkedin-project-description` | Turns a project README into a LinkedIn project description of at most 1000 characters, using only supported claims.                            | [linkedin-project-description/SKILL.md](linkedin-project-description/SKILL.md), [linkedin-project-description/agents/openai.yaml](linkedin-project-description/agents/openai.yaml) |
-| `readme-generator`             | Generates or updates a verified repository README from inspected repository facts.                                                             | [readme-generator/SKILL.md](readme-generator/SKILL.md), [readme-generator/agents/openai.yaml](readme-generator/agents/openai.yaml)                                                 |
-| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                              | [repo-local-workspace/SKILL.md](repo-local-workspace/SKILL.md), [repo-local-workspace/agents/openai.yaml](repo-local-workspace/agents/openai.yaml)                                 |
-| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                              | [resume-tailoring/SKILL.md](resume-tailoring/SKILL.md), [resume-tailoring/assets/Resume.tex](resume-tailoring/assets/Resume.tex)                                                   |
-| `shadcn-tailwind-ui`           | shadcn/ui components, Tailwind CSS styling, and canvas-based visual designs. Third-party, Apache 2.0.                                          | [shadcn-tailwind-ui/SKILL.md](shadcn-tailwind-ui/SKILL.md), [shadcn-tailwind-ui/scripts/](shadcn-tailwind-ui/scripts/)                                                             |
-| `ui-ux-design-reference`       | Searchable UI/UX design data: styles, palettes, font pairings, UX guidelines, charts, and stack guidance. Third-party, MIT.                    | [ui-ux-design-reference/SKILL.md](ui-ux-design-reference/SKILL.md), [ui-ux-design-reference/scripts/search.py](ui-ux-design-reference/scripts/search.py)                           |
+| Skill                          | Purpose                                                                                                                              | Main files                                                                                                                                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `codebase-architecture`        | Reviews, plans, hardens, cleans up, deduplicates, and documents codebase structure.                                                  | [codebase-architecture/SKILL.md](codebase-architecture/SKILL.md), [codebase-architecture/agents/openai.yaml](codebase-architecture/agents/openai.yaml)                             |
+| `frontend-design`              | Guides clean, functional frontend UI and UX work with fully custom components and no browser-native UI.                              | [frontend-design/SKILL.md](frontend-design/SKILL.md), [frontend-design/agents/openai.yaml](frontend-design/agents/openai.yaml)                                                     |
+| `git-commit-and-push`          | Creates factual Git commits with inspected changes, `.gitignore` upkeep, and strict commit message formatting.                       | [git-commit-and-push/SKILL.md](git-commit-and-push/SKILL.md), [git-commit-and-push/agents/openai.yaml](git-commit-and-push/agents/openai.yaml)                                     |
+| `internet-research`            | Guides current, source based research, comparison, validation, and recommendation work.                                              | [internet-research/SKILL.md](internet-research/SKILL.md), [internet-research/agents/openai.yaml](internet-research/agents/openai.yaml)                                             |
+| `kaggle-jupyter-notebooks`     | Safe notebook editing, with Kaggle GPU T4 x2 as the default runtime and rules for documentation, progress, metrics, and output zips. | [kaggle-jupyter-notebooks/SKILL.md](kaggle-jupyter-notebooks/SKILL.md), [kaggle-jupyter-notebooks/scripts/notebook_doctor.py](kaggle-jupyter-notebooks/scripts/notebook_doctor.py) |
+| `linkedin-project-description` | Turns a project README into a LinkedIn project description of at most 1000 characters, using only supported claims.                  | [linkedin-project-description/SKILL.md](linkedin-project-description/SKILL.md), [linkedin-project-description/agents/openai.yaml](linkedin-project-description/agents/openai.yaml) |
+| `readme-generator`             | Generates or updates a verified repository README from inspected repository facts.                                                   | [readme-generator/SKILL.md](readme-generator/SKILL.md), [readme-generator/agents/openai.yaml](readme-generator/agents/openai.yaml)                                                 |
+| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                    | [repo-local-workspace/SKILL.md](repo-local-workspace/SKILL.md), [repo-local-workspace/agents/openai.yaml](repo-local-workspace/agents/openai.yaml)                                 |
+| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                    | [resume-tailoring/SKILL.md](resume-tailoring/SKILL.md), [resume-tailoring/assets/Resume.tex](resume-tailoring/assets/Resume.tex)                                                   |
 
 ## Repository Structure
 
@@ -133,13 +124,10 @@ One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper
 |-- .prettierrc.json
 |-- AGENTS.md
 |-- README.md
-|-- banner-design/             third-party: SKILL.md, LICENSE, agents/, references/
-|-- brand-guidelines/          third-party: SKILL.md, LICENSE, agents/, references/, scripts/, templates/
 |-- codebase-architecture/
 |   |-- SKILL.md
 |   `-- agents/
 |       `-- openai.yaml
-|-- design-system/             third-party: SKILL.md, LICENSE, agents/, data/, references/, scripts/, templates/
 |-- frontend-design/
 |   |-- SKILL.md
 |   `-- agents/
@@ -148,8 +136,6 @@ One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper
 |   |-- SKILL.md
 |   `-- agents/
 |       `-- openai.yaml
-|-- graphic-design/            third-party: SKILL.md, LICENSE, agents/, data/, references/, scripts/
-|-- html-presentations/        third-party: SKILL.md, LICENSE, agents/, references/
 |-- internet-research/
 |   |-- SKILL.md
 |   `-- agents/
@@ -175,28 +161,19 @@ One first-party skill, `kaggle-jupyter-notebooks`, also includes a Python helper
 |   |-- SKILL.md
 |   `-- agents/
 |       `-- openai.yaml
-|-- resume-tailoring/
-|   |-- SKILL.md
-|   |-- agents/
-|   |   `-- openai.yaml
-|   `-- assets/
-|       `-- Resume.tex
-|-- shadcn-tailwind-ui/        third-party: SKILL.md, LICENSE.txt, agents/, canvas-fonts/, references/, scripts/
-`-- ui-ux-design-reference/
-    |-- LICENSE
+`-- resume-tailoring/
     |-- SKILL.md
     |-- agents/
     |   `-- openai.yaml
-    |-- data/           design data CSV and JSON files
-    |-- references/     quick-reference.md and pro-rules.md
-    `-- scripts/        search.py, core.py, design_system.py, and tests/
+    `-- assets/
+        `-- Resume.tex
 ```
 
 Important paths:
 
-- `.gitattributes`: enables automatic text file normalisation, pins `ui-ux-design-reference/data/` CSV and JSON files to LF so their stored hashes match, and marks fonts and images as binary.
+- `.gitattributes`: enables automatic text file normalisation and marks fonts and images as binary.
 - `.gitignore`: keeps local folders (`.agent-local/`, `.venv/`, `.cache/`), Python and Node.js artefacts, notebook helper backups, secrets files, logs, and editor files out of Git.
-- `.prettierignore`: stops Prettier from reformatting the third-party skills, which are kept identical to upstream apart from the listed local changes.
+- `.prettierignore`: stops Prettier from checking the local `.agent-local/`, `.venv/`, and `.cache/` folders.
 - `.prettierrc.json`: stores formatter preferences for tabs and tab width.
 - `AGENTS.md`: stores general coding and response guidelines for agents working in this repository.
 - `*/SKILL.md`: stores the main instructions for each skill.
@@ -204,32 +181,29 @@ Important paths:
 - `kaggle-jupyter-notebooks/README.md`: gives short setup notes for the notebook skill.
 - `kaggle-jupyter-notebooks/references/precommit.md`: documents optional notebook Git protection commands.
 - `kaggle-jupyter-notebooks/scripts/notebook_doctor.py`: provides the notebook maintenance command line tool.
-- `ui-ux-design-reference/scripts/search.py`: searches the bundled design data. It uses only the Python standard library and makes no network calls.
-- `*/LICENSE` and `shadcn-tailwind-ui/LICENSE.txt`: licences for the third-party skills.
+- `resume-tailoring/assets/Resume.tex`: the single-page LaTeX resume template the resume skill copies into a new workspace.
 
 ## Technology Stack
 
-| Technology             | Version                       | Purpose                                                            | Where used                                             | Notes                                                         |
-| ---------------------- | ----------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------------- |
-| Markdown               | Not declared                  | Stores skill instructions and documentation.                       | `README.md`, `SKILL.md`, and reference files.          | Agents read skill behaviour from Markdown files.              |
-| YAML                   | Not declared                  | Stores skill metadata.                                             | `agents/openai.yaml` files.                            | Each metadata file enables implicit invocation.               |
-| Python                 | Exact version not declared    | Runs the notebook helper and the third-party skill scripts.        | `*/scripts/*.py`.                                      | `shadcn-tailwind-ui` requires Python 3.10 or later.           |
-| Node.js                | Exact version not declared    | Runs the `.cjs` scripts in `brand-guidelines` and `design-system`. | `brand-guidelines/scripts/`, `design-system/scripts/`. | `shadcn-tailwind-ui` notes Node.js 18 or later for shadcn/ui. |
-| `nbformat`             | Exact version not declared    | Reads, writes, converts, normalises, and validates notebooks.      | Imported by `notebook_doctor.py`.                      | The script exits with an install message if it is missing.    |
-| Git                    | Exact version not declared    | Tracks repository changes and applies `.gitattributes`.            | `.git`, `.gitattributes`.                              | The current folder is a Git work tree.                        |
-| Prettier configuration | Prettier version not declared | Defines formatting preferences.                                    | `.prettierrc.json`.                                    | The file sets `useTabs` to `true` and `tabWidth` to `2`.      |
+| Technology             | Version                       | Purpose                                                       | Where used                                             | Notes                                                      |
+| ---------------------- | ----------------------------- | ------------------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------- |
+| Markdown               | Not declared                  | Stores skill instructions and documentation.                  | `README.md`, `SKILL.md`, and reference files.          | Agents read skill behaviour from Markdown files.           |
+| YAML                   | Not declared                  | Stores skill metadata.                                        | `agents/openai.yaml` files.                            | Each metadata file enables implicit invocation.            |
+| Python                 | Exact version not declared    | Runs the notebook helper.                                     | `kaggle-jupyter-notebooks/scripts/notebook_doctor.py`. | None.                                                      |
+| `nbformat`             | Exact version not declared    | Reads, writes, converts, normalises, and validates notebooks. | Imported by `notebook_doctor.py`.                      | The script exits with an install message if it is missing. |
+| Git                    | Exact version not declared    | Tracks repository changes and applies `.gitattributes`.       | `.git`, `.gitattributes`.                              | The current folder is a Git work tree.                     |
+| Prettier configuration | Prettier version not declared | Defines formatting preferences.                               | `.prettierrc.json`.                                    | The file sets `useTabs` to `true` and `tabWidth` to `2`.   |
 
-No root package manager manifest is present. There is no root `package.json`, `pyproject.toml`, `requirements.txt`, lock file, or setup file. `shadcn-tailwind-ui/scripts/requirements.txt` lists only test dependencies.
+No root package manager manifest is present. There is no root `package.json`, `pyproject.toml`, `requirements.txt`, lock file, or setup file.
 
 ## Prerequisites
 
-| Prerequisite                      | Required for                                              | Version                         | Verification                                                                  |
-| --------------------------------- | --------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------- |
-| Skill compatible agent or harness | Using these folders as skills.                            | Not declared in the repository. | The repository contains skill folders with `SKILL.md`.                        |
-| Git                               | Repository maintenance.                                   | Not declared in the repository. | `git rev-parse --is-inside-work-tree` returns `true`.                         |
-| Python 3                          | Running `notebook_doctor.py`.                             | Exact version not declared.     | The script has a Python 3 shebang and uses Python 3 syntax.                   |
-| `nbformat`                        | Notebook helper commands.                                 | Exact version not declared.     | The script imports `nbformat` and the help command runs when it is installed. |
-| Node.js                           | `.cjs` scripts in `brand-guidelines` and `design-system`. | Not declared.                   | `node --version`.                                                             |
+| Prerequisite                      | Required for                   | Version                         | Verification                                                                  |
+| --------------------------------- | ------------------------------ | ------------------------------- | ----------------------------------------------------------------------------- |
+| Skill compatible agent or harness | Using these folders as skills. | Not declared in the repository. | The repository contains skill folders with `SKILL.md`.                        |
+| Git                               | Repository maintenance.        | Not declared in the repository. | `git rev-parse --is-inside-work-tree` returns `true`.                         |
+| Python 3                          | Running `notebook_doctor.py`.  | Exact version not declared.     | The script has a Python 3 shebang and uses Python 3 syntax.                   |
+| `nbformat`                        | Notebook helper commands.      | Exact version not declared.     | The script imports `nbformat` and the help command runs when it is installed. |
 
 ## Local Installation
 
@@ -283,12 +257,12 @@ There is no long running application to start.
 
 Useful repository commands:
 
-| Command                                                               | Purpose                               | Expected result                                                           |
-| --------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
-| `rg --files -g '!.git'`                                               | List repository files outside `.git`. | Prints 279 tracked or working tree files in the current repository state. |
-| `Get-ChildItem -Directory \| Where-Object { $_.Name -ne ".git" }`     | List skill folders.                   | Prints 16 skill folders.                                                  |
-| `Get-Content .\readme-generator\SKILL.md`                             | Read the README generator skill.      | Prints the selected skill instructions.                                   |
-| `python .\kaggle-jupyter-notebooks\scripts\notebook_doctor.py --help` | Run the notebook helper help command. | Prints usage text and 7 subcommands.                                      |
+| Command                                                               | Purpose                               | Expected result                                                          |
+| --------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------ |
+| `rg --files -g '!.git'`                                               | List repository files outside `.git`. | Prints 24 tracked or working tree files in the current repository state. |
+| `Get-ChildItem -Directory \| Where-Object { $_.Name -ne ".git" }`     | List skill folders.                   | Prints 9 skill folders.                                                  |
+| `Get-Content .\readme-generator\SKILL.md`                             | Read the README generator skill.      | Prints the selected skill instructions.                                  |
+| `python .\kaggle-jupyter-notebooks\scripts\notebook_doctor.py --help` | Run the notebook helper help command. | Prints usage text and 7 subcommands.                                     |
 
 ## Notebook Utility
 
@@ -325,17 +299,7 @@ Notebooks are not executed locally. The skill targets Kaggle, so runtime behavio
 
 ## Environment Configuration
 
-The first-party skills read no environment variables. Some scripts in the third-party skills read these optional variables:
-
-| Variable name                | Required | Purpose                                                                                 | Expected format | Safe example value | Default value             | Security notes                              |
-| ---------------------------- | -------- | --------------------------------------------------------------------------------------- | --------------- | ------------------ | ------------------------- | ------------------------------------------- |
-| `GEMINI_API_KEY`             | Optional | Gemini image generation in `graphic-design` logo, icon, and corporate identity scripts. | API key string  | `your-key-here`    | None                      | Secret. Keep it out of scripts and logs.    |
-| `GOOGLE_API_KEY`             | Optional | Alternative name for the Gemini key in `graphic-design` scripts.                        | API key string  | `your-key-here`    | None                      | Secret. Keep it out of scripts and logs.    |
-| `ATLASCLOUD_API_KEY`         | Optional | Atlas Cloud image generation in `graphic-design/scripts/logo/generate.py`.              | API key string  | `your-key-here`    | None                      | Secret. Sends prompts to api.atlascloud.ai. |
-| `MUAPI_API_KEY`              | Optional | MuAPI image generation in `graphic-design/scripts/logo/generate.py`.                    | API key string  | `your-key-here`    | None                      | Secret. Sends prompts to api.muapi.ai.      |
-| `DESIGN_SYSTEM_PROJECT_ROOT` | Optional | Overrides the project root used by `design-system` scripts.                             | Absolute path   | `D:\projects\app`  | Current working directory | Not secret.                                 |
-
-Without these keys, the image generation features in `graphic-design` do not run. All other scripts work without network access or keys.
+No skill in this repository reads environment variables.
 
 ## Input Validation And Error Handling
 
@@ -356,25 +320,7 @@ No API input validation exists because the repository contains no API server.
 
 ## Testing And Verification
 
-The third-party skills include pytest and unittest test modules:
-
-| Skill                    | Test modules | Tests | Result |
-| ------------------------ | ------------ | ----- | ------ |
-| `brand-guidelines`       | 1            | 15    | Passed |
-| `graphic-design`         | 1            | 12    | Passed |
-| `design-system`          | 1            | 2     | Passed |
-| `shadcn-tailwind-ui`     | 2            | 64    | Passed |
-| `ui-ux-design-reference` | 9            | 133   | Passed |
-
-`banner-design` and `html-presentations` have no tests. No tests exist for `notebook_doctor.py`.
-
-Run them with pytest from a repository local virtual environment. The `brand-guidelines` tests also need Node.js because they run the `.cjs` scripts.
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python -m pip install pytest pytest-mock --cache-dir .cache\pip
-.\.venv\Scripts\python -m pytest -q -p no:cacheprovider brand-guidelines graphic-design design-system shadcn-tailwind-ui ui-ux-design-reference
-```
+No automated tests exist in this repository, including for `notebook_doctor.py`.
 
 Verification run while preparing this README:
 
@@ -414,7 +360,7 @@ The repository contains this Prettier configuration:
 }
 ```
 
-`.prettierignore` excludes the seven third-party skill folders and the local `.agent-local/`, `.venv/`, and `.cache/` folders. Check formatting with a repository local npm cache:
+`.prettierignore` excludes the local `.agent-local/`, `.venv/`, and `.cache/` folders. Check formatting with a repository local npm cache:
 
 ```powershell
 $env:npm_config_cache = "$PWD\.cache\npm"
@@ -423,19 +369,11 @@ npx --yes prettier@3 --check "**/*.{md,json,yaml}"
 
 Result when this README was updated: all matched files use Prettier code style.
 
-Check the third-party design data with the bundled validator:
-
-```powershell
-python .\ui-ux-design-reference\scripts\validate_data.py
-```
-
-Result when this README was updated: `OK: validated 12 domain files, 22 stack files, and ui-reasoning.csv`.
-
 No formatter script, lint script, type check script, precommit configuration file, or automated test command is declared at the repository root.
 
 ## Build, Deployment, And CI
 
-There is no build process. The repository contains Markdown, YAML, CSV and JSON data, fonts, and Python and Node.js helper scripts.
+There is no build process. The repository contains Markdown, YAML, one LaTeX template, and one Python helper script.
 
 The repository does not contain:
 
@@ -453,20 +391,19 @@ The repository does not contain:
 | Metric name                       | Verified value                          | Source file or command used for verification                                                 | Notes                                                                            |
 | --------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | Git work tree                     | Yes                                     | `git rev-parse --is-inside-work-tree`                                                        | Returned `true`.                                                                 |
-| Top level skill directories       | 16                                      | `Get-ChildItem -Force -Directory` filtered to exclude `.git`                                 | Counts current working tree folders.                                             |
-| Skill definition files            | 16                                      | `rg --files -g '!.git' -g 'SKILL.md'`                                                        | Files named `SKILL.md`.                                                          |
-| Agent metadata files              | 16                                      | `rg --files -g '!.git'` filtered for `agents\openai.yaml`                                    | One metadata file per skill.                                                     |
-| Repository files outside `.git`   | 279                                     | `rg --files -g '!.git'`                                                                      | 255 are in the seven third-party skills, mostly data, fonts, and references.     |
-| Markdown files                    | 72                                      | `rg --files -g '!.git' -g '*.md'`                                                            | Includes this README and all skill Markdown files.                               |
-| YAML files                        | 16                                      | `rg --files -g '!.git' -g '*.yaml'`                                                          | Agent metadata files only.                                                       |
-| Python scripts                    | 36                                      | `git ls-files -co --exclude-standard` filtered for `.py`                                     | Includes 14 test modules.                                                        |
-| Node.js scripts                   | 7                                       | `git ls-files -co --exclude-standard` filtered for `.cjs`                                    | In `brand-guidelines/scripts/` and `design-system/scripts/`.                     |
+| Top level skill directories       | 9                                       | `Get-ChildItem -Force -Directory` filtered to exclude `.git`                                 | Counts current working tree folders.                                             |
+| Skill definition files            | 9                                       | `rg --files -g '!.git' -g 'SKILL.md'`                                                        | Files named `SKILL.md`.                                                          |
+| Agent metadata files              | 9                                       | `rg --files -g '!.git'` filtered for `agents\openai.yaml`                                    | One metadata file per skill.                                                     |
+| Repository files outside `.git`   | 24                                      | `rg --files -g '!.git'`                                                                      | Includes this README, configuration files, and the skill folders.                |
+| Markdown files                    | 13                                      | `rg --files -g '!.git' -g '*.md'`                                                            | Includes this README and all skill Markdown files.                               |
+| YAML files                        | 9                                       | `rg --files -g '!.git' -g '*.yaml'`                                                          | Agent metadata files only.                                                       |
+| Python scripts                    | 1                                       | `git ls-files -co --exclude-standard` filtered for `.py`                                     | `notebook_doctor.py`.                                                            |
 | Notebook helper subcommands       | 7                                       | `python .\kaggle-jupyter-notebooks\scripts\notebook_doctor.py --help`                        | `inspect`, `validate`, `repair`, `clean`, `export-code`, `check-kaggle`, `diff`. |
 | Package manifests                 | 0                                       | Search for `package.json`, `pyproject.toml`, `requirements.txt`, setup files, and lock files | No package manager metadata found.                                               |
 | API endpoints                     | 0                                       | Search for common route and server patterns                                                  | No API server code found.                                                        |
-| Environment variables             | 5                                       | Search for common environment access patterns                                                | All optional and in third-party skills. See Environment Configuration.           |
+| Environment variables             | 0                                       | Search for common environment access patterns                                                | No environment variable access found.                                            |
 | Database models                   | 0                                       | Repository file inspection                                                                   | No database files found.                                                         |
-| Test files                        | 14                                      | `git ls-files -co --exclude-standard` filtered for `test_*.py`                               | All in the third-party skills. 226 tests passed.                                 |
+| Test files                        | 0                                       | `git ls-files -co --exclude-standard` filtered for `test_*.py`                               | No automated tests.                                                              |
 | CI or deployment files            | 0                                       | Search for common CI, Docker, compose, and hosting files                                     | No deployment pipeline found.                                                    |
 | Default ports                     | 0                                       | Repository file inspection                                                                   | No server or port configuration found.                                           |
 | Notebook output warning threshold | 5 MiB                                   | `kaggle-jupyter-notebooks/scripts/notebook_doctor.py`                                        | Used by the `inspect` command.                                                   |
@@ -475,7 +412,7 @@ The repository does not contain:
 ## Security Notes
 
 - No secrets, tokens, passwords, private keys, or connection strings were found during README inspection.
-- No environment variables are required. The optional API keys for `graphic-design` image generation are secrets and send prompts to external services when set.
+- No environment variables are read.
 - Notebook outputs can contain sensitive data. The notebook skill instructs users to check for secrets and machine specific paths before finalising notebook work.
 - `notebook_doctor.py` can create backups when `--backup` is passed to `repair` or `clean`. Inside a Git repository they go to `.agent-local/backups/`.
 - `notebook_doctor.py` is not a secret scanner. Review notebooks manually before sharing them.
@@ -506,13 +443,12 @@ The repository does not contain:
 - There is no root package manifest.
 - Dependency versions are not pinned.
 - The exact supported Python version is not declared.
-- There is no automated test suite for the first-party skills.
+- There is no automated test suite.
 - There is no coverage report.
 - There is no lint, type check, or format script.
 - There is no CI or CD setup.
 - There is no deployment configuration.
 - There is no API service or database layer.
-- Third-party skills are copies. Upstream updates must be merged manually, and the local changes listed under Licence must be reapplied.
 - `notebook_doctor.py` has no automated tests.
 
 ## Contribution Guidelines
@@ -531,25 +467,6 @@ Use these repository rules for changes:
 ## Licence
 
 No repository level licence file is present. Licence terms for the repository as a whole cannot be verified from the current files.
-
-Seven skills are third-party code from [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): `banner-design`, `brand-guidelines`, `graphic-design`, `design-system`, `html-presentations`, `shadcn-tailwind-ui`, and `ui-ux-design-reference`.
-
-- Six are under the upstream MIT licence. A copy is kept in each folder as `LICENSE`.
-- `shadcn-tailwind-ui` ships its own Apache 2.0 licence as `shadcn-tailwind-ui/LICENSE.txt`. Its `canvas-fonts/` folder includes an OFL licence file for each font family.
-
-They were copied from upstream commit `dcc40ff` (version 2.13.0, 21 September 2026), folder `.claude/skills/`, with these local changes:
-
-- `ui-ux-design-reference/SKILL.md` script commands use `<skill-dir>/scripts/search.py` instead of the Claude Code plugin path `${CLAUDE_PLUGIN_ROOT}/.claude/skills/ui-ux-pro-max/scripts/search.py`.
-- Harness-specific wording was made neutral: references to the `AskUserQuestion` tool now say to ask the user, subagent use is conditional on harness support, the note about Claude Code reporting the skill base directory now refers to agent harnesses in general, and the `/slides:create` and `/brand:update` slash command examples were replaced with plain requests.
-- The `design-system` reference to an upstream example file that is not shipped (`assets/designs/slides/claudekit-pitch-251223.html`) was removed.
-- Four `ui-ux-design-reference` test modules and their fixtures were removed because they test the upstream repository layout: `test_catalog_refresh.py`, `test_catalog_summary_line_endings.py`, `test_relevance_evaluator.py`, and `test_skill_script_paths.py`.
-- The committed coverage database `shadcn-tailwind-ui/scripts/.coverage` was not copied.
-- `LICENSE` files (except in `shadcn-tailwind-ui`) and `agents/openai.yaml` files were added.
-- Five skills were renamed from their upstream names so the names describe their content: `brand` to `brand-guidelines`, `design` to `graphic-design`, `slides` to `html-presentations`, `ui-styling` to `shadcn-tailwind-ui`, and `ui-ux-pro-max` to `ui-ux-design-reference`. References between the skills were updated to match. `banner-design` and `design-system` keep their upstream names.
-
-Other upstream folders, such as the `cli/` installer, `src/` templates, `docs/`, `gallery/`, `preview/`, and `screenshots/`, are upstream project tooling and marketing material, not skills, and were not copied.
-
-The skills refer to each other with relative paths such as `../design-system/scripts/generate-tokens.cjs`, so keep them as sibling folders when copying them elsewhere.
 
 ## Support
 

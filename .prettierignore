@@ -1,14 +1,3 @@
-# Third-party skills copied from nextlevelbuilder/ui-ux-pro-max-skill with only the local edits listed in README.md.
-# ui-ux-design-reference/data/catalog-summary.json stores hashes of the data files, so
-# reformatting them breaks data validation.
-banner-design/
-brand-guidelines/
-design-system/
-graphic-design/
-html-presentations/
-shadcn-tailwind-ui/
-ui-ux-design-reference/
-
 # Local, uncommitted folders
 .agent-local/
 .venv/

@@ -1,14 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# ui-ux-design-reference/data/catalog-summary.json stores SHA-256 hashes of the data
-# files computed over LF bytes. Keep them LF on every platform so the hashes
-# match after checkout.
-ui-ux-design-reference/data/**/*.csv text eol=lf
-ui-ux-design-reference/data/**/*.json text eol=lf
-ui-ux-design-reference/data/*.csv text eol=lf
-ui-ux-design-reference/data/*.json text eol=lf
-
 # Binary assets
 *.ttf binary
 *.otf binary
