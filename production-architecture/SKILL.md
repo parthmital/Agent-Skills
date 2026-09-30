@@ -1,6 +1,6 @@
 ---
 name: production-architecture
-description: "Re-architect an entire repository to be production ready, scalable, fully modular, and free of all redundancy: whole-repo restructuring, removing every exact, near, and semantic duplicate, splitting monolithic files, classes, and functions, enforcing boundaries, and evolving the architecture as the repo grows. Use when the user asks to make a codebase production ready, scalable, modular, or maintainable, restructure or re-architect a repo, deduplicate or remove redundancy, split a monolith or god files, fix circular imports or spaghetti code, or organise a monorepo. Broad and structural, not surgical. Vulnerabilities belong to security-hardening."
+description: "Re-architect an entire repository to be production ready, scalable, fully modular, and free of all redundancy: whole-repo restructuring, removing every exact, near, and semantic duplicate, splitting monolithic files, classes, and functions, enforcing boundaries, and evolving the architecture as the repo grows. Use when the user asks to make a codebase production ready, scalable, modular, or maintainable, restructure or re-architect a repo, deduplicate or remove redundancy, split a monolith or god files, fix circular imports or spaghetti code, organise a monorepo, or set up, fix, or change how the app starts locally (`npm run dev`, start scripts, first-run setup). Broad and structural, not surgical. Vulnerabilities belong to security-hardening."
 ---
 
 # Production Architecture
@@ -64,6 +64,18 @@ Fix limits the code actually has; add no infrastructure the workload does not ne
 - Suitable algorithms on hot paths.
 - Adding a feature means adding a module, not editing many files.
 
+## Local Development Launch
+
+`npm run dev` at the root is the only launcher, cross-platform, via one Node script; delete `start.ps1`, `start.sh`, and similar.
+
+- First run installs everything: Node deps, `.venv` with Python deps, `.env` from the example. Later runs skip setup unless a lockfile hash (Git-ignored stamp) changed or an environment is broken.
+- Run Python via the `.venv` interpreter so no activation is needed.
+- One titled terminal window per long-running process (frontend, backend, services, workers), derived from the repo; fall back to prefixed output in the main terminal.
+- The main terminal shows status, URLs, and crashes; Ctrl+C there kills every process tree and window.
+- Clean, readable logs; summarise install noise, never hide errors. Fail fast on missing runtimes or busy ports.
+- Open the browser once the frontend responds, except in CI.
+- Verify a fresh and a repeat run, and that no processes or ports are left behind.
+
 ## Rules
 
 - Move and rename with tooling; update every import, config, script, CI file, and doc.
@@ -79,4 +91,5 @@ Fix limits the code actually has; add no infrastructure the workload does not ne
 - Target module map and dependency rules.
 - Per phase: what moved, merged, split, and deleted, with before and after file and line counts.
 - Duplicates removed and exceptions kept, with reasons.
+- `npm run dev` behaviour and what was verified on which OS.
 - Checks run, results, and what is unverified.

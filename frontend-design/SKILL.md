@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: "Clean, minimal, functional frontend UI and UX for websites, web apps, dashboards, landing pages, games, components, and design systems: layout, typography, colour, custom accessible components, interaction states, responsive behaviour, and copy. Use whenever the user asks to build, redesign, restyle, polish, or simplify any user-facing page, component, app, game, or dashboard. Enforces fully custom UI with no browser-native controls and a result that does not look generic, templated, or AI generated."
+description: "Clean, minimal, functional frontend UI and UX for websites, web apps, dashboards, landing pages, games, components, and design systems: layout, typography, colour, custom accessible components, interaction states, responsive behaviour, legibility, smooth interactions, custom icons, and copy. Use whenever the user asks to build, redesign, restyle, polish, or simplify any user-facing page, component, app, game, or dashboard. Enforces fully custom UI with no browser-native controls, full responsiveness on every device, and a result that never looks generic, templated, vibe coded, or like a student project."
 ---
 
 # Frontend Design
@@ -61,6 +61,10 @@ Custom controls must keep native-level behaviour: keyboard support, focus manage
 - Use cards only for repeated items, modals, or framed tools. Never nest cards or make every section a floating card.
 - Keep text inside its container at every viewport with stable widths, aspect ratios, grid tracks, min and max sizes, wrapping, and overflow handling.
 - Meet accessibility basics: accessible names, visible focus, sufficient contrast, keyboard reach, and reduced-motion support.
+- Fully responsive from 320px to wide desktop, tablets, touch, and 200% zoom: reflow, no horizontal scroll, 44px touch targets.
+- Legible: body text at least 16px, generous spacing, nothing cramped.
+- Smooth: instant press feedback, 150 to 250ms eased transitions, no layout shift or jank.
+- Icons: one consistent, subject-specific set; no scattered default icons or emoji.
 - Do not add in-app text explaining the UI's design, implementation, shortcuts, or styling unless it is part of the product.
 
 ## Copy
@@ -80,8 +84,9 @@ Custom controls must keep native-level behaviour: keyboard support, focus manage
 
 ## Final Check
 
-- Desktop and mobile render without overlap or clipped text, with a clear hierarchy and no competing panels or actions.
+- Phone, tablet, and desktop widths render without overlap or clipped text, with a clear hierarchy and no competing panels or actions.
 - Primary workflows are reachable and controls show clear states.
+- Legible, smooth, with consistent icons.
 - Nothing reads as placeholder, fake, templated, or AI generated. Assets load and fit the subject.
 - No native UI remains. Search for `alert(`, `confirm(`, `prompt(`, `title=`, `<select`, `<datalist`, native picker `type=` values, `<details`, `<dialog`, `<progress`, `<meter`, and forms without `novalidate`, then check focus, selection, autofill, and scrollbar styling in the rendered UI.
 - Console, build, lint, and tests pass where available. State anything unverified.
