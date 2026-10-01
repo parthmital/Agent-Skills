@@ -21,7 +21,8 @@ Fixes are in scope, including broad ones such as a central validation or auth la
 4. Confirm each finding with a concrete attack path; drop false positives. Rate Critical, High, Medium, or Low and tag the CWE.
 5. Fix highest severity first, then add a regression test that reproduces each attack.
 6. Re-scan until nothing new appears.
-7. Add guardrails that fit: secret-scanning pre-commit hook, Dependabot or Renovate, security scans in CI, SHA-pinned least-privilege CI actions, `SECURITY.md` for public repos.
+7. Add guardrails that fit: secret-scanning pre-commit hook, Dependabot or Renovate, security scans in CI, SHA-pinned least-privilege CI actions.
+8. Write or update `SECURITY.md` at the repository root: one file covering the complete security posture: vulnerability reporting policy, threat model, scanners and guardrails in place, checklist status per category, fixed findings by ID and severity (no exploit details for unfixed ones), residual risks, and required user actions. Never include secrets.
 
 ## Checklist
 

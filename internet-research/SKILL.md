@@ -26,6 +26,7 @@ Use external evidence where it materially improves the answer. Search broadly, b
 3. Open promising sources and verify details directly.
 4. Extract repeated patterns, tradeoffs, warnings, maintenance and adoption signals, and implementation details.
 5. Synthesise into actionable options, each with its supporting and missing evidence.
+6. Write or update `RESEARCH.md` at the repository root: one file covering all research for the project. Add each topic as a dated section with the brief, scope, findings, recommendation, and sources; update a topic's section rather than duplicating it, and mark superseded findings.
 
 ## Source Checks
 

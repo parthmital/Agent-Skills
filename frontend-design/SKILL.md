@@ -27,7 +27,8 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
    - Signature: at most one memorable visual or interaction idea tied to the subject.
 3. Critique the plan. Cut clutter first, then revise anything that could fit an unrelated brief: cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, orbs, generic numbered sections, boilerplate heroes, and fake dashboards.
 4. Implement the plan exactly, using repo conventions.
-5. Verify in desktop and mobile viewports with browser or screenshot tools when available, and read the screenshots rather than trusting the first render. Without such tools, say the visual result is unverified.
+5. Write or update `DESIGN.md` at the repository root: one file covering the complete design system and UI decisions: palette with roles, type scale, spacing and layout grid, breakpoints, component inventory and states, icon set, motion rules, copy terminology, signature idea, and decisions with reasons. Keep it in sync with the code it describes.
+6. Verify in desktop and mobile viewports with browser or screenshot tools when available, and read the screenshots rather than trusting the first render. Without such tools, say the visual result is unverified.
 
 ## No Browser-Native UI
 
