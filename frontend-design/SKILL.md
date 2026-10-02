@@ -63,7 +63,7 @@ Custom controls must keep native-level behaviour: keyboard support, focus manage
 - Keep text inside its container at every viewport with stable widths, aspect ratios, grid tracks, min and max sizes, wrapping, and overflow handling.
 - Meet accessibility basics: accessible names, visible focus, sufficient contrast, keyboard reach, and reduced-motion support.
 - Fully responsive from 320px to wide desktop, tablets, touch, and 200% zoom: reflow, no horizontal scroll, 44px touch targets.
-- Legible: body text at least 16px, generous spacing, nothing cramped.
+- Legible: body text at least 14px, generous spacing, nothing cramped.
 - Smooth: instant press feedback, 150 to 250ms eased transitions, no layout shift or jank.
 - Icons: one consistent, subject-specific set; no scattered default icons or emoji.
 - Do not add in-app text explaining the UI's design, implementation, shortcuts, or styling unless it is part of the product.
