@@ -1,65 +1,83 @@
 ---
 name: readme-generator
-description: Generate, rewrite, audit, or update a repository README.md by inspecting the codebase and documenting verified setup, scripts, APIs, environment variables, testing, deployment, architecture, troubleshooting, security, and maintenance. For repositories with Kaggle or Jupyter notebooks and downloaded outputs, explains every notebook cell by cell with all metrics and embeds every output image. Use when the user asks to create, write, rewrite, improve, refresh, fix, audit, or update a project README, repository documentation, setup guide, developer onboarding guide, or README quality review.
+description: Generates, rewrites, audits, or updates a repository README.md from verified codebase facts, covering setup, scripts, APIs, environment variables, testing, deployment, architecture, and troubleshooting; notebook repositories with downloaded outputs get a cell-by-cell walkthrough with every metric and output image. Use when the user asks to create, write, rewrite, improve, refresh, fix, audit, or update a project README, repository documentation, setup guide, or developer onboarding guide.
 ---
 
 # README Generator
 
-Create or update the repository root `README.md` from verified repository facts.
+## Overview
 
-## Writing Rules
+Write the root `README.md` so a new developer understands and runs the project without other help, with every claim traceable to the repository.
 
-- Simple, beginner-friendly Indian English that is still technical, accurate, and formal. A new developer should understand the project without other help.
-- ASCII only: no em or en dashes, smart quotes, emojis, or icons. This includes Mermaid diagrams.
-- State only facts found in the repository. Never invent features, commands, metrics, URLs, credentials, or config values.
-- Avoid vague claims such as fast, scalable, secure, lightweight, production-ready, highly available, optimised, or easy to use, unless a verified metric supports the claim; then give the metric and its evidence.
-- Add badges only when their URLs and values can be verified.
-- Valid Markdown: clear heading hierarchy, short paragraphs, ordered steps for procedures, tables for structured data, language-tagged code blocks, relative repository links, and a table of contents with working anchors.
-- When updating an existing README, keep accurate, useful project-specific content and remove stale, unverifiable, duplicated, or misleading claims.
-- Never duplicate other docs. When `ARCHITECTURE.md`, `DESIGN.md`, `RESEARCH.md`, `SECURITY.md`, `CONTRIBUTING.md`, or similar files cover a topic, summarise it in a line or two and link to them.
-- For an audit or review request, report findings and proposed changes without writing to `README.md` unless the user asks.
+## When to Use
 
-## Inspect First
+- Creating, updating, or auditing a README or onboarding guide.
+- For an audit, report findings and proposed changes without writing to `README.md` unless asked.
 
-Build a fact ledger from files and command output so every claim traces to evidence. Review source code, config, package and dependency files, scripts, environment variable usage, tests, existing docs, API routes, database schemas, migrations, and seeds, deployment and CI or CD files, and Docker, compose, server, and hosting files.
+## Process
 
-Do not run destructive, deployment, database reset, migration, or seed commands, or commands needing secrets, unless the user explicitly asks. Verify such commands from files and state that they were not executed.
+1. Build a fact ledger from source, config, dependency files, scripts, env var usage, tests, existing docs, API routes, schemas, migrations, seeds, CI/CD, Docker, and hosting files.
+2. Never run destructive, deployment, database reset, migration, or seed commands, or commands needing secrets, unless asked. Verify them from files and say they were not executed.
+3. Choose depth (below) and write. When updating, keep accurate project-specific content and remove stale, unverifiable, duplicated, or misleading claims.
+4. Run Verification, then write `README.md` at the root.
 
 ## Depth
 
-A longer README is not a better one. Follow any depth the user asks for; otherwise:
+Longer is not better. Follow any depth the user asks for; otherwise:
 
-- Small project, script, library, or content repository: title, overview, quick start, usage, repository structure, and only other sections a new developer needs.
-- Standard application: add configuration, testing, build, deployment, and troubleshooting as supported.
-- Large or multi-service system: the full candidate list, where each section carries real information.
-- Notebook repository with downloaded outputs: always the full walkthrough in Notebook Repositories, however long it becomes.
+- Small project, script, library, or content repo: title, overview, quick start, usage, structure, and only other sections a new developer needs.
+- Standard application: add configuration, testing, build, deployment, troubleshooting as supported.
+- Large or multi-service system: all candidate sections that carry real information.
+- Notebook repository with outputs: always the full walkthrough below.
 
-Candidate sections: title, table of contents, quick start, overview, problem statement, goals, key features, use cases, architecture, workflow, technology stack, repository structure, prerequisites, installation, environment configuration, database setup, running, scripts and commands, API documentation, authentication and authorisation, input validation, error handling, logging, testing, code quality checks, build, deployment, CI or CD, security, performance, monitoring and maintenance, troubleshooting, known limitations, contributing, coding standards, licence, and support. Omit sections that do not apply. No empty sections or tables that only say "none found", unless the absence itself helps readers.
+Candidates: table of contents, quick start, overview, problem, goals, features, use cases, architecture, workflow, tech stack, structure, prerequisites, installation, environment, database setup, running, scripts, API, auth, validation, error handling, logging, testing, code quality, build, deployment, CI/CD, security, performance, monitoring, troubleshooting, known limitations, contributing, coding standards, licence, support. No empty sections or "none found" tables unless the absence helps readers.
+
+## Writing Rules
+
+- Simple, beginner-friendly Indian English that is still technical and formal.
+- ASCII only, including Mermaid: no em or en dashes, smart quotes, emojis, or icons.
+- Never invent features, commands, metrics, URLs, credentials, or config values. No vague claims (fast, scalable, secure, lightweight, production-ready, optimised, easy) unless a verified metric supports them, given with its evidence. Badges only when verifiable.
+- Valid Markdown: clear heading hierarchy, short paragraphs, ordered steps, tables for structured data, language-tagged code blocks, relative links, working table-of-contents anchors.
+- Never duplicate other docs: summarise `ARCHITECTURE.md`, `DESIGN.md`, `RESEARCH.md`, `SECURITY.md`, `CONTRIBUTING.md`, and similar in a line or two and link them.
 
 ## Section Requirements
 
-- Quick start, near the top: the minimum verified steps to install and run locally. For every command, give the exact command, what it does, where to run it, the expected result, and common errors with fixes.
-- Technology stack: for each technology, its name, version if known, purpose, where it is used, why it is needed, and how it interacts with the rest of the system.
-- Environment variables: a table of name, required or optional, purpose, format, safe example value, default, and security notes. Never expose real passwords, tokens, keys, connection strings, or personal data.
-- API documentation, only when endpoints exist: for each, method, route, purpose, auth, headers, path and query parameters, request body, validation rules, success and error responses, status codes, and example request and response, all verified from code.
-- Repository structure: an ASCII tree, with the purpose of every important directory and file.
-- Diagrams: Mermaid only when the repository holds enough information for an accurate one, such as architecture, request flow, auth flow, database relationships, or deployment.
-- Troubleshooting: a table of problem, likely cause, diagnostic command, and resolution.
-- Metrics, only when they help readers understand or operate the project: verifiable counts and limits such as features, modules, endpoints, models, env vars, scripts, tests, coverage, build time, bundle size, runtime versions, ports, timeouts, retries, and pagination, file size, or rate limits. Give each metric's name, value, source file or command, and notes. Never estimate. If an important metric cannot be verified, write exactly: `Not measured in the current repository.`
+- Quick start, near the top: minimum verified steps; for each command, what it does, where to run it, expected result, and common errors with fixes.
+- Tech stack: name, version if known, purpose, where used, why needed, how it interacts with the rest.
+- Environment variables table: name, required or optional, purpose, format, safe example, default, security notes. Never real secrets or personal data.
+- API, only when endpoints exist, verified from code: method, route, purpose, auth, headers, parameters, body, validation, responses, status codes, example request and response.
+- Structure: ASCII tree with the purpose of every important directory and file.
+- Mermaid diagrams only when the repo holds enough information for an accurate one.
+- Troubleshooting table: problem, likely cause, diagnostic command, resolution.
+- Metrics only when they help readers: verifiable counts and limits with name, value, source file or command, notes. Never estimate; for an important unverifiable metric write exactly `Not measured in the current repository.`
 
 ## Notebook Repositories
 
-Apply when the repository has Kaggle or Jupyter notebooks (`.ipynb`) with downloaded run outputs. Outputs usually sit in an `outputs/` folder or an extracted `outputs.zip`, often with `plots/`, `metrics/`, `logs/`, `predictions/`, and `weights/` subfolders. Saved cell outputs inside the notebook also count.
+Applies when the repo has `.ipynb` files with downloaded outputs (usually `outputs/` or an extracted `outputs.zip` with `plots/`, `metrics/`, `logs/`, `predictions/`, `weights/`), or saved cell outputs.
 
-- Read every notebook cell in order, markdown and code, including saved outputs. List every file in the outputs folder and read every metrics, log, CSV, and JSON file, however many there are. Never execute the notebooks.
-- Explain each notebook end to end in its own subsection, in execution order. For each code cell, or small group of cells doing one job, explain what it does, why, its key parameters and choices, and what it produced. Quote the exact results it printed or saved: dataset shapes, class counts, hyperparameters, training progress, per-epoch or per-fold scores, and final values.
-- Add a results section with every metric in tables: metric, value, split or fold, and source file or cell. Include per-class, per-fold, and per-epoch values, not only headline numbers.
-- Embed every image in the outputs folder with a relative path, such as `![Confusion matrix](outputs/plots/confusion_matrix.png)`, percent-encoding spaces as `%20`. Place each image beside the cell or result that produced it, with a caption on what it shows and what it says about the results. Unattached images go in the results section.
-- Describe prediction and submission files: contents, shape, and columns. List weight and checkpoint files with their size and purpose, without embedding them.
-- Interpret only as far as the numbers support, such as which model or fold scored best. Do not claim causes, generalisation, or real-world performance the outputs do not show. If a notebook has no saved outputs or matching output files, say so instead of describing results.
+- Read every cell in order, including saved outputs, and every file in the outputs folder, including all metrics, logs, CSV, and JSON. Never execute notebooks.
+- One subsection per notebook, in execution order. Per code cell or small group doing one job: what, why, key parameters, and what it produced, quoting exact printed or saved results (shapes, class counts, hyperparameters, per-epoch or per-fold scores, final values).
+- Results section: every metric in tables of metric, value, split or fold, and source, including per-class, per-fold, and per-epoch values.
+- Embed every output image with a relative path (spaces as `%20`) beside the cell or result that produced it, with a caption on what it shows; unattached images go in results.
+- Describe prediction and submission files (contents, shape, columns). List weights and checkpoints with size and purpose, not embedded.
+- Interpret only as far as the numbers go. If a notebook has no saved outputs, say so.
 
-## Final Validation
+## Common Rationalizations
 
-Before writing, verify every command, file path, port, environment variable, API route, dependency, version, and metric against the repository. Confirm no secrets are exposed, all characters are ASCII, the Markdown is valid, and no unsupported claim was added. For notebook repositories, confirm every cell is covered, every output image is embedded with a working relative path, and every output metric is reported.
+| Rationalization                   | Reality                                                          |
+| --------------------------------- | ---------------------------------------------------------------- |
+| "Every README needs all sections" | Empty or padded sections hide the useful ones.                   |
+| "This command obviously works"    | Verify it against scripts and config, or say it was not run.     |
+| "Headline metrics are enough"     | Notebook readers need per-fold, per-class, and per-epoch values. |
 
-Unless the user asked for an audit only, write the result to `README.md` in the repository root.
+## Red Flags
+
+- A command, port, or env var not found in the repo.
+- Non-ASCII characters.
+- Output images that exist but are not embedded.
+
+## Verification
+
+- [ ] Every command, path, port, env var, route, dependency, version, and metric checked against the repo.
+- [ ] No secrets, ASCII only, valid Markdown, no unsupported claims.
+- [ ] Notebook repos: every cell covered, every output image embedded with a working relative path, every output metric reported.

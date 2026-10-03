@@ -1,24 +1,49 @@
 ---
 name: linkedin-project-description
-description: Turn a project README or project write-up into a concise LinkedIn project description of at most 1000 characters, grounded only in the source. Use when the user asks for a LinkedIn project description, LinkedIn project summary, LinkedIn post about a project, or to convert a README for LinkedIn.
+description: Turns a project README or write-up into a LinkedIn project description of at most 1000 characters, grounded only in the source. Use when the user asks for a LinkedIn project description, LinkedIn project summary, LinkedIn post about a project, or to convert a README for LinkedIn.
 ---
 
 # LinkedIn Project Description
 
-Turn a project README or similar write-up into a LinkedIn project description. If no source is given, ask for it. If the user points at a repository, read its `README.md` and any linked docs that hold the metrics.
+## Overview
 
-Before writing, silently identify: purpose and users, the 3 to 5 main technical contributions, the strongest supported metrics, clear user, business, or operational impact, and what to leave out.
+A short, factual LinkedIn description that recruiters and engineers both understand, using only claims the source supports.
 
-## Requirements
+## When to Use
 
-- At most 1000 characters including spaces and punctuation. Count before replying.
-- Reply with the description in one code block. The description has no title, intro, explanation, or citations. Add nothing else, except one short line after the block when something needs the user's attention, such as a contradictory source or a claim left out because it was unsupported.
-- Open with one simple sentence on what was built and why, then 3 to 5 concise bullets starting with `•`.
-- Order: what was built, then how, then measurable impact.
-- Mention technologies, systems, scale, workflows, and metrics only when the source supports them, and do not turn it into a tech-stack list.
-- Keep metrics and units exactly as in the source. Never invent, estimate, infer, or exaggerate.
-- Combine related features and focus on substantial engineering work and clear outcomes.
-- Use simple, direct language for recruiters and engineers alike, with strong verbs such as Built, Designed, Engineered, Automated, Implemented, and Developed. Avoid buzzwords such as "cutting-edge", "innovative", "seamless", "scalable", and "revolutionary".
-- If the source contradicts itself, use the most specific or most current information without guessing.
+- Converting a README or project write-up for LinkedIn.
+- Not for resumes (`resume-tailoring`) or READMEs (`readme-generator`).
 
-Write the shortest natural version that keeps the most important technical and measurable information.
+## Process
+
+1. Get the source; ask if none is given. For a repository, read `README.md` and any linked docs holding metrics.
+2. Silently identify: purpose and users, 3 to 5 main technical contributions, the strongest supported metrics, clear impact, and what to leave out.
+3. Write one simple sentence on what was built and why, then 3 to 5 concise bullets starting with `•`, ordered what, how, then measurable impact.
+4. Count characters including spaces and punctuation; cut to 1000 or fewer.
+
+## Rules
+
+- Technologies, scale, workflows, and metrics only when the source supports them; no tech-stack list.
+- Metrics and units exactly as in the source. Never invent, estimate, infer, or exaggerate.
+- Combine related features; focus on substantial engineering and clear outcomes.
+- Strong verbs (Built, Designed, Engineered, Automated, Implemented, Developed). No buzzwords such as "cutting-edge", "innovative", "seamless", "scalable", "revolutionary".
+- If the source contradicts itself, use the most specific or current information without guessing.
+- Reply with only the description in one code block: no title, intro, or citations. Add one short line after it only when something needs attention, such as a contradiction or an unsupported claim left out.
+
+## Common Rationalizations
+
+| Rationalization                    | Reality                               |
+| ---------------------------------- | ------------------------------------- |
+| "Rounding the metric reads better" | Changed numbers are invented numbers. |
+| "Listing every tool shows breadth" | Tech lists bury the impact.           |
+
+## Red Flags
+
+- Any number not found verbatim in the source.
+- Text outside the code block beyond one attention line.
+
+## Verification
+
+- [ ] At most 1000 characters, counted.
+- [ ] Every claim and metric traces to the source.
+- [ ] One opening sentence plus 3 to 5 `•` bullets.

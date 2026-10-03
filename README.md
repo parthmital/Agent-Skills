@@ -47,10 +47,7 @@ There is no install script. To use a skill, copy its whole folder into the skill
 |   |-- SKILL.md                      skill instructions
 |   `-- agents/openai.yaml            optional harness metadata
 |-- kaggle-jupyter-notebooks/
-|   |-- README.md                     setup notes for the helper
-|   |-- references/
-|   |   |-- kaggle-authoring.md       hardware, progress, metrics, output layout, zip cell
-|   |   `-- precommit.md              optional nbdime and nbstripout setup
+|   |-- references/kaggle-authoring.md  hardware, progress, metrics, output layout, zip cell
 |   `-- scripts/notebook_doctor.py    notebook maintenance CLI
 `-- resume-tailoring/
     `-- assets/Resume.tex             single-page LaTeX resume template
@@ -84,12 +81,13 @@ On POSIX shells use `./.venv/bin/python` and forward slashes.
 
 ## Writing And Maintaining Skills
 
-Skills load into the agent's context, so every line costs tokens. Keep them tight:
+Skills follow the [addyosmani/agent-skills skill anatomy](https://github.com/addyosmani/agent-skills/blob/main/docs/skill-anatomy.md). Skills load into the agent's context, so every line costs tokens. Keep them tight:
 
-- Put all "when to use" triggers in the front matter `description`. The body is loaded only after the skill triggers, so it covers how, not when.
-- Say each rule once, in imperative form, and give the reason when it is not obvious. A reason generalises better than an all-caps rule.
+- Front matter has only `name` (matching the folder) and `description`: what the skill does in third person, then a `Use when` clause with every trigger, at most 1024 characters. The body loads only after the skill triggers.
+- Body sections: `## Overview`, `## When to Use` (including exclusions and the skill to use instead), the process and its rules, `## Common Rationalizations` (excuses for skipping steps, with rebuttals), `## Red Flags`, and `## Verification` (an evidence-based checklist).
+- Say each rule once, in imperative form, and give the reason when it is not obvious. Reference other skills by name instead of repeating them.
 - Cut anything the agent already does by default or that does not change behaviour.
-- Move long material needed only for some tasks into `references/`, with a clear pointer from `SKILL.md` saying when to read it.
+- Move material over about 100 lines needed only for some tasks into `references/`, with a pointer from `SKILL.md` saying when to read it. Keep shorter material inline.
 - Update `SKILL.md`, `agents/openai.yaml`, and this README together when a skill is added, renamed, or changes behaviour.
 - Never commit `.venv/`, `.cache/`, or `.agent-local/`.
 

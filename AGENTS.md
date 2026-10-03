@@ -2,7 +2,21 @@
 
 ## Skills
 
-Before each task, check the available skills and follow every relevant one. A skill's required steps and outputs are part of the task.
+Before each task, check the available skills. If one plausibly applies, invoke it before acting and follow it fully: its steps, outputs, and Verification checklist are part of the task. When several apply, follow all of them.
+
+Intent map:
+
+- Installs, helper scripts, logs, outputs, downloads, caches: `repo-local-workspace`
+- User-facing UI: `frontend-design`
+- Whole-repo structure, deduplication, local launch (`npm run dev`): `production-architecture`
+- Security audit or hardening: `security-hardening`
+- External facts, prior art, comparisons: `internet-research`
+- `.ipynb` work: `kaggle-jupyter-notebooks`
+- README or onboarding docs: `readme-generator`
+- Commit or push: `git-commit-and-push`
+- Resume: `resume-tailoring`; LinkedIn project description: `linkedin-project-description`
+
+Wrong thoughts: "this is too small for a skill", "I'll check skills after gathering context", "I remember what the skill says". Check and load the skill first.
 
 ## Communication
 
@@ -25,3 +39,10 @@ Before each task, check the available skills and follow every relevant one. A sk
 - Verify the requested behaviour with the available non-destructive syntax, type, lint, test, and build checks. Never execute Jupyter notebooks locally; they are verified on their target runtime.
 - Confirm existing behaviour is preserved, and report every intentional behaviour change.
 - Never claim code compiles or tests pass without running them; state what was not verified.
+
+## Common Rationalizations
+
+- "It is a small change, no need to check": small unchecked changes are where regressions hide.
+- "While I am here, I will tidy this up": unrequested changes bloat the diff and hide the real one.
+- "It should work": only a check that ran counts; otherwise say it is unverified.
+- "The user probably meant X": if a wrong guess changes the result, ask or state the assumption.

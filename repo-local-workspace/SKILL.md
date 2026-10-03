@@ -1,13 +1,19 @@
 ---
 name: repo-local-workspace
-description: "Keep everything a task creates or needs inside the target repository: dependencies, virtual environments, caches, browser binaries, helper scripts, logs, outputs, downloads, and temporary files, in an organised, Git-ignored folder so nothing touches system folders and past scripts can be reused. Use before installing packages, running package managers or Python helpers, writing helper scripts, saving logs or outputs, downloading tools, using Playwright or browser tooling, converting documents, cloning reference code, or any step that could write outside the repository."
+description: "Keeps everything a task creates or needs inside the target repository: dependencies, virtual environments, caches, browser binaries, helper scripts, logs, outputs, downloads, and temporary files, in an organised, Git-ignored folder so nothing touches system folders and past scripts can be reused. Use before installing packages, running package managers or Python helpers, writing helper scripts, saving logs or outputs, downloading tools, using Playwright or browser tooling, converting documents, cloning reference code, or any step that could write outside the repository."
 ---
 
 # Repo Local Workspace
 
-Everything a task creates or needs lives inside the target repository: tools, dependencies, helper scripts, caches, downloads, logs, outputs, and temp files. Nothing goes into global Python or Node, the user home directory, OS temp folders, system package stores, or shared caches. This keeps the machine clean, and because the work area is kept between tasks (never committed), earlier scripts and outputs can be found and reused.
+## Overview
 
-Use `.agent-local/` even if the harness offers its own scratch or temp directory outside the repository, unless the user says otherwise. If a tool cannot be made repo-local, ask first and state what global path or system state it would touch. The same applies to any global SDK or system package that is not already installed.
+Nothing goes into global Python or Node, the user home, OS temp, system package stores, or shared caches. The machine stays clean, and because the work area persists between tasks (never committed), earlier scripts and outputs can be reused.
+
+## When to Use
+
+- Any install, download, helper script, log, output, cache, or temp file.
+- Use `.agent-local/` even when the harness offers its own scratch or temp directory, unless the user says otherwise.
+- If a tool cannot be made repo-local, or needs a global SDK or system package not already installed, ask first and state what global path or state it would touch.
 
 ## Layout
 
@@ -17,85 +23,58 @@ repo/
   .agent-local/
     README.md         one-line-per-script index
     scripts/          helper scripts, kept for reuse
-    logs/             command and script logs
+    logs/             <date>_<purpose>.log
     tmp/              disposable intermediate files
-    output/<task>/    generated results, one folder per task
+    output/<task>/    generated results
     downloads/        downloaded files
     vendor/           cloned reference repositories
     backups/          copies made before risky edits
-  .cache/             tool caches: pip, uv, poetry, npm, pnpm, yarn, playwright,
-                      maven, gradle, go-build, go-mod, cargo, nuget, huggingface
+  .cache/             tool caches (pip, uv, npm, pnpm, playwright, maven, ...)
 ```
 
-If these folders are not already ignored in a Git repository, add `.venv/`, `.agent-local/`, and `.cache/` to the root `.gitignore`, following its grouping and comments. Never ignore source, fixtures, required assets, lockfiles, or project config.
+Add `.venv/`, `.agent-local/`, and `.cache/` to the root `.gitignore` if missing, following its grouping. Never ignore source, fixtures, required assets, lockfiles, or project config.
 
-## Workflow
+## Process
 
-1. Find the repository or workspace root.
-2. Reuse an existing healthy repo-local environment (`.venv`, `venv`, or a project-managed one); create one only if none exists.
-3. Before writing a helper script, check `.agent-local/scripts/` and its index, and reuse or extend an existing script rather than creating a near-duplicate.
-4. Run every tool with repo-local cache, install, and temp paths. For spawned tools that create temp files, set `TMPDIR`, `TMP`, and `TEMP` to the absolute path of `.agent-local/tmp`.
+1. Find the repository root.
+2. Reuse a healthy repo-local environment (`.venv`, `venv`, or project-managed); create one only if none exists. Use the repo's declared toolchain (`pyproject.toml`, `requirements.txt`, `uv.lock`, `Pipfile`, `poetry.lock`) with local paths.
+3. Before writing a helper script, check `.agent-local/scripts/` and its index; extend an existing script rather than adding a near-duplicate.
+4. Run every tool with repo-local cache, install, and temp paths; set `TMPDIR`, `TMP`, and `TEMP` to the absolute path of `.agent-local/tmp` for tools that spawn temp files.
 
-Never use:
+## Local Paths
 
-- Global installs: `pip install` outside a venv, `pip install --user`, `npm install -g`, `yarn global`, `pnpm add -g`, `pipx install`, `uv tool install`, `gem install`, or system package managers.
-- User- or system-level config writes such as `npm config set`, `pnpm config set`, `git config --global`, or `pip config set`, unless scoped to the project, such as `npm config set --location project`.
-- Default user-home caches for pip, npm, pnpm, Playwright, Maven, Gradle, Go, Cargo, NuGet, or browsers when a local override exists.
-- Scripts or files in the user profile, OS temp, desktop, downloads folder, or global tool directories.
+- Python: `python -m venv .venv`, then `.venv/bin/python -m pip install <pkg> --cache-dir .cache/pip` (Windows: `.venv\Scripts\python`). `PIP_CACHE_DIR=.cache/pip`, `UV_CACHE_DIR=.cache/uv`, `POETRY_VIRTUALENVS_IN_PROJECT=true` with `POETRY_CACHE_DIR=.cache/poetry`, `HF_HOME=.cache/huggingface`.
+- Node: `node_modules/.bin`, package scripts, or exec commands; a dev dependency for repeated tools. `npm_config_cache=.cache/npm` (PowerShell: `$env:npm_config_cache = ".cache\npm"`); `pnpm install --store-dir .cache/pnpm` or `store-dir` in project `.npmrc`; Yarn's repo-local cache where supported.
+- Playwright: `PLAYWRIGHT_BROWSERS_PATH=.cache/playwright`; disposable profiles under `.agent-local/tmp/`, never a personal profile.
+- Maven `-Dmaven.repo.local=.cache/maven`; Gradle `GRADLE_USER_HOME=.cache/gradle`; Go `GOCACHE=.cache/go-build`, `GOMODCACHE=.cache/go-mod`; Rust `CARGO_HOME=.cache/cargo` when compatible; .NET `NUGET_PACKAGES=.cache/nuget`; Ruby `bundle config set path vendor/bundle`.
+- Downloads in `.agent-local/downloads/`, reference clones in `.agent-local/vendor/`; record source URLs when they affect reproducibility.
 
-## Scripts, Logs, And Outputs
+Never: `pip install` outside a venv or with `--user`, `npm install -g`, `yarn global`, `pnpm add -g`, `pipx install`, `uv tool install`, `gem install`, system package managers, user- or system-level config writes (`npm config set`, `git config --global`, `pip config set`) unless project-scoped, or files in the user profile, OS temp, desktop, or downloads folder.
 
-- Name scripts by purpose, such as `extract_pdf_tables.py`, never `script.py`, `test2.py`, or `tmp.py`.
-- Start each script with a header comment giving its purpose, inputs, outputs, and exact run command. Take paths and options as arguments so it can be rerun.
-- Update the `.agent-local/README.md` index whenever a script is added, renamed, or removed.
-- Name logs by date and purpose, such as `.agent-local/logs/2026-09-25_pdf-extract.log`.
-- Keep scripts in `.agent-local/scripts/` unless they are durable project code, and results in `.agent-local/output/<task>/` unless the user names another repository path.
-- Never store secrets, tokens, or credentials in scripts, logs, or outputs.
+## Scripts And Outputs
 
-## Python
+- Name scripts by purpose (`extract_pdf_tables.py`, never `script.py` or `tmp.py`), with a header comment giving purpose, inputs, outputs, and run command. Take paths and options as arguments.
+- Update `.agent-local/README.md` whenever a script is added, renamed, or removed.
+- Results go in `.agent-local/output/<task>/` unless the user names another path; durable project code goes in the project.
+- Never store secrets in scripts, logs, or outputs.
 
-Use the repo-local environment for all Python work, including one-off extraction, parsing, conversion, generation, validation, and analysis.
+## Common Rationalizations
 
-```bash
-python -m venv .venv
-./.venv/bin/python -m pip install <package> --cache-dir .cache/pip
-./.venv/bin/python .agent-local/scripts/task.py
-```
+| Rationalization                      | Reality                                                         |
+| ------------------------------------ | --------------------------------------------------------------- |
+| "The harness scratch folder is fine" | It is lost after the session; scripts cannot be reused.         |
+| "One global install is harmless"     | It pollutes the machine and hides the dependency from the repo. |
+| "I'll write a quick new script"      | Check the index first; near-duplicates pile up.                 |
 
-On Windows use `.\.venv\Scripts\python` and backslash paths.
+## Red Flags
 
-- If the repository declares dependencies in `pyproject.toml`, `requirements.txt`, `uv.lock`, `Pipfile`, or `poetry.lock`, use its toolchain with local environment and cache paths.
-- Set `PIP_CACHE_DIR=.cache/pip` for indirect pip use, `UV_CACHE_DIR=.cache/uv` for uv, `POETRY_VIRTUALENVS_IN_PROJECT=true` and `POETRY_CACHE_DIR=.cache/poetry` for Poetry, and `HF_HOME=.cache/huggingface` for Hugging Face.
+- `-g`, `--user`, or `--global` in a command.
+- Paths under the user profile, `%TEMP%`, or `/tmp`.
+- Generic script names or a stale index.
 
-## JavaScript
+## Verification
 
-- Use `node_modules/.bin`, package scripts, or package-manager exec commands. Never install global Node packages; add a dev dependency when a tool is needed repeatedly.
-- npm, `npx`, and `npm exec`: set `npm_config_cache=.cache/npm` (in PowerShell, `$env:npm_config_cache = ".cache\npm"`).
-- pnpm: `pnpm install --store-dir .cache/pnpm`, or `store-dir=.cache/pnpm` in the project `.npmrc`.
-- Yarn: repo-local cache configuration where the project supports it.
-
-## Browsers And Playwright
-
-- Set `PLAYWRIGHT_BROWSERS_PATH=.cache/playwright` before installing browsers, and prefer the repository's existing Playwright setup.
-- Use disposable browser profiles under `.agent-local/tmp/`. Never attach to a personal browser profile.
-
-## Other Ecosystems
-
-- Maven: `-Dmaven.repo.local=.cache/maven`
-- Gradle: `GRADLE_USER_HOME=.cache/gradle`
-- Go: `GOCACHE=.cache/go-build` and `GOMODCACHE=.cache/go-mod`
-- Rust: `CARGO_HOME=.cache/cargo` for task-specific commands when compatible
-- .NET: `NUGET_PACKAGES=.cache/nuget`
-- Ruby: `bundle config set path vendor/bundle`
-
-## Downloads And External Repos
-
-Put downloads in `.agent-local/downloads/` and reference clones in `.agent-local/vendor/`, unless the clone is meant to be part of the project. Record source URLs in a note or script comment when they affect reproducibility.
-
-## Before Finishing
-
-- Keep scripts, logs, outputs, and downloads that may be needed again. Delete only disposable files in `.agent-local/tmp/`, superseded copies of the same output, and large downloads that are easy to fetch again and clearly no longer needed.
-- Update the `.agent-local/README.md` index.
-- Confirm `.venv/`, `.cache/`, and `.agent-local/` are ignored and not staged.
-- Confirm no global installs were run and nothing was written to OS temp, the user profile, or scratch directories outside the repository. Report any unavoidable global effect and whether it was authorised.
-- Report which scripts, logs, and outputs were created or updated.
+- [ ] `.venv/`, `.cache/`, `.agent-local/` ignored and not staged.
+- [ ] Only disposable `tmp/` files, superseded outputs, and large easily refetched downloads deleted; reusable scripts, logs, and outputs kept.
+- [ ] Index updated; created or updated scripts, logs, and outputs reported.
+- [ ] No global installs or writes outside the repo, or each unavoidable one reported with whether it was authorised.

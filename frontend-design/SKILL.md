@@ -1,93 +1,99 @@
 ---
 name: frontend-design
-description: "Clean, minimal, functional frontend UI and UX for websites, web apps, dashboards, landing pages, games, components, and design systems: layout, typography, colour, custom accessible components, interaction states, responsive behaviour, legibility, smooth interactions, custom icons, and copy. Use whenever the user asks to build, redesign, restyle, polish, or simplify any user-facing page, component, app, game, or dashboard. Enforces fully custom UI with no browser-native controls, full responsiveness on every device, and a result that never looks generic, templated, vibe coded, or like a student project."
+description: "Builds clean, minimal, functional frontend UI and UX with fully custom accessible components, no browser-native controls, and full responsiveness: layout, typography, colour, states, motion, icons, and copy. Use when the user asks to build, redesign, restyle, polish, or simplify any user-facing website, web app, page, component, dashboard, landing page, game, or design system. The result must never look generic, templated, vibe coded, or like a student project."
 ---
 
 # Frontend Design
 
-Build the usable experience asked for. Clarity, fast comprehension, and task completion matter more than visual novelty. Treat the brief, codebase, and audience as constraints, and ground every choice in the product domain so the result feels product-native rather than bloated, templated, or vibe coded.
+## Overview
 
-## Approach
+Build the usable experience asked for. Clarity, fast comprehension, and task completion beat visual novelty. Ground every choice in the product domain so the result feels product-native, not bloated or templated.
 
-- If the brief is vague, infer a concrete subject, user, and primary job. Ask only if a wrong guess would make the work unusable.
-- Follow the existing design system, component library, tokens, routing, data model, and interaction patterns before adding new ones.
-- Make the first screen the actual tool, app, dashboard, or game unless a landing page was asked for. Tools and dashboards favour density and scanning without crowding. Games and expressive sites may carry more motion and character when it helps.
-- Assets: use user- or repo-provided ones first, others only with clear source and licence, otherwise a clearly marked placeholder. Never rely on gradients, blobs, or decorative SVGs as the main visual.
-- Every element must help users navigate, decide, enter data, understand state, or finish the task. Before adding a section, panel, metric, filter, tab, chart, setting, or onboarding text, name the decision or action it supports. If it only makes the page look fuller, cut it.
-- Avoid AI tells: fake metrics, generic SaaS cards, placeholder testimonials, fake social proof, vague "powerful insights" copy, lorem ipsum, oversized empty heroes, random gradients, repeated icon tiles, and decoration that could belong to any product.
+## When to Use
+
+- Any new or changed user-facing UI: pages, components, apps, dashboards, games, design systems.
+- Not for backend-only work or whole-repo restructuring (`production-architecture`).
 
 ## Process
 
-1. Brief: subject, audience, primary task, screens, constraints, and success criteria.
-2. Plan before coding:
-   - Palette: 3 to 5 named colours with roles and enough neutral space. Not a one-colour theme unless the brief requires it.
-   - Type: a small, readable scale with few roles.
+1. Brief: subject, user, primary task, screens, constraints, success criteria. If vague, infer concrete ones; ask only if a wrong guess makes the work unusable.
+2. Reuse the existing design system, component library, tokens, routing, data model, and interaction patterns before adding new ones.
+3. Plan before coding:
+   - Palette: 3 to 5 named colours with roles and enough neutral space; not one colour unless the brief requires it.
+   - Type: a small readable scale with few roles.
    - Components: reusable primitives for controls, forms, overlays, feedback, navigation, and data display.
    - Layout: grid, hierarchy, responsive behaviour, navigation, and what is left out.
    - Signature: at most one memorable visual or interaction idea tied to the subject.
-3. Critique the plan. Cut clutter first, then revise anything that could fit an unrelated brief: cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, orbs, generic numbered sections, boilerplate heroes, and fake dashboards.
-4. Implement the plan exactly, using repo conventions.
-5. Write or update `DESIGN.md` at the repository root: one file covering the complete design system and UI decisions: palette with roles, type scale, spacing and layout grid, breakpoints, component inventory and states, icon set, motion rules, copy terminology, signature idea, and decisions with reasons. Keep it in sync with the code it describes.
-6. Verify in desktop and mobile viewports with browser or screenshot tools when available, and read the screenshots rather than trusting the first render. Without such tools, say the visual result is unverified.
+4. Critique the plan. Cut clutter, then revise anything that could fit an unrelated brief: cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, orbs, generic numbered sections, boilerplate heroes, fake dashboards.
+5. Implement the plan exactly, in repo conventions.
+6. Write or update root `DESIGN.md`: palette with roles, type scale, spacing and grid, breakpoints, component inventory and states, icons, motion rules, copy terminology, signature idea, and decisions with reasons. Keep it in sync with the code.
+7. Run Verification.
+
+## Content
+
+- The first screen is the actual tool, app, dashboard, or game unless a landing page was asked for. Tools favour density and scanning without crowding; games and expressive sites may carry more motion and character.
+- Every element must help users navigate, decide, enter data, understand state, or finish the task. Before adding a section, panel, metric, filter, tab, chart, setting, or onboarding text, name the action it supports; cut it if it only fills the page.
+- Assets: user or repo ones first, others only with clear source and licence, else a marked placeholder. Never gradients, blobs, or decorative SVGs as the main visual.
+- Real domain objects, realistic labels, meaningful empty and sample states.
+- No AI tells: fake metrics, testimonials, or social proof, generic SaaS cards, "powerful insights" copy, lorem ipsum, oversized empty heroes, random gradients, repeated icon tiles, decoration that fits any product.
+- No in-app text about the UI's design, implementation, shortcuts, or styling unless it is part of the product.
+- Copy from the user's side: name controls by the action or object ("Save changes", not "Submit"), keep terms consistent across buttons, headings, toasts, and errors, and make empty and error states say what happened and what to do next. No filler or hype.
 
 ## No Browser-Native UI
 
-Browser defaults differ across Chrome, Safari, Firefox, and mobile, so any native UI breaks consistency. Use one consistent custom component system for everything visible:
+Native UI differs across Chrome, Safari, Firefox, and mobile, so replace everything visible with one custom component system:
 
 - `alert`, `confirm`, `prompt`: custom modals and toasts.
 - `<select>`, `<datalist>`: custom listbox, menu, or combobox.
-- Date, time, datetime-local, month, week, and colour inputs: custom pickers.
+- Date, time, datetime-local, month, week, colour inputs: custom pickers.
 - `title` tooltips: custom tooltips.
-- Native validation bubbles: `novalidate` on forms and custom inline errors.
+- Validation bubbles: `novalidate` plus custom inline errors.
 - Checkbox, radio, range, file, number spinner, search clear button, `<progress>`, `<meter>`: `appearance: none` or hidden, with a custom control.
-- `<details>` and `<summary>` markers: custom disclosure or accordion.
-- `<dialog>` and popover defaults: custom modal or popover with its own backdrop, animation, and focus trap.
-- Focus rings, selection colour, caret, placeholder, autofill background, scrollbars (including panels, menus, and code blocks), fonts, and user-agent spacing: style explicitly, with a reset or normalise layer and explicit font stacks.
-- Drag previews and file picker triggers: a custom drop zone and button that opens the picker from code.
+- `<details>` and `<summary>` markers, `<dialog>`, popovers: custom disclosure, modal, or popover with its own backdrop, animation, and focus trap.
+- Focus rings, selection colour, caret, placeholder, autofill background, scrollbars (panels, menus, and code blocks too), fonts, user-agent spacing: style explicitly, with a reset layer and explicit font stacks.
+- Drag previews and file pickers: a custom drop zone and a button that opens the picker from code.
 
-Allowed only as invisible plumbing:
+Allowed only as invisible plumbing: real `<input>` and `<textarea>` for typing, fully restyled, because rebuilding text editing breaks IME, autofill, spell check, password managers, and mobile keyboards; visually hidden native elements that give custom controls semantics or form value; the OS file chooser, share sheet, and permission prompts, triggered from custom controls.
 
-- Real `<input>` and `<textarea>` for typing, fully restyled, because rebuilding text editing breaks IME, autofill, spell check, password managers, and mobile keyboards.
-- Visually hidden native elements that give custom controls their semantics or form value.
-- The OS file chooser, share sheet, and permission prompts, triggered from custom controls.
-
-Custom controls must keep native-level behaviour: keyboard support, focus management, ARIA roles and states, screen-reader labels, escape and outside-click handling, touch targets, and mobile use. Build on the repo's headless accessible library if it has one.
+Custom controls keep native-level behaviour: keyboard support, focus management, ARIA roles and states, screen-reader labels, escape and outside-click handling, touch targets. Build on the repo's headless accessible library if it has one.
 
 ## Interface Standards
 
-- Keep choices few and obvious: one primary action per view, clear secondary actions, and progressive disclosure for advanced controls.
-- Use real domain objects, realistic labels, and meaningful empty or sample states.
-- Use the familiar control type: icons for common actions, segmented controls for modes, sliders or steppers for numbers, menus or comboboxes for option sets, tabs for views, and toggles or checkboxes for binary choices.
-- Style every relevant state: default, hover, focus-visible, active, selected, disabled, loading, invalid, success, empty, and skeleton.
-- Use cards only for repeated items, modals, or framed tools. Never nest cards or make every section a floating card.
-- Keep text inside its container at every viewport with stable widths, aspect ratios, grid tracks, min and max sizes, wrapping, and overflow handling.
-- Meet accessibility basics: accessible names, visible focus, sufficient contrast, keyboard reach, and reduced-motion support.
-- Fully responsive from 320px to wide desktop, tablets, touch, and 200% zoom: reflow, no horizontal scroll, 44px touch targets.
-- Legible: body text at least 14px, generous spacing, nothing cramped.
-- Smooth: instant press feedback, 150 to 250ms eased transitions, no layout shift or jank.
-- Icons: one consistent, subject-specific set; no scattered default icons or emoji.
-- Do not add in-app text explaining the UI's design, implementation, shortcuts, or styling unless it is part of the product.
+- One primary action per view, clear secondary actions, progressive disclosure for advanced controls.
+- Familiar control types: icons for common actions, segmented controls for modes, sliders or steppers for numbers, menus or comboboxes for option sets, tabs for views, toggles or checkboxes for binary choices.
+- Style every state: default, hover, focus-visible, active, selected, disabled, loading, invalid, success, empty, skeleton.
+- Cards only for repeated items, modals, or framed tools; never nested, never one per section.
+- Text stays inside its container at every viewport: stable widths, aspect ratios, grid tracks, min and max sizes, wrapping, overflow handling.
+- Accessible names, visible focus, sufficient contrast, keyboard reach, reduced-motion support.
+- Responsive from 320px to wide desktop, tablets, touch, and 200% zoom: reflow, no horizontal scroll, 44px touch targets.
+- Body text at least 14px, generous spacing. Never scale font size directly with viewport width; use a type scale and layout changes.
+- Instant press feedback, 150 to 250ms eased transitions, no layout shift. Animate only to clarify state, hierarchy, direct manipulation, or the subject's character.
+- One consistent, subject-specific icon set; no scattered default icons or emoji.
+- Match the existing framework, styling stack, icon library, state management, data loading, and routing. Create only the primitives this UI needs. Keep CSS specificity predictable; no broad overriding selectors.
+- 3D or canvas: use the repo's rendering library; the canvas must be nonblank, framed, animating or interactive as intended, and usable on mobile.
 
-## Copy
+## Common Rationalizations
 
-- Write from the user's side of the screen. Name controls by the action or object users recognise: "Save changes", not "Submit".
-- Keep terminology consistent across buttons, headings, empty states, toasts, and errors.
-- Empty and error states say what happened and what to do next.
-- No filler, hype, or vague adjectives without visible evidence.
+| Rationalization                                   | Reality                                                                                   |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| "A native `<select>` is accessible enough"        | It looks different on every browser and breaks the system. Build a custom accessible one. |
+| "Sample metrics make the dashboard feel complete" | Fake data is the clearest AI tell and misleads users.                                     |
+| "More sections show more effort"                  | Elements with no user action behind them are clutter.                                     |
+| "It looks right at desktop width"                 | Most breakage is at 320px, tablet, and 200% zoom.                                         |
 
-## Implementation
+## Red Flags
 
-- Match the existing framework, styling stack, icon library, state management, data loading, and routing. Reuse shared components; otherwise create only the primitives this UI needs, not a full design system.
-- Keep CSS specificity predictable and avoid broad selectors that override components.
-- Never scale font size directly with viewport width. Use a type scale and layout changes instead.
-- Animate only to clarify state, hierarchy, direct manipulation, or the subject's character.
-- For 3D or canvas, use the repo's rendering library and verify the canvas is nonblank, framed, animating or interactive as intended, and usable on mobile.
+- `alert(`, `<select`, `title=`, or native picker types in the diff.
+- Clipped text or horizontal scroll at narrow widths.
+- A visual idea that would fit an unrelated brief.
+- Claiming the UI looks right without reading a screenshot.
 
-## Final Check
+## Verification
 
-- Phone, tablet, and desktop widths render without overlap or clipped text, with a clear hierarchy and no competing panels or actions.
-- Primary workflows are reachable and controls show clear states.
-- Legible, smooth, with consistent icons.
-- Nothing reads as placeholder, fake, templated, or AI generated. Assets load and fit the subject.
-- No native UI remains. Search for `alert(`, `confirm(`, `prompt(`, `title=`, `<select`, `<datalist`, native picker `type=` values, `<details`, `<dialog`, `<progress`, `<meter`, and forms without `novalidate`, then check focus, selection, autofill, and scrollbar styling in the rendered UI.
-- Console, build, lint, and tests pass where available. State anything unverified.
+- [ ] Desktop and mobile screenshots taken and read, not trusted on first render. Without browser or screenshot tools, the visual result is reported unverified.
+- [ ] Phone, tablet, desktop: no overlap or clipped text, clear hierarchy, no competing panels or actions.
+- [ ] Primary workflows reachable; controls show clear states; legible, smooth, consistent icons.
+- [ ] Nothing placeholder, fake, templated, or AI-looking; assets load and fit.
+- [ ] Searched for `alert(`, `confirm(`, `prompt(`, `title=`, `<select`, `<datalist`, native picker `type=` values, `<details`, `<dialog`, `<progress`, `<meter`, and forms without `novalidate`; focus, selection, autofill, and scrollbars checked in the render.
+- [ ] `DESIGN.md` matches the code.
+- [ ] Console, build, lint, and tests pass where available; anything unverified is stated.
