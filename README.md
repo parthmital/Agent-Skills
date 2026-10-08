@@ -8,9 +8,10 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 2. [Installation](#installation)
 3. [Repository Structure](#repository-structure)
 4. [Notebook Helper](#notebook-helper)
-5. [Writing And Maintaining Skills](#writing-and-maintaining-skills)
-6. [Troubleshooting](#troubleshooting)
-7. [Known Limitations](#known-limitations)
+5. [Paper Checker](#paper-checker)
+6. [Writing And Maintaining Skills](#writing-and-maintaining-skills)
+7. [Troubleshooting](#troubleshooting)
+8. [Known Limitations](#known-limitations)
 
 ## Skills
 
@@ -20,6 +21,7 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 | `git-commit-and-push`          | Factual commits from inspected changes, `.gitignore` upkeep, strict message format, and push.                                    |
 | `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                     |
 | `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip. |
+| `latex-research-papers`        | Compile-clean LaTeX papers via local Tectonic: no overflow, well-placed floats, verified in-order references, clickable links.   |
 | `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 1000 characters, using only supported claims.                      |
 | `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.  |
 | `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.             |
@@ -49,11 +51,14 @@ There is no install script. To use a skill, copy its whole folder into the skill
 |-- kaggle-jupyter-notebooks/
 |   |-- references/kaggle-authoring.md  hardware, progress, metrics, output layout, zip cell
 |   `-- scripts/notebook_doctor.py    notebook maintenance CLI
+|-- latex-research-papers/
+|   |-- references/fixes.md           overflow, placement, bibliography, link fixes; Tectonic install
+|   `-- scripts/paper_check.py        Tectonic compile plus layout, reference, and citation checks
 `-- resume-tailoring/
     `-- assets/Resume.tex             single-page LaTeX resume template
 ```
 
-`<skill>` stands for each of the 10 skill folders listed above.
+`<skill>` stands for each of the 11 skill folders listed above.
 
 ## Notebook Helper
 
@@ -79,6 +84,26 @@ On POSIX shells use `./.venv/bin/python` and forward slashes.
 
 `repair` and `clean` accept `--backup`. Inside a Git repository, backups go to `<repo>/.agent-local/backups/`; outside one, next to the notebook. The helper never executes notebooks; runtime behaviour is verified only by running on Kaggle.
 
+## Paper Checker
+
+[latex-research-papers/scripts/paper_check.py](latex-research-papers/scripts/paper_check.py) needs Python 3 and a Tectonic binary. It uses `--tectonic <path>`, else `$TECTONIC`, else `tectonic` on `PATH`, else `tectonic.exe` in the paper folder, its parents, and their direct subfolders. The PDF checks need `pypdf`, and `--render` also needs `pypdfium2`; without them those checks are skipped. Install both into a repository-local virtual environment:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python -m pip install pypdf pypdfium2 --cache-dir .cache\pip
+.\.venv\Scripts\python .\latex-research-papers\scripts\paper_check.py <paper>\main.tex --render .agent-local\output\paper-pages
+```
+
+| Option              | Purpose                                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------------------- |
+| `--tectonic <path>` | Tectonic binary to use.                                                                              |
+| `--outdir <dir>`    | Build directory; default `<repo>/.agent-local/tmp/latex-build/`.                                     |
+| `--allow <regex>`   | Accept a log or BibTeX line confirmed harmless in the PDF, such as a template-internal overfull box. |
+| `--render <dir>`    | Render every page to `page-NN.png` for visual inspection.                                            |
+| `--check-links`     | Request every external link in the PDF and print its HTTP status.                                    |
+
+It compiles with `--keep-logs --keep-intermediates --reruns 3` (Tectonic 0.15 otherwise loops to six passes) and `TECTONIC_CACHE_DIR=<repo>/.cache/tectonic`. It exits 1 on TeX errors, overfull boxes, missing glyphs, undefined or duplicate labels, BibTeX warnings, broken references, missing or uncited bibliography entries, unreferenced or unlabelled figures and tables, numeric citations out of order of first appearance, or no `hyperref`; and, with `pypdf`, on `??` in the PDF, cited DOIs or URLs that are not links, and body figures or tables more than one page after their first mention. Underfull boxes, other warnings, bare URLs, and entries without a DOI or URL are listed without failing. Visual overflow still needs a look at the rendered pages.
+
 ## Writing And Maintaining Skills
 
 Skills follow the [addyosmani/agent-skills skill anatomy](https://github.com/addyosmani/agent-skills/blob/main/docs/skill-anatomy.md). Skills load into the agent's context, so every line costs tokens. Keep them tight:
@@ -100,13 +125,14 @@ npx --yes prettier@3 --check "**/*.{md,json,yaml}"
 
 ## Troubleshooting
 
-| Problem                                          | Likely cause                                 | Resolution                                                                       |
-| ------------------------------------------------ | -------------------------------------------- | -------------------------------------------------------------------------------- |
-| `python` is not recognised.                      | Python is not installed or not on `PATH`.    | Install Python 3 or use the Python launcher on the machine.                      |
-| `notebook_doctor.py` reports `nbformat` missing. | The active environment lacks `nbformat`.     | Install it into `.venv` as shown above and run the script with that interpreter. |
-| A notebook is reported as invalid.               | Invalid JSON, schema, or duplicate cell IDs. | Read the `validate` output; if structural, run `repair --backup`.                |
+| Problem                                          | Likely cause                                 | Resolution                                                                          |
+| ------------------------------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `python` is not recognised.                      | Python is not installed or not on `PATH`.    | Install Python 3 or use the Python launcher on the machine.                         |
+| `notebook_doctor.py` reports `nbformat` missing. | The active environment lacks `nbformat`.     | Install it into `.venv` as shown above and run the script with that interpreter.    |
+| A notebook is reported as invalid.               | Invalid JSON, schema, or duplicate cell IDs. | Read the `validate` output; if structural, run `repair --backup`.                   |
+| `paper_check.py` reports `tectonic not found`.   | Tectonic is not on `PATH` or near the paper. | Pass `--tectonic <path>`, or install it into the project per `references/fixes.md`. |
 
 ## Known Limitations
 
-- No automated tests, CI, licence file, or dependency manifest. `nbformat` is not version-pinned and no Python version is declared.
+- No automated tests, CI, licence file, or dependency manifest. `nbformat`, `pypdf`, and `pypdfium2` are not version-pinned and no Python version is declared.
 - `notebook_doctor.py` is not a secret scanner. Review notebooks manually before sharing them.

@@ -33,7 +33,8 @@ A single-page LaTeX resume in which every claim traces to the user's ground-trut
 2. The target is the `.tex` file, whatever its name; if there are several, ask.
 3. Read every relevant file in `Education/`, `Experience/`, and `Projects/` before editing.
 4. A job description only guides which ground-truth content and keywords to choose and order. Never add a skill or claim because it asks for it; list unsupported important keywords for the user.
-5. Write per the rules below, then run Verification.
+5. List everything that must appear: every role and every `Projects/Present/` project, each one's key achievements and documented metrics, coursework, certifications, and every unique keyword for Technical Skills. Job description keywords the ground truth supports go first.
+6. Write per the rules below, fit per Fitting, then run Verification.
 
 ## Hard Constraints
 
@@ -44,7 +45,7 @@ A single-page LaTeX resume in which every claim traces to the user's ground-trut
 
 ## Writing Rules
 
-1. About 200 characters (two printed lines) per bullet as a guide, not a cap. Bullet counts follow depth and impact; split large achievements rather than over-compress.
+1. About 200 characters (two printed lines) per bullet as a guide, not a cap. Bullet counts follow depth and impact.
 2. Bullet order of ideas: the product and problem; the engineering, analysis, or architecture work; documented metrics; operational, business, or developer impact.
 3. Start every bullet with a strong verb, no opener used more than 2 times across the resume. Watch `Built` and `Automated`; alternatives include `Architected`, `Engineered`, `Implemented`, `Migrated`, `Designed`, `Trained`, `Benchmarked`, `Deployed`, `Quantised`, `Orchestrated`, `Consolidated`, `Streamlined`, `Authored`.
 4. Each bullet bolds its single most impactful element (metric, outcome, scale) with `\textbf{...}`, such as `\textbf{reducing model latency by 80\%}`. Never bold bare technology names.
@@ -55,19 +56,32 @@ A single-page LaTeX resume in which every claim traces to the user's ground-trut
 9. ATS-parseable: standard headings (`Education \& Certifications`, `Experience`, `Projects \& Research`, `Technical Skills`), `Role/Degree`, `Organisation`, `Dates`, `Location` hierarchy, `Month Year -- Month Year` dates, single column.
 10. No em dashes; `--` for ranges; escape `\%`, `\&`, `\_`, `\$`, `\#`; official spelling of tool names; zero spelling, grammar, or LaTeX errors.
 
+## Fitting
+
+Over one page: compress, never drop a listed item. In order, recompiling after each step:
+
+1. Cut filler, articles, and repeated context; shorten phrasing (`using` to `with`, `in order to` to `to`).
+2. Merge related bullets of the same role or project into one denser bullet.
+3. Trim bullets that end with a few words on a new line so they fit one line less.
+4. Move secondary tools from bullets to Technical Skills, and merge Technical Skills categories.
+
+If it still does not fit, stop and ask the user what to cut, listing the candidates; never decide silently.
+
 ## Common Rationalizations
 
 | Rationalization                                                   | Reality                                                              |
 | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
 | "The job description wants Kubernetes, and they probably used it" | Undocumented claims fail interviews. List it as unsupported instead. |
 | "An estimated metric is better than none"                         | Invented numbers are fabrication.                                    |
-| "A small preamble tweak will fit one page"                        | Layout is fixed; cut or tighten content instead.                     |
+| "A small preamble tweak will fit one page"                        | Layout is fixed; tighten wording instead.                            |
+| "Space is tight, drop the weakest project"                        | Compress per Fitting; only the user decides what to cut.             |
 
 ## Red Flags
 
 - Any diff outside macro content.
 - A metric not found in ground truth.
 - A verb opening more than 2 bullets.
+- A listed role, project, metric, or keyword missing from the final resume.
 
 ## Verification
 
@@ -76,5 +90,6 @@ A single-page LaTeX resume in which every claim traces to the user's ground-trut
 - [ ] All claims trace to ground truth; Projects only from `Projects/Present/`.
 - [ ] Verb limit, one `\textbf{...}` per bullet, `\&` used.
 - [ ] Technical Skills repeats nothing; Coursework uses formal titles.
+- [ ] Every item from step 5 appears, or the user agreed to cut it.
 - [ ] Escaping, spelling, grammar, headings, hierarchy, single column intact.
 - [ ] Final reply lists claims left without metrics, unsupported job description keywords, and whether one page was verified by compiling.

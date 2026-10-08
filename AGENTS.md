@@ -14,6 +14,7 @@ Intent map:
 - `.ipynb` work: `kaggle-jupyter-notebooks`
 - README or onboarding docs: `readme-generator`
 - Commit or push: `git-commit-and-push`
+- LaTeX research papers: `latex-research-papers`
 - Resume: `resume-tailoring`; LinkedIn project description: `linkedin-project-description`
 
 Wrong thoughts: "this is too small for a skill", "I'll check skills after gathering context", "I remember what the skill says". Check and load the skill first.
