@@ -30,9 +30,10 @@ Wrong thoughts: "this is too small for a skill", "I'll check skills after gather
 ## Implementation
 
 - Turn the request into verifiable goals; present materially different interpretations.
-- Write the minimum code that fully completes the task. Add no other features, abstractions, configurability, or premature optimisation.
+- Write the minimum code that fully completes the task and every fix. Add no unrequested features, abstractions, configurability, or premature optimisation.
 - Follow the existing style, naming, tooling, package manager, and tests, and the existing architecture unless the task is to change it. Add dependencies only when justified, installed inside the repository.
-- Change only what the task's scope covers: no unrelated refactors, reformatting, renames, or deletions; mention unrelated issues instead.
+- For every task, proactively identify and implement all relevant fixes, improvements, and necessary changes, including every issue found anywhere in the repository, even when unrelated to the task. Never leave known issues or unfinished work behind, and report each fix made. Where a fix needs an action the Ask rule above covers, or a skill's hard constraint forbids it, ask or report the issue instead of silently leaving it.
+- Update all documentation affected by every change in the same task: README (via `readme-generator`), other docs (`ARCHITECTURE.md`, `DESIGN.md`, `SECURITY.md`, `RESEARCH.md`, `CONTRIBUTING.md`, changelogs), skill files, docstrings, comments, and help text.
 - Remove unused code your changes introduce. Keep code focused, readable, and free of duplication.
 
 ## Verification
@@ -40,10 +41,13 @@ Wrong thoughts: "this is too small for a skill", "I'll check skills after gather
 - Verify the requested behaviour with the available non-destructive syntax, type, lint, test, and build checks. Never execute Jupyter notebooks locally; they are verified on their target runtime.
 - Confirm existing behaviour is preserved, and report every intentional behaviour change.
 - Never claim code compiles or tests pass without running them; state what was not verified.
+- Before any commit or push, run all tests, checks, and the full CI pipeline locally, except notebook execution. Fix every failure and rerun everything until it all passes. Commit and push only after all checks pass.
 
 ## Common Rationalizations
 
 - "It is a small change, no need to check": small unchecked changes are where regressions hide.
-- "While I am here, I will tidy this up": unrequested changes bloat the diff and hide the real one.
 - "It should work": only a check that ran counts; otherwise say it is unverified.
+- "The docs can be updated later": stale docs mislead the next reader; update them with the change.
+- "CI will catch it": run the full pipeline locally and get it green before committing.
+- "I'll note it as a follow-up" or "It is unrelated to the task": fix every known issue now instead of leaving it behind.
 - "The user probably meant X": if a wrong guess changes the result, ask or state the assumption.

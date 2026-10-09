@@ -18,7 +18,7 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 | Skill                          | Purpose                                                                                                                          |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | `frontend-design`              | Clean, functional, fully responsive frontend UI with custom components and icons, and no browser-native UI.                      |
-| `git-commit-and-push`          | Factual commits from inspected changes, `.gitignore` upkeep, strict message format, and push.                                    |
+| `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.            |
 | `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                     |
 | `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip. |
 | `latex-research-papers`        | Compile-clean LaTeX papers via local Tectonic: no overflow, well-placed floats, verified in-order references, clickable links.   |
@@ -39,7 +39,7 @@ There is no install script. To use a skill, copy its whole folder into the skill
 
 ```text
 .
-|-- AGENTS.md                         general coding and response rules for agents
+|-- AGENTS.md                         agent rules: skills, communication, implementation, verification
 |-- README.md
 |-- .gitattributes                    text normalisation; fonts, images, PDFs, zips as binary
 |-- .gitignore                        local folders, Python and Node artefacts, secrets, logs, editor files
@@ -110,6 +110,7 @@ Skills follow the [addyosmani/agent-skills skill anatomy](https://github.com/add
 
 - Front matter has only `name` (matching the folder) and `description`: what the skill does in third person, then a `Use when` clause with every trigger, at most 1024 characters. The body loads only after the skill triggers.
 - Body sections: `## Overview`, `## When to Use` (including exclusions and the skill to use instead), the process and its rules, `## Common Rationalizations` (excuses for skipping steps, with rebuttals), `## Red Flags`, and `## Verification` (an evidence-based checklist).
+- Never contradict `AGENTS.md`. Where a skill's hard constraint blocks a fix, the skill says to report the issue instead.
 - Say each rule once, in imperative form, and give the reason when it is not obvious. Reference other skills by name instead of repeating them.
 - Cut anything the agent already does by default or that does not change behaviour.
 - Move material over about 100 lines needed only for some tasks into `references/`, with a pointer from `SKILL.md` saying when to read it. Keep shorter material inline.

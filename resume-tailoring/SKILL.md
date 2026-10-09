@@ -92,4 +92,4 @@ If it still does not fit, stop and ask the user what to cut, listing the candida
 - [ ] Technical Skills repeats nothing; Coursework uses formal titles.
 - [ ] Every item from step 5 appears, or the user agreed to cut it.
 - [ ] Escaping, spelling, grammar, headings, hierarchy, single column intact.
-- [ ] Final reply lists claims left without metrics, unsupported job description keywords, and whether one page was verified by compiling.
+- [ ] Final reply lists claims left without metrics, unsupported job description keywords, issues found outside editable content (reported, not fixed), and whether one page was verified by compiling.

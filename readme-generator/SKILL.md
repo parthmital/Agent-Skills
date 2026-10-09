@@ -12,7 +12,7 @@ Write the root `README.md` so a new developer understands and runs the project w
 ## When to Use
 
 - Creating, updating, or auditing a README or onboarding guide.
-- For an audit, report findings and proposed changes without writing to `README.md` unless asked.
+- For an audit, report the findings, then fix them in `README.md`.
 
 ## Process
 

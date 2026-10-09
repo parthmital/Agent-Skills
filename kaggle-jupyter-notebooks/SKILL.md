@@ -21,7 +21,7 @@ No corrupted JSON, wrong-cell edits, hidden-state bugs, or noisy diffs; notebook
 1. Never execute notebooks locally: no `nbconvert --execute`, local kernels, training, or installs of the notebook's runtime dependencies. Never claim a notebook runs, its speed, or its metrics; those need a Kaggle run.
 2. Never edit raw notebook JSON with text replacement; use `nbformat` or `<doctor>`.
 3. Back up before mutating unless the file is clean in version control (`--backup` writes to `<repo>/.agent-local/backups/`).
-4. Preserve cell IDs, order, types, attachments, and unknown metadata unless the task requires a change. Clear execution counts; never renumber them.
+4. Preserve cell IDs, order, types, attachments, and unknown metadata unless the task or a fix requires a change. Clear execution counts; never renumber them.
 5. Every cell works in a fresh top-to-bottom Kaggle run, with no state from earlier runs.
 6. Self-contained: no imports of local modules absent on Kaggle, unless via a Kaggle utility script or dataset.
 7. Read from `/kaggle/input/` (read-only); write every output to `/kaggle/working/`.
@@ -72,7 +72,7 @@ Before creating a notebook or changing hardware setup, training, inference, eval
 
 - [ ] Original backed up or recoverable from version control.
 - [ ] `validate` and `check-kaggle` pass; no merge markers; cell IDs present and unique.
-- [ ] Only intended cells changed; overview and per-cell explanations present.
+- [ ] Only intended cells and cells with fixed issues changed; overview and per-cell explanations present.
 - [ ] Authoring reference followed: both GPUs, VRAM, CPU, RAM used; tqdm and realtime output on long steps; metrics and plots saved; final zip cell with download link.
 - [ ] Output policy applied; no secrets, tokens, or machine paths added.
 - [ ] Report: files and cells changed, outputs kept or cleared, check results, that runtime, speed, hardware use, and metrics are unverified until run on Kaggle GPU T4 x2, and Kaggle settings the user must set.

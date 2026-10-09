@@ -48,4 +48,4 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 - [ ] Every page viewed: no overflow, no `??`, figures and tables beside their first mention.
 - [ ] References verified; order correct, or the venue's order stated.
 - [ ] Deliverable rebuilt; no template file or plot edited.
-- [ ] Final reply: PDF path, page count, commands run, each `--allow` line and remaining warning with its reason, anything unverified.
+- [ ] Final reply: PDF path, page count, commands run, each `--allow` line and remaining warning with its reason, issues in template files or source plots (reported, not fixed), anything unverified.
