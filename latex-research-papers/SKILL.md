@@ -1,6 +1,6 @@
 ---
 name: latex-research-papers
-description: Writes and finalises compile-ready LaTeX research papers with a local Tectonic, iterating until there is no overflow, figures and tables sit beside their first mention, references are current, verified, and in order of appearance, and citations, cross-references, URLs, and DOIs are clickable. Use when the user asks to write, edit, fix, compile, or polish a research paper, manuscript, preprint, thesis chapter, or other academic LaTeX, or its bibliography, figures, tables, or overflow. Not for resumes (`resume-tailoring`).
+description: Writes and finalises compile-ready LaTeX research papers in the official LaTeX template of the best-fit journal, with a local Tectonic, iterating until there is no overflow, figures and tables sit beside their first mention, references are current, verified, and in order of appearance, and citations, cross-references, URLs, and DOIs are clickable. Use when the user asks to write, edit, fix, compile, or polish a research paper, manuscript, preprint, thesis chapter, or other academic LaTeX, or its bibliography, figures, tables, or overflow. Not for resumes (`resume-tailoring`).
 ---
 
 # LaTeX Research Papers
@@ -16,13 +16,16 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 ## Process
 
 1. Read the project's paper README, paper skill, and build command (such as `npm run paper`) and follow them. Numbers come only from the project's result files.
-2. Tectonic: `$TECTONIC`, `PATH`, or `tectonic(.exe)` in or near the paper folder. If missing, ask, then install it per [references/fixes.md](references/fixes.md#install-tectonic).
-3. Write per the Rules. Never edit the template's `.cls`, `.sty`, or `.bst`, its geometry or fonts, or source plots; patch template quirks in the preamble.
-4. Run `python <skill>/scripts/paper_check.py main.tex --render .agent-local/output/paper-pages`; PDF checks need `pypdf` and `pypdfium2` in the repo `.venv`. Fix every blocking item and fixable warning with [references/fixes.md](references/fixes.md), view every page, and repeat. `--allow REGEX` only for a template-internal line confirmed harmless in the PDF.
-5. Before finishing, rerun with `--check-links`, then build the deliverable with the project's command, else `tectonic --keep-logs --reruns 3 main.tex` in the paper folder. Git-ignore build artefacts.
+2. Venue: if the user or project already names a target journal, use it. Otherwise, with `internet-research`, shortlist journals whose aims and scope fit the paper's topic, method, and article type, and pick the most suitable one on scope fit, then indexing and reputation, open-access policy and fees, and review time. Confirm on the journal's or publisher's official author guidelines that it offers a downloadable LaTeX template; drop any journal that does not and take the next best. State the choice, the runner-up, and the sources.
+3. Template: download the official template from that page into `.agent-local/downloads/<journal>/` (an untrusted download per `repo-local-workspace`), copy it into the paper folder, and build the paper from its sample `.tex`, class, and bibliography style, following the journal's guidelines (article type, abstract and keyword limits, section order, reference style). If the paper already uses that template, keep it; if it uses another, port the content into the official template.
+4. Tectonic: `$TECTONIC`, `PATH`, or `tectonic(.exe)` in or near the paper folder. If missing, ask, then install it per [references/fixes.md](references/fixes.md#install-tectonic).
+5. Write per the Rules. Never edit the template's `.cls`, `.sty`, or `.bst`, its geometry or fonts, or source plots; patch template quirks in the preamble.
+6. Run `python <skill>/scripts/paper_check.py main.tex --render .agent-local/output/paper-pages`; PDF checks need `pypdf` and `pypdfium2` in the repo `.venv`. Fix every blocking item and fixable warning with [references/fixes.md](references/fixes.md), view every page, and repeat. `--allow REGEX` only for a template-internal line confirmed harmless in the PDF.
+7. Before finishing, rerun with `--check-links`, then build the deliverable with the project's command, else `tectonic --keep-logs --reruns 3 main.tex` in the paper folder. Git-ignore build artefacts.
 
 ## Rules
 
+- The paper uses the target journal's official, unmodified LaTeX template, downloaded from its author guidelines; never a generic `article` class or a look-alike when an official template exists.
 - No overflow anywhere: text, figures, tables, equations, captions, bibliography. Never mask it with `\sloppy`, `\hfuzz`, `\vfuzz`, or a blanket `\resizebox`.
 - Every figure and table has a caption and label, is referenced in the text, and is placed right after the paragraph that first mentions it, landing on that page or the next (appendix exempt). Supplements go in the same PDF so references stay links.
 - References are verified at the source, never from memory or invented; prefer peer-reviewed, recent, published versions over preprints. Every citation has an entry and every entry is cited. Each entry has a `doi`, else a verified `url`.
@@ -35,17 +38,20 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 | ---------------------------- | ------------------------------------------------------------- |
 | "It compiled, so it is done" | Cramped tables, drifting floats, and dead links compile fine. |
 | "I know this paper's DOI"    | Remembered metadata is often wrong; verify it.                |
+| "`article` is close enough"  | Journals desk-reject off-template submissions; use theirs.    |
 | "The project build passes"   | It checks the log only, not placement, links, or citations.   |
 
 ## Red Flags
 
+- Choosing a journal without checking its scope, or without confirming its LaTeX template download.
 - Finishing without viewing rendered pages, or with PDF checks skipped.
 - `--allow`, `[H]`, or `\sloppy` used on body content.
 
 ## Verification
 
+- [ ] Journal chosen on scope fit with sources; its official LaTeX template confirmed downloadable and used.
 - [ ] `RESULT: CLEAN` with PDF checks run; non-200 links from `--check-links` explained.
 - [ ] Every page viewed: no overflow, no `??`, figures and tables beside their first mention.
 - [ ] References verified; order correct, or the venue's order stated.
 - [ ] Deliverable rebuilt; no template file or plot edited.
-- [ ] Final reply: PDF path, page count, commands run, each `--allow` line and remaining warning with its reason, issues in template files or source plots (reported, not fixed), anything unverified.
+- [ ] Final reply: chosen journal with reasons, runner-up, and template source URL, PDF path, page count, commands run, each `--allow` line and remaining warning with its reason, issues in template files or source plots (reported, not fixed), anything unverified.

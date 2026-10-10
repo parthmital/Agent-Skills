@@ -15,19 +15,19 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 
 ## Skills
 
-| Skill                          | Purpose                                                                                                                          |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| `frontend-design`              | Clean, functional, fully responsive frontend UI with custom components and icons, and no browser-native UI.                      |
-| `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.            |
-| `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                     |
-| `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip. |
-| `latex-research-papers`        | Compile-clean LaTeX papers via local Tectonic: no overflow, well-placed floats, verified in-order references, clickable links.   |
-| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 1000 characters, using only supported claims.                      |
-| `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.  |
-| `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.             |
-| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                |
-| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                |
-| `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                       |
+| Skill                          | Purpose                                                                                                                                                                       |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `frontend-design`              | Clean, functional, fully responsive frontend UI with custom components and icons, and no browser-native UI.                                                                   |
+| `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.                                                         |
+| `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                                                                  |
+| `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip.                                              |
+| `latex-research-papers`        | Picks the best-fit journal and uses its official LaTeX template; compiles via local Tectonic: no overflow, well-placed floats, verified in-order references, clickable links. |
+| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 1000 characters, using only supported claims.                                                                   |
+| `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                               |
+| `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                          |
+| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                             |
+| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                                                             |
+| `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                                                                    |
 
 ## Installation
 
