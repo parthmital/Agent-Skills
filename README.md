@@ -15,19 +15,19 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 
 ## Skills
 
-| Skill                          | Purpose                                                                                                                                                                       |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `frontend-design`              | Clean, functional, fully responsive frontend UI with custom components and icons, and no browser-native UI.                                                                   |
-| `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.                                                         |
-| `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                                                                  |
-| `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip.                                              |
-| `latex-research-papers`        | Picks the best-fit journal and uses its official LaTeX template; compiles via local Tectonic: no overflow, well-placed floats, verified in-order references, clickable links. |
-| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 1000 characters, using only supported claims.                                                                   |
-| `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                               |
-| `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                          |
-| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                             |
-| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                                                             |
-| `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                                                                    |
+| Skill                          | Purpose                                                                                                                                                                            |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `frontend-design`              | Clean, intuitive, fully responsive frontend UI in light and dark modes, built on proven patterns and libraries, with custom components and no browser-native UI.                   |
+| `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.                                                              |
+| `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                                                                       |
+| `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip.                                                   |
+| `latex-research-papers`        | Picks the best-fit journal and uses its official LaTeX template; compiles via local Tectonic: no overflow, well-placed floats, peer-reviewed in-order references, clickable links. |
+| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 1000 characters, using only supported claims.                                                                        |
+| `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                                    |
+| `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                               |
+| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                                  |
+| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                                                                  |
+| `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                                                                         |
 
 ## Installation
 
@@ -102,7 +102,7 @@ python -m venv .venv
 | `--render <dir>`    | Render every page to `page-NN.png` for visual inspection.                                            |
 | `--check-links`     | Request every external link in the PDF and print its HTTP status.                                    |
 
-It compiles with `--keep-logs --keep-intermediates --reruns 3` (Tectonic 0.15 otherwise loops to six passes) and `TECTONIC_CACHE_DIR=<repo>/.cache/tectonic`. It exits 1 on TeX errors, overfull boxes, missing glyphs, undefined or duplicate labels, BibTeX warnings, broken references, missing or uncited bibliography entries, unreferenced or unlabelled figures and tables, numeric citations out of order of first appearance, or no `hyperref`; and, with `pypdf`, on `??` in the PDF, cited DOIs or URLs that are not links, and body figures or tables more than one page after their first mention. Underfull boxes, other warnings, bare URLs, and entries without a DOI or URL are listed without failing. Visual overflow still needs a look at the rendered pages.
+It compiles with `--keep-logs --keep-intermediates --reruns 3` (Tectonic 0.15 otherwise loops to six passes) and `TECTONIC_CACHE_DIR=<repo>/.cache/tectonic`. It exits 1 on TeX errors, overfull boxes, missing glyphs, undefined or duplicate labels, BibTeX warnings, broken references, missing or uncited bibliography entries, book or preprint entries (book types, arXiv, bioRxiv, medRxiv, SSRN, `eprint`), unreferenced or unlabelled figures and tables, numeric citations out of order of first appearance, or no `hyperref`; and, with `pypdf`, on `??` in the PDF, cited DOIs or URLs that are not links, and body figures or tables more than one page after their first mention. Underfull boxes, other warnings, bare URLs, and entries without a DOI or URL are listed without failing. Visual overflow still needs a look at the rendered pages.
 
 ## Writing And Maintaining Skills
 

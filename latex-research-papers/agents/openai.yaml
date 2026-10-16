@@ -1,6 +1,6 @@
 interface:
   display_name: "LaTeX Research Papers"
-  short_description: "Journal-template LaTeX papers with verified references"
+  short_description: "Journal-template LaTeX papers with peer-reviewed references"
   default_prompt: "Use $latex-research-papers to finish this paper, compile it with Tectonic, and make the PDF clean."
 policy:
   allow_implicit_invocation: true

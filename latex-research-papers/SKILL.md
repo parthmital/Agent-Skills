@@ -28,7 +28,7 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 - The paper uses the target journal's official, unmodified LaTeX template, downloaded from its author guidelines; never a generic `article` class or a look-alike when an official template exists.
 - No overflow anywhere: text, figures, tables, equations, captions, bibliography. Never mask it with `\sloppy`, `\hfuzz`, `\vfuzz`, or a blanket `\resizebox`.
 - Every figure and table has a caption and label, is referenced in the text, and is placed right after the paragraph that first mentions it, landing on that page or the next (appendix exempt). Supplements go in the same PDF so references stay links.
-- References are verified at the source, never from memory or invented; prefer peer-reviewed, recent, published versions over preprints. Every citation has an entry and every entry is cited. Each entry has a `doi`, else a verified `url`.
+- References are verified at the source, never from memory or invented, and are only peer-reviewed, published journal or conference papers, preferably recent; never preprints (arXiv, bioRxiv, SSRN), books, or other unreviewed sources. If only a preprint exists, drop the claim or report it. Every citation has an entry and every entry is cited. Each entry has a `doi`, else a verified `url`.
 - Numeric citations are numbered in order of first appearance (`unsrtnat`, `IEEEtran`, biblatex `sorting=none`). If the venue mandates another order, follow it and say so.
 - `hyperref` loaded once (many classes load it); citations, cross-references (`\ref`, `\cref`, never typed numbers), URLs (`\url`, `\href`), and DOIs are clickable.
 
@@ -39,6 +39,7 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 | "It compiled, so it is done" | Cramped tables, drifting floats, and dead links compile fine. |
 | "I know this paper's DOI"    | Remembered metadata is often wrong; verify it.                |
 | "`article` is close enough"  | Journals desk-reject off-template submissions; use theirs.    |
+| "The arXiv version is fine"  | Preprints are unreviewed; cite the peer-reviewed version.     |
 | "The project build passes"   | It checks the log only, not placement, links, or citations.   |
 
 ## Red Flags
@@ -52,6 +53,6 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 - [ ] Journal chosen on scope fit with sources; its official LaTeX template confirmed downloadable and used.
 - [ ] `RESULT: CLEAN` with PDF checks run; non-200 links from `--check-links` explained.
 - [ ] Every page viewed: no overflow, no `??`, figures and tables beside their first mention.
-- [ ] References verified; order correct, or the venue's order stated.
+- [ ] References verified and all peer-reviewed papers, no preprints or books; order correct, or the venue's order stated.
 - [ ] Deliverable rebuilt; no template file or plot edited.
 - [ ] Final reply: chosen journal with reasons, runner-up, and template source URL, PDF path, page count, commands run, each `--allow` line and remaining warning with its reason, issues in template files or source plots (reported, not fixed), anything unverified.

@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: "Builds clean, minimal, functional frontend UI and UX with fully custom accessible components, no browser-native controls, and full responsiveness: layout, typography, colour, states, motion, icons, and copy. Use when the user asks to build, redesign, restyle, polish, or simplify any user-facing website, web app, page, component, dashboard, landing page, game, or design system. The result must never look generic, templated, vibe coded, or like a student project."
+description: "Builds clean, minimal, intuitive frontend UI and UX with fully custom accessible components, light and dark modes, no browser-native controls, proven patterns from established products, and full responsiveness: layout, typography, colour, states, motion, icons, and copy. Use when the user asks to build, redesign, restyle, polish, or simplify any user-facing website, web app, page, component, dashboard, landing page, game, or design system. The result must never look generic, templated, vibe coded, or like a student project."
 ---
 
 # Frontend Design
@@ -17,16 +17,16 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
 ## Process
 
 1. Brief: subject, user, primary task, screens, constraints, success criteria. If vague, infer concrete ones; ask only if a wrong guess makes the work unusable.
-2. Reuse the existing design system, component library, tokens, routing, data model, and interaction patterns before adding new ones.
+2. Reuse the existing design system, component library, tokens, routing, data model, and interaction patterns before adding new ones. For anything missing, research with `internet-research` how established products in the domain solve it and which maintained open-source libraries or templates fit; adapt proven patterns instead of inventing new ones.
 3. Plan before coding:
-   - Palette: 3 to 5 named colours with roles and enough neutral space; not one colour unless the brief requires it.
+   - Palette: 3 to 5 named colours with roles and enough neutral space, as semantic tokens with light and dark values; not one colour unless the brief requires it.
    - Type: a small readable scale with few roles.
    - Components: reusable primitives for controls, forms, overlays, feedback, navigation, and data display.
    - Layout: grid, hierarchy, responsive behaviour, navigation, and what is left out.
    - Signature: at most one memorable visual or interaction idea tied to the subject.
 4. Critique the plan. Cut clutter, then revise anything that could fit an unrelated brief: cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, orbs, generic numbered sections, boilerplate heroes, fake dashboards.
 5. Implement the plan exactly, in repo conventions.
-6. Write or update root `DESIGN.md`: palette with roles, type scale, spacing and grid, breakpoints, component inventory and states, icons, motion rules, copy terminology, signature idea, and decisions with reasons. Keep it in sync with the code.
+6. Write or update root `DESIGN.md`: palette with roles and light and dark values, references and libraries reused, type scale, spacing and grid, breakpoints, component inventory and states, icons, motion rules, copy terminology, signature idea, and decisions with reasons. Keep it in sync with the code.
 7. Run Verification.
 
 ## Content
@@ -55,10 +55,12 @@ Native UI differs across Chrome, Safari, Firefox, and mobile, so replace everyth
 
 Allowed only as invisible plumbing: real `<input>` and `<textarea>` for typing, fully restyled, because rebuilding text editing breaks IME, autofill, spell check, password managers, and mobile keyboards; visually hidden native elements that give custom controls semantics or form value; the OS file chooser, share sheet, and permission prompts, triggered from custom controls.
 
-Custom controls keep native-level behaviour: keyboard support, focus management, ARIA roles and states, screen-reader labels, escape and outside-click handling, touch targets. Build on the repo's headless accessible library if it has one.
+Custom controls keep native-level behaviour: keyboard support, focus management, ARIA roles and states, screen-reader labels, escape and outside-click handling, touch targets. Build on the repo's headless accessible library, else add a maintained one (such as React Aria or Radix) rather than hand-rolling behaviour.
 
 ## Interface Standards
 
+- Light and dark modes always: default to `prefers-color-scheme`, offer a persisted toggle, set `color-scheme`, and use only theme tokens, never hard-coded colours. Both themes meet contrast.
+- Simple and intuitive first: familiar patterns over novelty, fewest steps to finish the task.
 - One primary action per view, clear secondary actions, progressive disclosure for advanced controls.
 - Familiar control types: icons for common actions, segmented controls for modes, sliders or steppers for numbers, menus or comboboxes for option sets, tabs for views, toggles or checkboxes for binary choices.
 - Style every state: default, hover, focus-visible, active, selected, disabled, loading, invalid, success, empty, skeleton.
@@ -80,17 +82,19 @@ Custom controls keep native-level behaviour: keyboard support, focus management,
 | "Sample metrics make the dashboard feel complete" | Fake data is the clearest AI tell and misleads users.                                     |
 | "More sections show more effort"                  | Elements with no user action behind them are clutter.                                     |
 | "It looks right at desktop width"                 | Most breakage is at 320px, tablet, and 200% zoom.                                         |
+| "Dark mode can come later"                        | Retrofitting themes means hunting hard-coded colours. Token both themes from the start.   |
 
 ## Red Flags
 
 - `alert(`, `<select`, `title=`, or native picker types in the diff.
 - Clipped text or horizontal scroll at narrow widths.
+- Hex, `rgb(`, or named colours outside the theme tokens.
 - A visual idea that would fit an unrelated brief.
 - Claiming the UI looks right without reading a screenshot.
 
 ## Verification
 
-- [ ] Desktop and mobile screenshots taken and read, not trusted on first render. Without browser or screenshot tools, the visual result is reported unverified.
+- [ ] Desktop and mobile screenshots in light and dark modes taken and read, not trusted on first render. Without browser or screenshot tools, the visual result is reported unverified.
 - [ ] Phone, tablet, desktop: no overlap or clipped text, clear hierarchy, no competing panels or actions.
 - [ ] Primary workflows reachable; controls show clear states; legible, smooth, consistent icons.
 - [ ] Nothing placeholder, fake, templated, or AI-looking; assets load and fit.

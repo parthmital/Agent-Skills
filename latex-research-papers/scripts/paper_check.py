@@ -5,7 +5,8 @@ Usage: python paper_check.py main.tex [--tectonic PATH] [--outdir DIR] [--allow 
                              [--render DIR] [--check-links]
 Exits 1 when anything blocking remains: TeX errors, overfull boxes, missing glyphs,
 undefined or duplicate labels, BibTeX warnings, missing or uncited bibliography
-entries, unreferenced or unlabelled figures and tables, numeric citations out of
+entries, book or preprint entries (book types, arXiv, bioRxiv, medRxiv, SSRN,
+eprint), unreferenced or unlabelled figures and tables, numeric citations out of
 order of first appearance, no hyperref, and (when pypdf is installed) '??' in the
 PDF, cited DOIs or URLs that are not links in the PDF, or figures and tables more
 than one page after their first mention.
@@ -464,7 +465,17 @@ def main() -> int:
     no_link_entries = [
         k
         for k, body in entries.items()
-        if body and not re.search(r"[,\s](doi|url|eprint)\s*=", body, re.IGNORECASE)
+        if body and not re.search(r"[,\s](doi|url)\s*=", body, re.IGNORECASE)
+    ]
+    not_peer_reviewed = [
+        k
+        for k, body in entries.items()
+        if re.search(
+            r"^@\s*(?:book|inbook|booklet|unpublished)\b"
+            r"|arxiv|biorxiv|medrxiv|ssrn|preprint|[,\s]eprint\s*=",
+            body,
+            re.IGNORECASE,
+        )
     ]
     bare_urls = re.findall(
         r"(?<![{=/\w])(https?://[^\s}{]+)",
@@ -500,6 +511,7 @@ def main() -> int:
     section("Broken \\ref targets", broken_refs, True)
     section("Cited but missing from bibliography", missing, True)
     section("Bibliography entries never cited", uncited, True)
+    section("Books or preprints in bibliography", not_peer_reviewed, True)
     section("Figures or tables never referenced in text", unreferenced_floats, True)
     section("Figures or tables without a \\label", unlabelled_floats, True)
     print(f"\nCitation order of first appearance: {order_note}")
@@ -529,7 +541,7 @@ def main() -> int:
             True,
         )
 
-    section("Bibliography entries without doi, url, or eprint", no_link_entries, False)
+    section("Bibliography entries without doi or url", no_link_entries, False)
     section("Bare URLs outside \\url or \\href", sorted(set(bare_urls)), False)
     if years:
         print(
