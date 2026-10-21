@@ -1,6 +1,6 @@
 ---
 name: security-hardening
-description: "Scans a whole repository and its Git history for every class of vulnerability, then fixes and verifies them: code, dependencies, secrets, auth, injection, web and API flaws, crypto, files, business logic, CI/CD, containers, infrastructure, and LLM features. Use when the user asks for a security audit, vulnerability or secret scan, dependency audit, threat model, OWASP review, or to secure, harden, or make a codebase bulletproof. Whole repository, not just pending changes."
+description: "Scans a whole repository and its Git history for every class of vulnerability (code, dependencies, secrets, infrastructure, CI/CD, LLM features), then fixes and verifies them. Use when the user asks for a security audit, vulnerability or secret scan, dependency audit, threat model, OWASP review, or to secure, harden, or make a codebase bulletproof. Whole repository, not just pending changes."
 ---
 
 # Security Hardening

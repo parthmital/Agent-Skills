@@ -1,0 +1,6 @@
+interface:
+  display_name: "Research-Driven Development"
+  short_description: "Research and reuse existing solutions before building"
+  default_prompt: "Use $research-driven-development to decide whether this task needs research, then find and evaluate existing solutions to adopt or adapt before building."
+policy:
+  allow_implicit_invocation: true

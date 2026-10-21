@@ -1,6 +1,6 @@
 ---
 name: repo-local-workspace
-description: "Keeps everything a task creates or needs inside the target repository: dependencies, virtual environments, caches, browser binaries, helper scripts, logs, outputs, downloads, and temporary files, in an organised, Git-ignored folder so nothing touches system folders and past scripts can be reused. Use before installing packages, running package managers or Python helpers, writing helper scripts, saving logs or outputs, downloading tools, using Playwright or browser tooling, converting documents, cloning reference code, or any step that could write outside the repository."
+description: "Keeps everything a task creates or needs (dependencies, environments, caches, browser binaries, helper scripts, logs, outputs, downloads, temp files) in Git-ignored folders inside the target repository. Use before installing packages, running package managers or Python helpers, writing helper scripts, saving logs or outputs, downloading tools, using Playwright or browser tooling, converting documents, cloning reference code, or any step that could write outside the repository."
 ---
 
 # Repo Local Workspace

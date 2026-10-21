@@ -6,11 +6,12 @@ Before each task, check the available skills. If one plausibly applies, invoke i
 
 Intent map:
 
+- New project, feature, integration, or technology choice: `research-driven-development` (it decides whether research is needed)
 - Installs, helper scripts, logs, outputs, downloads, caches: `repo-local-workspace`
 - User-facing UI: `frontend-design`
 - Whole-repo structure, deduplication, local launch (`npm run dev`): `production-architecture`
 - Security audit or hardening: `security-hardening`
-- External facts, prior art, comparisons: `internet-research`
+- External facts, comparisons, citations: `internet-research`
 - `.ipynb` work: `kaggle-jupyter-notebooks`
 - README or onboarding docs: `readme-generator`
 - Commit or push: `git-commit-and-push`
@@ -30,7 +31,7 @@ Wrong thoughts: "this is too small for a skill", "I'll check skills after gather
 ## Implementation
 
 - Turn the request into verifiable goals; present materially different interpretations.
-- Do not reinvent the wheel. Before building from scratch, research existing tools, libraries, frameworks, templates, and open-source projects (`internet-research`), then adapt and extend the best fit. Prefer reliable, maintainable solutions with the least complexity.
+- Do not reinvent the wheel. Before non-trivial work, run `research-driven-development`: it scales research to the task's complexity, scope, and novelty (none for small, well-understood changes), then adopts or adapts the best existing fit. Prefer reliable, maintainable solutions with the least complexity.
 - Write the minimum code that fully completes the task and every fix. Add no unrequested features, abstractions, configurability, or premature optimisation.
 - Follow the existing style, naming, tooling, package manager, and tests, and the existing architecture unless the task is to change it. Add dependencies only when justified, installed inside the repository.
 - For every task, proactively identify and implement all relevant fixes, improvements, and necessary changes, including every issue found anywhere in the repository, even when unrelated to the task. Never leave known issues or unfinished work behind, and report each fix made. Where a fix needs an action the Ask rule above covers, or a skill's hard constraint forbids it, ask or report the issue instead of silently leaving it.

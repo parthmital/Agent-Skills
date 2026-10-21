@@ -1,6 +1,6 @@
 ---
 name: git-commit-and-push
-description: Runs all tests, checks, and the full CI pipeline locally until everything passes, then creates accurate Git commits from inspected diffs with a strict hyphenated-body message format, keeps .gitignore up to date so unwanted files are never committed, and pushes after each successful commit. Use when the user asks to commit, stage and commit, commit and push, push after committing, write or amend a commit message, or verify the latest commit message.
+description: Runs the full local CI until it passes, then makes accurate Git commits from inspected diffs in a strict hyphenated-body format, keeps .gitignore current, and pushes. Use when the user asks to commit, stage and commit, commit and push, push after committing, write or amend a commit message, or verify the latest commit message.
 ---
 
 # Git Commit And Push

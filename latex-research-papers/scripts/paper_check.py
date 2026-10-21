@@ -10,6 +10,9 @@ eprint), unreferenced or unlabelled figures and tables, numeric citations out of
 order of first appearance, no hyperref, and (when pypdf is installed) '??' in the
 PDF, cited DOIs or URLs that are not links in the PDF, or figures and tables more
 than one page after their first mention.
+Labels of a document named by \externaldocument (xr or xr-hyper, for example a separate
+supplementary PDF) are valid \ref targets, read from its .aux next to the main file, and
+a bibliography entry cited only by that document is not reported as uncited.
 --allow downgrades log or BibTeX lines matching REGEX (for example a
 template-internal overfull box already checked in the PDF) to accepted.
 Figures and tables in the appendix are exempt from the placement check. Underfull boxes and other
@@ -149,10 +152,16 @@ def source_files(tex: Path) -> list[Path]:
     return seen
 
 
-def read_aux(outdir: Path, stem: str) -> str:
-    """Main .aux first, then any from \\include, so citation order is preserved."""
+def read_aux(outdir: Path, stem: str, includes: set[str]) -> str:
+    """Main .aux first, then those of \\include files, so citation order is preserved.
+
+    Only included files count: another document's .aux in the same build folder (for
+    example a supplement built there earlier) must not leak into this one.
+    """
     main = outdir / f"{stem}.aux"
-    others = [p for p in sorted(outdir.glob("*.aux")) if p != main]
+    others = [
+        p for p in sorted(outdir.glob("*.aux")) if p != main and p.stem in includes
+    ]
     return "\n".join(
         p.read_text(encoding="utf-8", errors="replace")
         for p in [main, *others]
@@ -419,7 +428,10 @@ def main() -> int:
         strip_comments(p.read_text(encoding="utf-8", errors="replace"))
         for p in source_files(tex)
     )
-    aux = read_aux(outdir, tex.stem)
+    includes = {
+        Path(name).stem for name in re.findall(r"\\include\{([^}]+)\}", sources_text)
+    }
+    aux = read_aux(outdir, tex.stem, includes)
     cited, cite_all = cited_in_order(aux)
     entries, bib_files = bib_keys(aux, tex.parent, sources_text)
     if re.search(r"\\bibitem", sources_text):
@@ -427,8 +439,22 @@ def main() -> int:
             k: ""
             for k in re.findall(r"\\bibitem(?:\[[^]]*\])?\{([^}]+)\}", sources_text)
         }
+    external_labels: set[str] = set()
+    external_cited: set[str] = set()
+    for prefix, name in re.findall(
+        r"\\externaldocument(?:\[([^]]*)\])?\{([^}]+)\}", sources_text
+    ):
+        ext_aux = tex.parent / f"{name}.aux"
+        if ext_aux.exists():
+            ext_text = ext_aux.read_text(encoding="utf-8", errors="replace")
+            external_labels.update(prefix + k for k in label_anchors(ext_text))
+            external_cited.update(cited_in_order(ext_text)[0])
     missing = [k for k in cited if k not in entries]
-    uncited = [] if cite_all else [k for k in entries if k not in cited]
+    uncited = (
+        []
+        if cite_all
+        else [k for k in entries if k not in cited and k not in external_cited]
+    )
 
     numbers = bib_numbers(aux)
     order_note = "skipped (no bibliography numbers in .aux)"
@@ -459,7 +485,9 @@ def main() -> int:
         for kind, number, _page, anchor in floats
         if anchor not in labelled_anchors
     ]
-    broken_refs = sorted(k for k in referenced - set(anchors) if "#" not in k)
+    broken_refs = sorted(
+        k for k in referenced - set(anchors) - external_labels if "#" not in k
+    )
 
     hyperref = bool(re.search(r"^Package: hyperref", log, re.MULTILINE))
     no_link_entries = [

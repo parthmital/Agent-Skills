@@ -1,6 +1,6 @@
 ---
 name: latex-research-papers
-description: Writes and finalises compile-ready LaTeX research papers in the official LaTeX template of the best-fit journal, with a local Tectonic, iterating until there is no overflow, figures and tables sit beside their first mention, references are current, verified, and in order of appearance, and citations, cross-references, URLs, and DOIs are clickable. Use when the user asks to write, edit, fix, compile, or polish a research paper, manuscript, preprint, thesis chapter, or other academic LaTeX, or its bibliography, figures, tables, or overflow. Not for resumes (`resume-tailoring`).
+description: Writes and finalises compile-ready LaTeX research papers in the best-fit journal's official template, compiled with a local Tectonic until there is no overflow, floats sit beside their first mention, references are verified and in order, and links are clickable. Use when the user asks to write, edit, fix, compile, or polish a research paper, manuscript, preprint, thesis chapter, or other academic LaTeX, or its bibliography, figures, tables, or overflow. Not for resumes (`resume-tailoring`).
 ---
 
 # LaTeX Research Papers
@@ -27,7 +27,7 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 
 - The paper uses the target journal's official, unmodified LaTeX template, downloaded from its author guidelines; never a generic `article` class or a look-alike when an official template exists.
 - No overflow anywhere: text, figures, tables, equations, captions, bibliography. Never mask it with `\sloppy`, `\hfuzz`, `\vfuzz`, or a blanket `\resizebox`.
-- Every figure and table has a caption and label, is referenced in the text, and is placed right after the paragraph that first mentions it, landing on that page or the next (appendix exempt). Supplements go in the same PDF so references stay links.
+- Every figure and table has a caption and label, is referenced in the text, and is placed right after the paragraph that first mentions it, landing on that page or the next (appendix exempt). Supplements go in the same PDF so references stay links; when a separate supplementary PDF is required, link the two documents with `xr-hyper` (`\externaldocument`, compiled main, supplement, main), which `paper_check.py` resolves.
 - References are verified at the source, never from memory or invented, and are only peer-reviewed, published journal or conference papers, preferably recent; never preprints (arXiv, bioRxiv, SSRN), books, or other unreviewed sources. If only a preprint exists, drop the claim or report it. Every citation has an entry and every entry is cited. Each entry has a `doi`, else a verified `url`.
 - Numeric citations are numbered in order of first appearance (`unsrtnat`, `IEEEtran`, biblatex `sorting=none`). If the venue mandates another order, follow it and say so.
 - `hyperref` loaded once (many classes load it); citations, cross-references (`\ref`, `\cref`, never typed numbers), URLs (`\url`, `\href`), and DOIs are clickable.

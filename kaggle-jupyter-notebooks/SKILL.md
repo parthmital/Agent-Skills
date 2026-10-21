@@ -1,6 +1,6 @@
 ---
 name: kaggle-jupyter-notebooks
-description: Creates, edits, refactors, validates, cleans, diffs, repairs, and merges Jupyter notebooks safely, targeting Kaggle GPU T4 x2 by default with full GPU, VRAM, CPU, and RAM use, a markdown explanation before every code cell, realtime tqdm progress, detailed metrics and plots, and a final zip-and-download cell. Use when work involves .ipynb files, notebook cells, Kaggle, Jupyter, JupyterLab, Colab, nbformat, notebook outputs, refactors or cleanup, or notebook merge conflicts. Notebooks are never executed locally.
+description: Creates, edits, refactors, validates, cleans, diffs, repairs, and merges Jupyter notebooks safely, targeting Kaggle GPU T4 x2 by default with full hardware use, per-cell explanations, progress, metrics, and an output zip. Use when work involves .ipynb files, notebook cells, Kaggle, Jupyter, JupyterLab, Colab, nbformat, notebook outputs, refactors or cleanup, or notebook merge conflicts. Notebooks are never executed locally.
 ---
 
 # Kaggle Jupyter Notebooks
@@ -40,7 +40,7 @@ Before creating a notebook or changing hardware setup, training, inference, eval
 
 1. Triage: `python <doctor> inspect nb.ipynb`, `validate`, and `check-kaggle`. Also check kernel metadata, oversized outputs, widget state, magics, undefined names, secrets, absolute local paths, and merge markers. If invalid, `repair --backup` before changing content.
 2. Edit by task:
-   - New: build with `nbformat`, overview first, then alternating markdown and code cells per the authoring reference.
+   - New: choose the approach, pretrained models, and datasets with `research-driven-development`, then build with `nbformat`, overview first, then alternating markdown and code cells per the authoring reference.
    - Small: locate the cell by ID or unique source fragment, change it with a notebook-aware script, keep its ID, update its markdown, then review `python <doctor> diff before.ipynb after.ipynb`.
    - Large refactor: `python <doctor> export-code nb.ipynb --output .agent-local/tmp/notebook_cells.py` for review, define shared functions once in an early cell, keep markdown in step. Only non-Kaggle notebooks with a matching package may move logic into `.py` modules.
 3. Fix hidden state: names used before their defining cell, irregular execution counts, `globals()`, `locals()`, `exec`, `eval`, `%run` or cross-notebook dependencies, mutable globals changed across cells, late imports, paths outside `/kaggle/input/` and `/kaggle/working/`, cells relying on a previously displayed object. Reorder, initialise explicitly, or merge coupled cells.

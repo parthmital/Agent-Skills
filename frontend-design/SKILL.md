@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: "Builds clean, minimal, intuitive frontend UI and UX with fully custom accessible components, light and dark modes, no browser-native controls, proven patterns from established products, and full responsiveness: layout, typography, colour, states, motion, icons, and copy. Use when the user asks to build, redesign, restyle, polish, or simplify any user-facing website, web app, page, component, dashboard, landing page, game, or design system. The result must never look generic, templated, vibe coded, or like a student project."
+description: "Builds clean, minimal, intuitive, fully responsive frontend UI and UX with custom accessible components, light and dark modes, and proven patterns, never generic or templated. Use when the user asks to build, redesign, restyle, polish, or simplify any user-facing website, web app, page, component, dashboard, landing page, game, or design system."
 ---
 
 # Frontend Design
@@ -17,7 +17,7 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
 ## Process
 
 1. Brief: subject, user, primary task, screens, constraints, success criteria. If vague, infer concrete ones; ask only if a wrong guess makes the work unusable.
-2. Reuse the existing design system, component library, tokens, routing, data model, and interaction patterns before adding new ones. For anything missing, research with `internet-research` how established products in the domain solve it and which maintained open-source libraries or templates fit; adapt proven patterns instead of inventing new ones.
+2. Reuse the existing design system, component library, tokens, routing, data model, and interaction patterns before adding new ones. For anything missing, use `research-driven-development` to find how established products in the domain solve it and which maintained open-source libraries or templates fit; adapt proven patterns instead of inventing new ones.
 3. Plan before coding:
    - Palette: 3 to 5 named colours with roles and enough neutral space, as semantic tokens with light and dark values; not one colour unless the brief requires it.
    - Type: a small readable scale with few roles.
@@ -25,7 +25,7 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
    - Layout: grid, hierarchy, responsive behaviour, navigation, and what is left out.
    - Signature: at most one memorable visual or interaction idea tied to the subject.
 4. Critique the plan. Cut clutter, then revise anything that could fit an unrelated brief: cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, orbs, generic numbered sections, boilerplate heroes, fake dashboards.
-5. Implement the plan exactly, in repo conventions.
+5. Implement the plan exactly, in repo conventions. Before building or changing any control, form, overlay, tooltip, or scrollable panel, read [references/custom-controls.md](references/custom-controls.md): every browser-native UI to replace and what may stay native.
 6. Write or update root `DESIGN.md`: palette with roles and light and dark values, references and libraries reused, type scale, spacing and grid, breakpoints, component inventory and states, icons, motion rules, copy terminology, signature idea, and decisions with reasons. Keep it in sync with the code.
 7. Run Verification.
 
@@ -38,24 +38,6 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
 - No AI tells: fake metrics, testimonials, or social proof, generic SaaS cards, "powerful insights" copy, lorem ipsum, oversized empty heroes, random gradients, repeated icon tiles, decoration that fits any product.
 - No in-app text about the UI's design, implementation, shortcuts, or styling unless it is part of the product.
 - Copy from the user's side: name controls by the action or object ("Save changes", not "Submit"), keep terms consistent across buttons, headings, toasts, and errors, and make empty and error states say what happened and what to do next. No filler or hype.
-
-## No Browser-Native UI
-
-Native UI differs across Chrome, Safari, Firefox, and mobile, so replace everything visible with one custom component system:
-
-- `alert`, `confirm`, `prompt`: custom modals and toasts.
-- `<select>`, `<datalist>`: custom listbox, menu, or combobox.
-- Date, time, datetime-local, month, week, colour inputs: custom pickers.
-- `title` tooltips: custom tooltips.
-- Validation bubbles: `novalidate` plus custom inline errors.
-- Checkbox, radio, range, file, number spinner, search clear button, `<progress>`, `<meter>`: `appearance: none` or hidden, with a custom control.
-- `<details>` and `<summary>` markers, `<dialog>`, popovers: custom disclosure, modal, or popover with its own backdrop, animation, and focus trap.
-- Focus rings, selection colour, caret, placeholder, autofill background, scrollbars (panels, menus, and code blocks too), fonts, user-agent spacing: style explicitly, with a reset layer and explicit font stacks.
-- Drag previews and file pickers: a custom drop zone and a button that opens the picker from code.
-
-Allowed only as invisible plumbing: real `<input>` and `<textarea>` for typing, fully restyled, because rebuilding text editing breaks IME, autofill, spell check, password managers, and mobile keyboards; visually hidden native elements that give custom controls semantics or form value; the OS file chooser, share sheet, and permission prompts, triggered from custom controls.
-
-Custom controls keep native-level behaviour: keyboard support, focus management, ARIA roles and states, screen-reader labels, escape and outside-click handling, touch targets. Build on the repo's headless accessible library, else add a maintained one (such as React Aria or Radix) rather than hand-rolling behaviour.
 
 ## Interface Standards
 

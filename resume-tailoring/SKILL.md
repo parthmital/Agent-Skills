@@ -1,6 +1,6 @@
 ---
 name: resume-tailoring
-description: Writes, updates, or tailors a single-page LaTeX resume from ground-truth documentation, with ATS keyword coverage, strategic bolding, action verb limits, and no invented metrics. Use when the user asks to write, update, rewrite, refresh, tighten, or tailor a resume or CV, rewrite resume bullets, fit a resume on one page, tailor a resume to a job description, or set up a resume workspace. Not for cover letters or LinkedIn posts.
+description: Writes, updates, or tailors a single-page LaTeX resume from ground-truth documentation, with ATS keyword coverage and no invented claims. Use when the user asks to write, update, rewrite, refresh, tighten, or tailor a resume or CV, rewrite resume bullets, fit a resume on one page, tailor a resume to a job description, or set up a resume workspace. Not for cover letters or LinkedIn posts.
 ---
 
 # Resume Tailoring

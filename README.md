@@ -26,8 +26,11 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 | `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                                    |
 | `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                               |
 | `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                                  |
+| `research-driven-development`  | Decides whether a task needs research; if so, finds existing libraries, projects, datasets, models, skills, and MCP servers to adopt or adapt before building.                     |
 | `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                                                                  |
 | `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                                                                         |
+
+`research-driven-development` is the entry point for new work. `AGENTS.md` routes non-trivial tasks to it, and `frontend-design`, `production-architecture`, and `kaggle-jupyter-notebooks` use it for library, architecture, model, and dataset choices. It picks a tier from the task's complexity, scope, and novelty: Skip (small, well-understood changes), Quick (one bounded choice), or Full (new project, unfamiliar domain, or stack choice). It judges sources by the `internet-research` rules and records lasting decisions in a `RESEARCH.md` at the target repository's root. The prior art behind this design is in this repository's [RESEARCH.md](RESEARCH.md).
 
 ## Installation
 
@@ -41,6 +44,7 @@ There is no install script. To use a skill, copy its whole folder into the skill
 .
 |-- AGENTS.md                         agent rules: skills, communication, implementation, verification
 |-- README.md
+|-- RESEARCH.md                       dated research behind this repository's design decisions
 |-- .gitattributes                    text normalisation; fonts, images, PDFs, zips as binary
 |-- .gitignore                        local folders, Python and Node artefacts, secrets, logs, editor files
 |-- .prettierrc.json                  Prettier: tabs, tab width 2
@@ -48,17 +52,23 @@ There is no install script. To use a skill, copy its whole folder into the skill
 |-- <skill>/
 |   |-- SKILL.md                      skill instructions
 |   `-- agents/openai.yaml            optional harness metadata
+|-- frontend-design/
+|   `-- references/custom-controls.md  browser-native UI to replace with custom components
 |-- kaggle-jupyter-notebooks/
 |   |-- references/kaggle-authoring.md  hardware, progress, metrics, output layout, zip cell
 |   `-- scripts/notebook_doctor.py    notebook maintenance CLI
 |-- latex-research-papers/
 |   |-- references/fixes.md           overflow, placement, bibliography, link fixes; Tectonic install
 |   `-- scripts/paper_check.py        Tectonic compile plus layout, reference, and citation checks
+|-- production-architecture/
+|   `-- references/local-launch.md    one-command npm run dev launcher rules
+|-- readme-generator/
+|   `-- references/notebook-walkthrough.md  cell-by-cell README rules for notebook repositories
 `-- resume-tailoring/
     `-- assets/Resume.tex             single-page LaTeX resume template
 ```
 
-`<skill>` stands for each of the 11 skill folders listed above.
+`<skill>` stands for each of the 12 skill folders listed above.
 
 ## Notebook Helper
 
@@ -102,18 +112,25 @@ python -m venv .venv
 | `--render <dir>`    | Render every page to `page-NN.png` for visual inspection.                                            |
 | `--check-links`     | Request every external link in the PDF and print its HTTP status.                                    |
 
-It compiles with `--keep-logs --keep-intermediates --reruns 3` (Tectonic 0.15 otherwise loops to six passes) and `TECTONIC_CACHE_DIR=<repo>/.cache/tectonic`. It exits 1 on TeX errors, overfull boxes, missing glyphs, undefined or duplicate labels, BibTeX warnings, broken references, missing or uncited bibliography entries, book or preprint entries (book types, arXiv, bioRxiv, medRxiv, SSRN, `eprint`), unreferenced or unlabelled figures and tables, numeric citations out of order of first appearance, or no `hyperref`; and, with `pypdf`, on `??` in the PDF, cited DOIs or URLs that are not links, and body figures or tables more than one page after their first mention. Underfull boxes, other warnings, bare URLs, and entries without a DOI or URL are listed without failing. Visual overflow still needs a look at the rendered pages.
+It compiles with `--keep-logs --keep-intermediates --reruns 3` (Tectonic 0.15 otherwise loops to six passes) and `TECTONIC_CACHE_DIR=<repo>/.cache/tectonic`. It exits 1 on TeX errors, overfull boxes, missing glyphs, undefined or duplicate labels, BibTeX warnings, broken references, missing or uncited bibliography entries, book or preprint entries (book types, arXiv, bioRxiv, medRxiv, SSRN, `eprint`), unreferenced or unlabelled figures and tables, numeric citations out of order of first appearance, or no `hyperref`; and, with `pypdf`, on `??` in the PDF, cited DOIs or URLs that are not links, and body figures or tables more than one page after their first mention. Labels of a document named by `\externaldocument` (`xr` or `xr-hyper`, such as a separate supplementary PDF) count as valid references, read from its `.aux` next to the main file, and entries cited only by that document are not reported as uncited. Underfull boxes, other warnings, bare URLs, and entries without a DOI or URL are listed without failing. Visual overflow still needs a look at the rendered pages.
 
 ## Writing And Maintaining Skills
 
-Skills follow the [addyosmani/agent-skills skill anatomy](https://github.com/addyosmani/agent-skills/blob/main/docs/skill-anatomy.md). Skills load into the agent's context, so every line costs tokens. Keep them tight:
+Skills follow the [addyosmani/agent-skills skill anatomy](https://github.com/addyosmani/agent-skills/blob/main/docs/skill-anatomy.md) and load in three levels ([Anthropic skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)):
 
-- Front matter has only `name` (matching the folder) and `description`: what the skill does in third person, then a `Use when` clause with every trigger, at most 1024 characters. The body loads only after the skill triggers.
-- Body sections: `## Overview`, `## When to Use` (including exclusions and the skill to use instead), the process and its rules, `## Common Rationalizations` (excuses for skipping steps, with rebuttals), `## Red Flags`, and `## Verification` (an evidence-based checklist).
+1. `name` and `description` of every skill: loaded in every session, so this is the most expensive text in the repository.
+2. `SKILL.md` body: loaded only when the skill triggers.
+3. `references/`, `scripts/`, `assets/`: read or run only when the body points to them for the current task.
+
+Keep each level as small as it can be without the agent making mistakes:
+
+- One skill per workflow. Split a skill that mixes unrelated workflows; reference other skills by name instead of repeating them.
+- Front matter has only `name` (matching the folder) and `description`: what the skill does in third person, then a `Use when` clause with every trigger, at most 1024 characters. Rules and details belong in the body, not the description.
+- Body sections: `## Overview`, `## When to Use` (including exclusions and the skill to use instead), the process and its rules, `## Common Rationalizations` (excuses for skipping steps, with rebuttals), `## Red Flags`, and `## Verification` (an evidence-based checklist). Keep the body well under 500 lines.
 - Never contradict `AGENTS.md`. Where a skill's hard constraint blocks a fix, the skill says to report the issue instead.
-- Say each rule once, in imperative form, and give the reason when it is not obvious. Reference other skills by name instead of repeating them.
+- Say each rule once, in imperative form, and give the reason when it is not obvious.
 - Cut anything the agent already does by default or that does not change behaviour.
-- Move material over about 100 lines needed only for some tasks into `references/`, with a pointer from `SKILL.md` saying when to read it. Keep shorter material inline.
+- Move material needed only for some tasks (a sub-workflow, a long checklist, platform-specific detail) into `references/`, linked directly from `SKILL.md` (one level deep) with a pointer saying when to read it. Keep material every run needs inline.
 - Update `SKILL.md`, `agents/openai.yaml`, and this README together when a skill is added, renamed, or changes behaviour.
 - Never commit `.venv/`, `.cache/`, or `.agent-local/`.
 

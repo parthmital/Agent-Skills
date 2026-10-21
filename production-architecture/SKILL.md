@@ -1,6 +1,6 @@
 ---
 name: production-architecture
-description: "Re-architects a whole repository to be production ready, scalable, modular, and free of redundancy: restructuring, removing exact, near, and semantic duplicates, splitting monoliths, enforcing boundaries, and a one-command `npm run dev` launcher. Use when the user asks to make a codebase production ready, scalable, modular, or maintainable, restructure or re-architect a repo, deduplicate, split god files, fix circular imports or spaghetti code, organise a monorepo, or set up, fix, or change how the app starts locally. Broad and structural, not surgical; vulnerabilities belong to `security-hardening`."
+description: "Re-architects a whole repository to be production ready, scalable, modular, and free of redundancy, with a one-command `npm run dev` launcher. Use when the user asks to make a codebase production ready, scalable, modular, or maintainable, restructure or re-architect a repo, deduplicate, split god files, fix circular imports or spaghetti code, organise a monorepo, or set up, fix, or change how the app starts locally. Broad and structural, not surgical; vulnerabilities belong to `security-hardening`."
 ---
 
 # Production Architecture
@@ -14,11 +14,12 @@ The scope is the whole repository: moving, merging, splitting, renaming, and del
 - Whole-repo restructuring, deduplication, modularisation, or production readiness.
 - Setting up or fixing local launch (`npm run dev`, start scripts, first-run setup).
 - Not for single-file fixes or security audits (`security-hardening`).
+- For a whole-repo pass or any local launch work, read [references/local-launch.md](references/local-launch.md): the `npm run dev` launcher rules.
 
 ## Process
 
 1. Map: manifests, entry points, runtime model, dependency graph, data stores, tests, CI, docs, change hotspots (`git log --stat`).
-2. Decide the architecture that fits now and at the next growth stage; list mismatches with file evidence.
+2. Decide the architecture that fits now and at the next growth stage, using `research-driven-development` for unfamiliar stacks, patterns, or tooling; list mismatches with file evidence.
 3. Inventory duplicates, monoliths, cycles, boundary leaks, production gaps, scaling limits, and dead code, files, dependencies, and docs. Leave Git-ignored work areas such as `.agent-local/` alone.
 4. Design the target: single-responsibility modules with small public APIs, allowed dependency directions, and where new code goes. Keep the language and framework unless they are the problem.
 5. Migrate in phases that each leave the repo green. Add characterisation tests before moving uncovered code.
@@ -51,17 +52,6 @@ Merge into one named abstraction in the lowest module all callers may depend on,
 - Versioned migrations, transactions for multi-step writes, indexes for real queries.
 - Formatter, linter, type checker, tests, and build runnable with one command and enforced in CI. Pinned runtime, committed lockfile, README setup works from a clean clone.
 - Fix only limits the code actually has: stateless handlers, no N+1 or unbounded queries, pagination and batching, background jobs for slow or bursty work, pooling, caching with explicit invalidation, back-pressure, suitable algorithms on hot paths. Adding a feature means adding a module, not editing many files.
-
-## Local Launch
-
-`npm run dev` at the root is the only launcher, cross-platform, via one Node script; delete `start.ps1`, `start.sh`, and similar.
-
-- First run installs everything (Node deps, `.venv` with Python deps, `.env` from the example). Later runs skip setup unless a lockfile hash (Git-ignored stamp) changed or an environment is broken.
-- Run Python via the `.venv` interpreter, no activation.
-- One titled terminal window per long-running process (frontend, backend, services, workers), else prefixed output in the main terminal.
-- The main terminal shows status, URLs, and crashes; Ctrl+C kills every process tree and window.
-- Clean logs: summarise install noise, never hide errors. Fail fast on missing runtimes or busy ports.
-- Open the browser once the frontend responds, except in CI.
 
 ## Rules
 

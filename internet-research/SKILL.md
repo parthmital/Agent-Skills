@@ -1,6 +1,6 @@
 ---
 name: internet-research
-description: Researches current or source-dependent facts, prior art, comparable products, repositories, libraries, docs, issues, discussions, benchmarks, pricing, legal or regulatory details, and implementation examples, with cited, dated evidence. Use when the user asks to research, look up, verify, cite, benchmark, or compare, find similar projects, repos, or apps, assess current options, validate assumptions with sources, or make a decision that benefits from external evidence.
+description: Researches current or source-dependent facts, products, repositories, libraries, docs, discussions, benchmarks, pricing, and legal or regulatory details, with cited, dated evidence. Use when the user asks to research, look up, verify, cite, benchmark, or compare, find similar projects or apps, assess current options, or validate assumptions with sources. For choosing what to reuse before building, use `research-driven-development`.
 ---
 
 # Internet Research
@@ -14,6 +14,7 @@ Use external evidence where it materially improves the answer, and tie every cla
 - Claims that are current, niche, source-dependent, or likely to have changed.
 - Decisions between libraries, products, or approaches.
 - Not for facts the repository itself answers; read the code instead.
+- Deciding what to reuse before building: `research-driven-development`, which applies the Source Rules below.
 
 ## Process
 
