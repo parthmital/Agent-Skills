@@ -29,12 +29,23 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 | `research-driven-development`  | Decides whether a task needs research; if so, finds existing libraries, projects, datasets, models, skills, and MCP servers to adopt or adapt before building.                     |
 | `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                                                                  |
 | `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                                                                         |
+| `skill-improvement`            | Records each solved hard problem in the skill that loads when it recurs, merging rather than appending, so every problem is solved once.                                           |
 
 `research-driven-development` is the entry point for new work. `AGENTS.md` routes non-trivial tasks to it, and `frontend-design`, `production-architecture`, and `kaggle-jupyter-notebooks` use it for library, architecture, model, and dataset choices. It picks a tier from the task's complexity, scope, and novelty: Skip (small, well-understood changes), Quick (one bounded choice), or Full (new project, unfamiliar domain, or stack choice). It judges sources by the `internet-research` rules and records lasting decisions in a `RESEARCH.md` at the target repository's root. The prior art behind this design is in this repository's [RESEARCH.md](RESEARCH.md).
 
+`skill-improvement` closes the loop. `AGENTS.md` tells the agent to search the skills for an error's text before debugging it, and to record every hard problem it solves in the skill that loads when the problem recurs. Fixes with no owning skill go in `skill-improvement/references/fixes.md`.
+
 ## Installation
 
-There is no install script. To use a skill, copy its whole folder into the skills directory of your agent or harness, keeping the folder name and every file in it (`SKILL.md`, `agents/`, `references/`, `scripts/`, `assets/`). The skills directory location depends on the harness.
+There is no install script. Link each skill folder into the skills directory of your agent or harness (for Claude Code, `~/.claude/skills/`), keeping the folder name. A link keeps one source of truth: edits made by `skill-improvement` from any project land in this repository. On Windows a directory junction needs no administrator rights:
+
+```powershell
+foreach ($d in Get-ChildItem -Directory | Where-Object { Test-Path "$($_.FullName)\SKILL.md" }) {
+  New-Item -ItemType Junction -Path "$HOME\.claude\skills\$($d.Name)" -Target $d.FullName
+}
+```
+
+On POSIX use `ln -s "$PWD/<skill>" ~/.claude/skills/<skill>`. A harness that does not follow links needs a copy of the whole folder (`SKILL.md`, `agents/`, `references/`, `scripts/`, `assets/`); recopy it after every change.
 
 `agents/openai.yaml` in each skill is optional metadata (`display_name`, `short_description`, `default_prompt`, `allow_implicit_invocation`) for harnesses that read it. Others ignore it.
 
@@ -64,11 +75,13 @@ There is no install script. To use a skill, copy its whole folder into the skill
 |   `-- references/local-launch.md    one-command npm run dev launcher rules
 |-- readme-generator/
 |   `-- references/notebook-walkthrough.md  cell-by-cell README rules for notebook repositories
-`-- resume-tailoring/
-    `-- assets/Resume.tex             single-page LaTeX resume template
+|-- resume-tailoring/
+|   `-- assets/Resume.tex             single-page LaTeX resume template
+`-- skill-improvement/
+    `-- references/fixes.md           tool and environment fixes no other skill owns
 ```
 
-`<skill>` stands for each of the 12 skill folders listed above.
+`<skill>` stands for each of the 13 skill folders listed above.
 
 ## Notebook Helper
 
@@ -131,6 +144,7 @@ Keep each level as small as it can be without the agent making mistakes:
 - Say each rule once, in imperative form, and give the reason when it is not obvious.
 - Cut anything the agent already does by default or that does not change behaviour.
 - Move material needed only for some tasks (a sub-workflow, a long checklist, platform-specific detail) into `references/`, linked directly from `SKILL.md` (one level deep) with a pointer saying when to read it. Keep material every run needs inline.
+- Record each solved hard problem with `skill-improvement`: search existing entries first, merge instead of appending, and place it where it loads when the problem recurs.
 - Update `SKILL.md`, `agents/openai.yaml`, and this README together when a skill is added, renamed, or changes behaviour.
 - Never commit `.venv/`, `.cache/`, or `.agent-local/`.
 

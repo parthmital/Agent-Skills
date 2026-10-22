@@ -1,0 +1,6 @@
+interface:
+  display_name: "Skill Improvement"
+  short_description: "Record solved problems in skills so they are solved once"
+  default_prompt: "Use $skill-improvement to record the fix for this solved problem in the skill that will load when it recurs."
+policy:
+  allow_implicit_invocation: true

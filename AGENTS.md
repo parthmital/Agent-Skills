@@ -17,6 +17,7 @@ Intent map:
 - Commit or push: `git-commit-and-push`
 - LaTeX research papers: `latex-research-papers`
 - Resume: `resume-tailoring`; LinkedIn project description: `linkedin-project-description`
+- Hard problem solved, a skill rule was wrong or missing, or skill edits: `skill-improvement`
 
 Wrong thoughts: "this is too small for a skill", "I'll check skills after gathering context", "I remember what the skill says". Check and load the skill first.
 
@@ -31,6 +32,7 @@ Wrong thoughts: "this is too small for a skill", "I'll check skills after gather
 ## Implementation
 
 - Turn the request into verifiable goals; present materially different interpretations.
+- Solve each problem once: before debugging an error, search the installed skills for its text and apply any recorded fix; after solving a hard or repeated problem, record it with `skill-improvement`.
 - Do not reinvent the wheel. Before non-trivial work, run `research-driven-development`: it scales research to the task's complexity, scope, and novelty (none for small, well-understood changes), then adopts or adapts the best existing fit. Prefer reliable, maintainable solutions with the least complexity.
 - Write the minimum code that fully completes the task and every fix. Add no unrequested features, abstractions, configurability, or premature optimisation.
 - Follow the existing style, naming, tooling, package manager, and tests, and the existing architecture unless the task is to change it. Add dependencies only when justified, installed inside the repository.

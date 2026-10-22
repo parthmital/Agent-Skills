@@ -24,6 +24,26 @@
 - Practitioner write-ups: [HumanLayer, Advanced Context Engineering for Coding Agents](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/ace-fca.md) (undated).
 - Registries: [skills.sh](https://skills.sh/); [MCP Registry](https://registry.modelcontextprotocol.io/).
 
+## Self-Improving Skills (2026-10-23)
+
+**Brief:** how to make each solved problem reusable so it is never solved twice, at minimal context cost.
+
+**Scope:** Every's compound engineering plugin and write-ups about it. Searched 2026-10-23 (one standard search; the plugin's file format was not confirmed).
+
+**Findings:**
+
+- Compound engineering adds a fourth step after plan, work, and review: document the solved problem (`/ce:compound`, formerly `/workflows:compound`) in searchable files that later sessions read. Command names have changed between versions.
+- Its learnings live in a separate docs folder, which a session must know to search. Here, skills already load on trigger, so the owning skill is the cheaper and more reliable home.
+- Inference: copies of installed skills drift from their source (this repository's `paper_check.py` differed from its installed copy), so a learning written to one copy can be lost.
+
+**Decision:** Borrow, not Adopt. A harness-neutral `skill-improvement` skill records each fix as symptom, cause, fix, and check in the cheapest location that loads when it recurs, merging instead of appending; `AGENTS.md` adds one search-first, record-after rule; installs are links, not copies. Alternatives considered: installing the plugin (rejected: Claude Code only, a separate workflow and docs folder, much larger context); harness auto-memory (rejected: per-harness, disabled by this user, not reviewable in Git).
+
+**Sources:**
+
+- Repository: [EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin).
+- Docs: [Mintlify, compound engineering plugin commands](https://www.mintlify.com/EveryInc/compound-engineering-plugin/plugin/commands).
+- Practitioner write-ups: [Ry Walker, compound engineering plugin](https://rywalker.com/research/compound-engineering-plugin) (undated).
+
 ## Skill Token Budgets And Progressive Disclosure (2026-10-21)
 
 **Brief:** how to keep these skills cheap in context, prompted by Reddit advice to use progressive disclosure and narrowly scoped skills.
