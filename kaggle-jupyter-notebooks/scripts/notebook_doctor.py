@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import argparse
 import ast
-import copy
 import difflib
+import itertools
 import json
 import shutil
 import sys
@@ -105,7 +105,7 @@ def inspect_notebook(path: Path) -> int:
 
     duplicates = sorted(value for value, n in Counter(ids).items() if value and n > 1)
     missing_ids = sum(value is None for value in ids)
-    non_monotonic = any(b <= a for a, b in zip(numeric_counts, numeric_counts[1:]))
+    non_monotonic = any(b <= a for a, b in itertools.pairwise(numeric_counts))
 
     print(f"File: {path}")
     print(f"Format: {nb.nbformat}.{nb.nbformat_minor}")
@@ -219,6 +219,53 @@ def mask_magics(source: str) -> str | None:
     return "\n".join(lines)
 
 
+def cell_python(source: str) -> str | None:
+    """Python source of a cell: the body of a `%%writefile *.py` cell, magics masked otherwise."""
+    if source.lstrip().startswith("%%writefile"):
+        header, _, body = source.lstrip().partition("\n")
+        return body if header.rstrip().endswith(".py") else None
+    return mask_magics(source)
+
+
+def call_name(node: ast.Call) -> str | None:
+    func = node.func
+    if isinstance(func, ast.Name):
+        return func.id
+    if isinstance(func, ast.Attribute):
+        return func.attr
+    return None
+
+
+def fork_pool_lines(tree: ast.AST) -> list[int]:
+    """Lines creating a process pool with the default (fork) start method on Linux."""
+    lines = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        name = call_name(node)
+        executor = name == "ProcessPoolExecutor" and not any(
+            keyword.arg == "mp_context" for keyword in node.keywords
+        )
+        pool = name == "Pool" and (
+            isinstance(node.func, ast.Name)
+            or (
+                isinstance(node.func.value, ast.Name)
+                and node.func.value.id in {"multiprocessing", "mp"}
+            )
+        )
+        if executor or pool:
+            lines.append(node.lineno)
+    return lines
+
+
+def silent_progress(tree: ast.AST) -> bool:
+    """True when a cell shows progress only with tqdm, which a saved Kaggle run's log omits."""
+    names = [call_name(node) for node in ast.walk(tree) if isinstance(node, ast.Call)]
+    return any(name in {"tqdm", "trange"} for name in names) and not any(
+        name in {"print", "log", "info", "warning", "write"} for name in names
+    )
+
+
 def check_kaggle(path: Path) -> int:
     """Static checks for the Kaggle notebook conventions. Nothing is executed."""
     nb = load_notebook(path)
@@ -237,18 +284,34 @@ def check_kaggle(path: Path) -> int:
             problems.append(
                 f"cell {index}: code cell without an explanatory markdown cell before it"
             )
-        masked = mask_magics(source_text(cells[index]))
-        if masked is None:
+        source = source_text(cells[index])
+        python = cell_python(source)
+        if python is None:
             continue
         try:
-            ast.parse(masked)
+            tree = ast.parse(python)
         except SyntaxError as exc:
             problems.append(
                 f"cell {index}: syntax error on line {exc.lineno}: {exc.msg}"
             )
+            continue
+        for line in fork_pool_lines(tree):
+            problems.append(
+                f"cell {index} line {line}: process pool without a spawn context "
+                "(forking a kernel with CUDA or threads can deadlock silently)"
+            )
+        if not source.lstrip().startswith("%%") and silent_progress(tree):
+            problems.append(
+                f"cell {index}: progress shown only by tqdm, which a saved Kaggle run's "
+                "log does not show; log progress lines too"
+            )
     all_code = "\n".join(source_text(cells[i]) for i in code_indices)
     if "tqdm" not in all_code:
         problems.append("tqdm is never used")
+    if "flush=True" not in all_code:
+        problems.append(
+            "nothing prints with flush=True, so the run log may lag or stay empty"
+        )
     if "/kaggle/working" not in all_code:
         problems.append("/kaggle/working is never referenced as the output location")
     for marker in ("C:\\", "/Users/", "/home/"):
