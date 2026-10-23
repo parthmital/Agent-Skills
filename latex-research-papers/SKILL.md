@@ -30,7 +30,7 @@ Done means [scripts/paper_check.py](scripts/paper_check.py) prints `RESULT: CLEA
 - Every figure and table has a caption and label, is referenced in the text, and is placed right after the paragraph that first mentions it, landing on that page or the next (appendix exempt). Supplements go in the same PDF so references stay links; when a separate supplementary PDF is required, link the two documents with `xr-hyper` (`\externaldocument`, compiled main, supplement, main), which `paper_check.py` resolves.
 - References are verified at the source, never from memory or invented, and are only peer-reviewed, published journal or conference papers, preferably recent; never preprints (arXiv, bioRxiv, SSRN), books, or other unreviewed sources. If only a preprint exists, drop the claim or report it. Every citation has an entry and every entry is cited. Each entry has a `doi`, else a verified `url`.
 - Numeric citations are numbered in order of first appearance (`unsrtnat`, `IEEEtran`, biblatex `sorting=none`). If the venue mandates another order, follow it and say so.
-- `hyperref` loaded once (many classes load it); citations, cross-references (`\ref`, `\cref`, never typed numbers), URLs (`\url`, `\href`), and DOIs are clickable.
+- `hyperref` loaded once (many classes load it); citations, cross-references (`\ref`, `\cref`, never typed numbers), URLs (`\url`, `\href`), and DOIs are clickable. The PDF has numbered bookmarks for the title, abstract, every section, and the references.
 
 ## Common Rationalizations
 

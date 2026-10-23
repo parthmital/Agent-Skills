@@ -296,6 +296,11 @@ def pdf_checks(
     if unresolved:
         problems.append("'??' in the PDF (unresolved reference or citation)")
 
+    bookmarks = len(reader.outline)
+    report.append(f"Top-level PDF bookmarks: {bookmarks}")
+    if bookmarks == 0:
+        problems.append("PDF has no bookmarks (see references/fixes.md, Bookmarks)")
+
     labels = list(reader.page_labels)
 
     def page_index(page: str | None) -> int | None:
