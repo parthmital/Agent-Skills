@@ -20,6 +20,7 @@ In the first code cell after imports, print the GPU count, names, and VRAM per G
 - Use gradient accumulation to reach the target effective batch size.
 - Use fp16 mixed precision with `torch.amp.autocast("cuda", dtype=torch.float16)` and a gradient scaler. T4 has fp16 tensor cores but no fast bf16, so never use bf16.
 - Log peak memory per GPU with `torch.cuda.max_memory_allocated(device)` after the first steps and at the end of each epoch.
+- **`OutOfMemoryError` in a post-training cell (Grad-CAM, inference) with GBs "reserved but unallocated"**: the notebook process fragments memory and stacks every model on one GPU. Set `os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"` in the first cell before importing torch (workers too), spread models over both GPUs, and per item retry once after `gc.collect()` and `empty_cache()` outside the `except`, then skip with a warning. Grad-CAM: freeze weights, return `output.detach().requires_grad_()` from the forward hook and take `torch.autograd.grad(target, leaf)`, which gives identical maps without the encoder graph or weight gradients. Check: compare maps with the full-backward version on CPU.
 
 ## Keep The GPUs Fed
 
@@ -34,6 +35,7 @@ In the first code cell after imports, print the GPU count, names, and VRAM per G
 - Show per-GPU utilisation and memory each epoch, in the progress bar postfix or a log line, using `torch.cuda` memory functions or `nvidia-smi`. An idle GPU is a bug to fix.
 - Report throughput in samples per second and time per epoch.
 - Checkpoint to `/kaggle/working/` regularly so a session timeout does not lose all progress.
+- A time budget covers the whole run, not only training epochs: set the training deadline from the notebook start minus a reserve for the post-training cells and zip, stop before an epoch when that epoch plus the evaluation (estimated from the measured validation time) would pass it, and still evaluate the best checkpoint so later cells have every model.
 - Seed data splits for reproducibility.
 
 ## Realtime Output and Liveness
