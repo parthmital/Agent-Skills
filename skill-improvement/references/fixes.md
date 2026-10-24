@@ -13,4 +13,4 @@ Tool and environment problems that no other skill owns. Search by symptom text. 
 
 ## Shell
 
-- **A regex passed through a bash heredoc into a JS string matches nothing, or an empty match inserts text at the start of the file**: the heredoc and the JS string each consume a level of backslashes (`\s` arrives as `s`). Prefer exact-string replacements, or edit with the Edit tool. Check: the target line changed and line 1 of the file is unchanged.
+- **Text sent through a bash heredoc loses backslashes: a regex matches nothing, an empty match inserts text at the start of the file, or a JSON payload fails with `Invalid \escape` / an exact LaTeX match finds 0**: the agent's Bash tool on Windows Git Bash can collapse backslashes even in `<<'EOF'` heredocs, and a JS or JSON string then consumes another level. Write payloads (JSON, LaTeX, code) to a file with the Write tool and pass the path; prefer exact-string replacements or the Edit tool. Check: the target line changed and line 1 of the file is unchanged.
