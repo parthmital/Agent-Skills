@@ -18,6 +18,7 @@ Only after the user agrees. Save `https://drop-ps1.fullyjustified.net` (Windows)
 
 - Floats: `[htbp]` right after the first-mentioning paragraph; `figure*` just before it. `\usepackage[section]{placeins}` and `\FloatBarrier`; `\topfraction` 0.9, `\textfraction` 0.07, `\floatpagefraction` 0.8.
 - If floats still drift: non-floating `minipage` environments that set `\@captype` and keep the class caption style, plus `\raggedbottom`.
+- **Two-column paper: several `table*` cited on one page land two pages later**: full-width floats queue first in, first out, so a later one cannot pass earlier ones, and one float page holds only two or three. Move a table whose numbers the body already states to the appendix, or shrink the others (`\scriptsize`, narrower columns), until the queue fits the next page; moving a float's source earlier only shifts the drift to the floats before it. Check: `paper_check.py` reports no float more than one page after its first mention.
 
 ## Bibliography
 
