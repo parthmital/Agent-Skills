@@ -1,6 +1,6 @@
 ---
 name: linkedin-project-description
-description: Turns a project README or write-up into a LinkedIn project description of at most 1000 characters, grounded only in the source. Use when the user asks for a LinkedIn project description, LinkedIn project summary, LinkedIn post about a project, or to convert a README for LinkedIn.
+description: Turns a project README or write-up into a LinkedIn project description of at most 500 characters, grounded only in the source. Use when the user asks for a LinkedIn project description, LinkedIn project summary, LinkedIn post about a project, or to convert a README for LinkedIn.
 ---
 
 # LinkedIn Project Description
@@ -19,7 +19,7 @@ A short, factual LinkedIn description that recruiters and engineers both underst
 1. Get the source; ask if none is given. For a repository, read `README.md` and any linked docs holding metrics.
 2. Silently list everything that must appear: purpose and users, every major feature or technical contribution, key technologies, every headline metric, and the impact.
 3. Write one simple sentence on what was built and why, then 3 to 6 concise bullets starting with `•`, ordered what, how, then measurable impact. A bullet may carry several related items.
-4. Count characters including spaces and punctuation. Over 1000: compress, never drop a listed item. In order: cut filler and adjectives, shorten phrasing, merge related bullets, fold technologies into the clause they serve, use symbols (`&`, `~`, `→`, `+`) and common abbreviations. Recount after each pass.
+4. Count characters including spaces and punctuation. Over 500: compress, never drop a listed item. In order: cut filler and adjectives, shorten phrasing, merge related bullets, fold technologies into the clause they serve, use symbols (`&`, `~`, `→`, `+`) and common abbreviations. Recount after each pass.
 
 ## Rules
 
@@ -36,7 +36,7 @@ A short, factual LinkedIn description that recruiters and engineers both underst
 | ---------------------------------- | ------------------------------------- |
 | "Rounding the metric reads better" | Changed numbers are invented numbers. |
 | "Listing every tool shows breadth" | Tech lists bury the impact.           |
-| "It's over 1000, drop a feature"   | Compress the wording; items stay.     |
+| "It's over 500, drop a feature"    | Compress the wording; items stay.     |
 
 ## Red Flags
 
@@ -46,7 +46,7 @@ A short, factual LinkedIn description that recruiters and engineers both underst
 
 ## Verification
 
-- [ ] At most 1000 characters, counted.
+- [ ] At most 500 characters, counted.
 - [ ] Every claim and metric traces to the source.
 - [ ] One opening sentence plus 3 to 6 `•` bullets.
 - [ ] Every item from step 2 appears, or the attention line names what could not fit.
