@@ -43,6 +43,7 @@ Wrong thoughts: "this is too small for a skill", "I'll check skills after gather
 - For every task, proactively identify and implement all relevant fixes, improvements, and necessary changes, including every issue found anywhere in the repository, even when unrelated to the task. Never leave known issues or unfinished work behind, and report each fix made. Where a fix needs an action the Ask rule above covers, or a skill's hard constraint forbids it, ask or report the issue instead of silently leaving it.
 - Update all documentation affected by every change in the same task: README (via `readme-generator`), other project docs (via `project-docs`), `EXPLAINER.md` if present, skill files, docstrings, comments, and help text.
 - Remove unused code your changes introduce. Keep code focused, readable, and free of duplication.
+- Never pass backslashes or nested quotes through a shell command: on Windows the Bash tool turns `\\` into `\` even inside `<<'EOF'` heredocs (so `"\\fi"` reaches Python as a form feed), and `printf` and `echo -e` expand escapes. Write scripts, LaTeX, regexes, and JSON to a file with the Write tool and run that file, and change files with the Edit tool.
 
 ## Verification
 

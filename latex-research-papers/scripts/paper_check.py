@@ -446,9 +446,13 @@ def main() -> int:
         }
     external_labels: set[str] = set()
     external_cited: set[str] = set()
+    # \Variant in \externaldocument{main\Variant} is "-anonymised" in the anonymised
+    # wrappers and empty otherwise, matching the file being checked.
+    variant = "-anonymised" if tex.stem.endswith("-anonymised") else ""
     for prefix, name in re.findall(
         r"\\externaldocument(?:\[([^]]*)\])?\{([^}]+)\}", sources_text
     ):
+        name = re.sub(r"\\Variant(?:\{\})?", variant, name)
         ext_aux = tex.parent / f"{name}.aux"
         if ext_aux.exists():
             ext_text = ext_aux.read_text(encoding="utf-8", errors="replace")
