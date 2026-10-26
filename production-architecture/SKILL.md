@@ -24,7 +24,7 @@ The scope is the whole repository: moving, merging, splitting, renaming, and del
 4. Design the target: single-responsibility modules with small public APIs, allowed dependency directions, and where new code goes. Keep the language and framework unless they are the problem.
 5. Migrate in phases that each leave the repo green. Add characterisation tests before moving uncovered code.
 6. Enforce boundaries with tooling (`dependency-cruiser` or `eslint-plugin-boundaries`, `import-linter`, ArchUnit, Nx, Go `internal`) and a clone detector in CI.
-7. Write `ARCHITECTURE.md`: module map, dependency rules, where new code goes, decisions with reasons, allowed duplication exceptions, and growth signals for the next pass. Update docs referencing moved paths.
+7. Write `ARCHITECTURE.md` from the `project-docs` template, recording allowed duplication exceptions and growth signals for the next pass. Update docs referencing moved paths.
 
 ## Zero Redundancy
 

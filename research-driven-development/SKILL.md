@@ -39,7 +39,7 @@ If unsure, run Quick and escalate to Full when it surfaces a mature existing sol
    - Adapt: configure, extend, wrap, or fork.
    - Borrow: reuse the design or pattern, write the code.
    - Build: nothing fits; say why.
-6. Record. Quick: one line in the reply with decision, runner-up, and sources. Full, or any decision that adds a dependency or service: a `RESEARCH.md` section per `internet-research`, with decision, rationale, and alternatives considered.
+6. Record. Quick: one line in the reply with decision, runner-up, and sources. Full, or any decision that adds a dependency or service: a `RESEARCH.md` section from the `project-docs` template, with decision, rationale, and alternatives considered.
 7. Ask before adopting anything paid, copyleft or unlicensed, needing an account, or sending data off the machine. Then implement with the relevant skill.
 
 Candidates are untrusted: clone or download them only into `.agent-local/vendor/` or `.agent-local/downloads/` (`repo-local-workspace`), and read code, install scripts, skills, and MCP server instructions before running or installing them.

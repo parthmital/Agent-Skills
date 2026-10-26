@@ -23,7 +23,7 @@ Use external evidence where it materially improves the answer, and tie every cla
 3. Open promising sources and verify details directly. Cite only sources you opened.
 4. Extract repeated patterns, tradeoffs, warnings, maintenance and adoption signals, and implementation details.
 5. Synthesise options around the user's decision, each with supporting and missing evidence.
-6. Write or update root `RESEARCH.md`: one dated section per topic with brief, scope, findings, recommendation, and sources. Update a topic's section rather than duplicating it; mark superseded findings.
+6. Write or update root `RESEARCH.md` from the `project-docs` template: one dated section per topic, updated rather than duplicated, with superseded findings marked.
 
 With no web tool, say so, answer from known information, and flag what may be outdated.
 

@@ -12,6 +12,7 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 6. [Writing And Maintaining Skills](#writing-and-maintaining-skills)
 7. [Troubleshooting](#troubleshooting)
 8. [Known Limitations](#known-limitations)
+9. [Documentation](#documentation)
 
 ## Skills
 
@@ -19,11 +20,14 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `frontend-design`              | Clean, intuitive, fully responsive frontend UI in light and dark modes, built on proven patterns and libraries, with custom components and no browser-native UI.                                                                          |
 | `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.                                                                                                                     |
+| `implementation-plan`          | Writes a plan folder of small, self-contained task files with exact code, checks, and commits, plus per-tool prompts, for a cheaper model to execute.                                                                                     |
 | `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                                                                                                                              |
 | `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip.                                                                                                          |
 | `latex-research-papers`        | Picks the best-fit journal and uses its official LaTeX template; compiles via local Tectonic: no overflow, well-placed floats, peer-reviewed in-order references, clickable links, no semicolons, plus anonymised and no-references PDFs. |
-| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 1000 characters, using only supported claims.                                                                                                                               |
+| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 500 characters, using only supported claims.                                                                                                                                |
 | `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                                                                                           |
+| `project-docs`                 | One compact, agent-first format for the project doc set (`AGENTS.md`, `ARCHITECTURE.md`, `DATABASE.md`, and others), with one purpose per file and no duplication.                                                                        |
+| `project-explainer`            | Writes `EXPLAINER.md`: the whole project explained from scratch for humans, with every decision, alternative, term, and metric, plus interview preparation.                                                                               |
 | `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                                                                                      |
 | `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                                                                                         |
 | `research-driven-development`  | Decides whether a task needs research; if so, finds existing libraries, projects, datasets, models, skills, and MCP servers to adopt or adapt before building.                                                                            |
@@ -34,6 +38,8 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 `research-driven-development` is the entry point for new work. `AGENTS.md` routes non-trivial tasks to it, and `frontend-design`, `production-architecture`, and `kaggle-jupyter-notebooks` use it for library, architecture, model, and dataset choices. It picks a tier from the task's complexity, scope, and novelty: Skip (small, well-understood changes), Quick (one bounded choice), or Full (new project, unfamiliar domain, or stack choice). It judges sources by the `internet-research` rules and records lasting decisions in a `RESEARCH.md` at the target repository's root. The prior art behind this design is in this repository's [RESEARCH.md](RESEARCH.md).
 
 `skill-improvement` closes the loop. `AGENTS.md` tells the agent to search the skills for an error's text before debugging it, and to record every hard problem it solves in the skill that loads when the problem recurs. Fixes with no owning skill go in `skill-improvement/references/fixes.md`.
+
+`project-docs` owns the documentation format of target repositories: which file answers which question, when a file should exist, and one template per file. The skills that write `ARCHITECTURE.md`, `DESIGN.md`, `SECURITY.md`, and `RESEARCH.md` follow its templates, and `README.md` links the rest. `EXPLAINER.md` from `project-explainer` is the one document written for humans rather than agents.
 
 ## Installation
 
@@ -65,14 +71,21 @@ On POSIX use `ln -s "$PWD/<skill>" ~/.claude/skills/<skill>`. A harness that doe
 |   `-- agents/openai.yaml            optional harness metadata
 |-- frontend-design/
 |   `-- references/custom-controls.md  browser-native UI to replace with custom components
+|-- implementation-plan/
+|   `-- references/                 plan templates, executor prompts per tool
 |-- kaggle-jupyter-notebooks/
 |   |-- references/kaggle-authoring.md  hardware, progress, metrics, output layout, zip cell
+|   |-- references/runtime-budget.md  session time limit, elastic work, splitting notebooks
 |   `-- scripts/notebook_doctor.py    notebook maintenance CLI
 |-- latex-research-papers/
 |   |-- references/fixes.md           overflow, placement, bibliography, link fixes; Tectonic install
 |   `-- scripts/paper_check.py        Tectonic compile plus layout, reference, and citation checks
 |-- production-architecture/
 |   `-- references/local-launch.md    one-command npm run dev launcher rules
+|-- project-docs/
+|   `-- references/doc-templates.md   template per project doc
+|-- project-explainer/
+|   `-- references/domain-checklists.md  what to explain per project type
 |-- readme-generator/
 |   `-- references/notebook-walkthrough.md  cell-by-cell README rules for notebook repositories
 |-- resume-tailoring/
@@ -81,7 +94,7 @@ On POSIX use `ln -s "$PWD/<skill>" ~/.claude/skills/<skill>`. A harness that doe
     `-- references/fixes.md           tool and environment fixes no other skill owns
 ```
 
-`<skill>` stands for each of the 13 skill folders listed above.
+`<skill>` stands for each of the 16 skill folders listed above.
 
 ## Notebook Helper
 
@@ -157,14 +170,22 @@ npx --yes prettier@3 --check "**/*.{md,json,yaml}"
 
 ## Troubleshooting
 
-| Problem                                          | Likely cause                                 | Resolution                                                                          |
-| ------------------------------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `python` is not recognised.                      | Python is not installed or not on `PATH`.    | Install Python 3 or use the Python launcher on the machine.                         |
-| `notebook_doctor.py` reports `nbformat` missing. | The active environment lacks `nbformat`.     | Install it into `.venv` as shown above and run the script with that interpreter.    |
-| A notebook is reported as invalid.               | Invalid JSON, schema, or duplicate cell IDs. | Read the `validate` output; if structural, run `repair --backup`.                   |
-| `paper_check.py` reports `tectonic not found`.   | Tectonic is not on `PATH` or near the paper. | Pass `--tectonic <path>`, or install it into the project per `references/fixes.md`. |
+| Problem                                                                                   | Likely cause                                               | Resolution                                                                                                                           |
+| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `python` is not recognised.                                                               | Python is not installed or not on `PATH`.                  | Install Python 3 or use the Python launcher on the machine.                                                                          |
+| `notebook_doctor.py` reports `nbformat` missing.                                          | The active environment lacks `nbformat`.                   | Install it into `.venv` as shown above and run the script with that interpreter.                                                     |
+| A notebook is reported as invalid.                                                        | Invalid JSON, schema, or duplicate cell IDs.               | Read the `validate` output; if structural, run `repair --backup`.                                                                    |
+| `paper_check.py` reports `tectonic not found`.                                            | Tectonic is not on `PATH` or near the paper.               | Pass `--tectonic <path>`, or install it into the project per `references/fixes.md`.                                                  |
+| Many files show as modified after formatting, or Git warns "LF will be replaced by CRLF". | Git for Windows checks out CRLF while formatters write LF. | Apply the line-ending entry in `skill-improvement/references/fixes.md`; `git diff --ignore-cr-at-eol --stat` shows the real changes. |
 
 ## Known Limitations
 
 - No automated tests, CI, licence file, or dependency manifest. `nbformat`, `pypdf`, and `pypdfium2` are not version-pinned and no Python version is declared.
 - `notebook_doctor.py` is not a secret scanner. Review notebooks manually before sharing them.
+
+## Documentation
+
+| File                       | Answers                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| [AGENTS.md](AGENTS.md)     | Rules every agent follows: skills, communication, implementation, verification. |
+| [RESEARCH.md](RESEARCH.md) | What was evaluated before each design decision in this repository.              |

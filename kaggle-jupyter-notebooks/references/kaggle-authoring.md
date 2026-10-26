@@ -34,8 +34,8 @@ In the first code cell after imports, print the GPU count, names, and VRAM per G
 
 - Show per-GPU utilisation and memory each epoch, in the progress bar postfix or a log line, using `torch.cuda` memory functions or `nvidia-smi`. An idle GPU is a bug to fix.
 - Report throughput in samples per second and time per epoch.
-- Checkpoint to `/kaggle/working/` regularly so a session timeout does not lose all progress.
-- A time budget covers the whole run, not only training epochs: set the training deadline from the notebook start minus a reserve for the post-training cells and zip, stop before an epoch when that epoch plus the evaluation (estimated from the measured validation time) would pass it, and still evaluate the best checkpoint so later cells have every model.
+- Save the best checkpoint to `weights/` during training, for evaluation in the same session. Never design a run to be resumed in a later session.
+- Plan and enforce the session time budget per [runtime-budget.md](runtime-budget.md).
 - Seed data splits for reproducibility.
 
 ## Realtime Output and Liveness

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Docs"
+  short_description: "Standard, compact, agent-first project documentation"
+  default_prompt: "Use $project-docs to audit and standardise this repository's documentation set so every file has one purpose and no fact is duplicated."
+policy:
+  allow_implicit_invocation: true

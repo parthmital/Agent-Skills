@@ -28,7 +28,7 @@ Find, fix, and prove fixes for every exploitable weakness. No code is provably a
 5. Fix highest severity first; add a regression test reproducing each attack.
 6. Re-scan until nothing new appears.
 7. Add guardrails: secret-scanning pre-commit hook, Dependabot or Renovate, CI security scans, SHA-pinned least-privilege actions.
-8. Write or update root `SECURITY.md`: reporting policy, threat model, scanners and guardrails, checklist status, fixed findings by ID and severity (no exploit details for unfixed ones), residual risks, required user actions. Never secrets.
+8. Write or update root `SECURITY.md` from the `project-docs` template, with checklist status under Controls. Never secrets or exploit details for unfixed findings.
 
 ## Checklist
 

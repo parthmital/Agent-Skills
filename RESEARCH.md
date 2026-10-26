@@ -1,5 +1,7 @@
 # Research
 
+Purpose: dated evidence behind this repository's design decisions. Read when: changing a skill's approach or revisiting a decision below.
+
 ## Research-Driven Development (2026-10-21)
 
 **Brief:** whether "research-driven agentic development" (research existing solutions before building, gated by task complexity) is an established practice, and how to integrate it into these skills.
@@ -63,3 +65,76 @@
 **Sources:**
 
 - Docs: [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices); [Claude Code best practices](https://code.claude.com/docs/en/best-practices).
+
+## Plan-Then-Execute Handoff To Cheaper Models (2026-10-26)
+
+**Brief:** a frontier model writes a plan that a cheaper model (Gemini Flash in Antigravity, a smaller Claude or GPT, a local model in OpenCode) executes reliably, across tools.
+
+**Scope:** obra/superpowers `writing-plans`, official command docs for Antigravity, Claude Code, Codex, and OpenCode. Searched 2026-10-26.
+
+**Findings:**
+
+- Superpowers `writing-plans` writes one plan file of small tasks, each with files, interfaces, tests, verification commands and expected output, and frequent commits, for an executor who "has not seen the codebase". It gives code bodies only where signatures and tests do not determine the algorithm, and executes with a fresh subagent per task.
+- Antigravity: `/goal` blocks the agent from ending its turn until it maps every deliverable to evidence, with no iteration cap and one goal per conversation; the docs suggest `/plan` first, then handing the plan to `/goal`. `/boost` (multi-agent deep reasoning) and `/teamwork-preview` (agent teams for repo-scale work) are paid-plan only. App and CLI support slash commands.
+- Claude Code: `/goal <condition>` starts work immediately and a separate small model judges the condition after every turn; conditions should name a measurable end state, the check that proves it, and constraints, and may cap turns. `/clear` starts a fresh context.
+- Codex: `/goal <objective>` from Codex 0.128.0, with `pause`, `resume`, `clear`; recommended form "end state verified by evidence while preserving constraints".
+- OpenCode: no goal mode; `/new` starts a session, `/models` picks a model, Tab cycles primary agents, and the Plan agent cannot edit files.
+- Inference: weak executors fail on undecided choices and algorithms, and lose the thread in long files, so plans for them need complete code and one file per task, beyond what superpowers gives a capable executor.
+
+**Decision:** Borrow. A new `implementation-plan` skill writes `plans/<slug>/` with `START-HERE.md`, `CHECKLIST.md`, and one self-contained task file per commit-sized task, plus a shared NEXT and DONE prompt wrapped in each tool's goal command. Alternatives considered: installing superpowers (rejected: single-file plans for capable executors, Claude Code plugin oriented); Spec Kit (rejected: heavier spec workflow, not aimed at weak executors).
+
+**Sources:**
+
+- Repository: [obra/superpowers writing-plans](https://raw.githubusercontent.com/obra/superpowers/main/skills/writing-plans/SKILL.md).
+- Docs: [Antigravity slash commands](https://antigravity.google/docs/slash-commands/); [Antigravity /goal](https://antigravity.google/docs/commands/goal/); [Claude Code commands](https://code.claude.com/docs/en/commands); [Claude Code /goal](https://code.claude.com/docs/en/goal.md); [Using Goals in Codex](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex); [OpenCode TUI commands](https://opencode.ai/docs/tui); [OpenCode agents](https://opencode.ai/docs/agents).
+
+## Agent-First Documentation Set (2026-10-26)
+
+**Brief:** one consistent format for `README.md`, `AGENTS.md`, `ARCHITECTURE.md`, `DATABASE.md`, `DESIGN.md`, `SECURITY.md`, `RESEARCH.md`, and similar, read mainly by agents, with no duplication and minimal tokens.
+
+**Scope:** agents.md, Diataxis, Keep a Changelog, and this repository's skills. Searched 2026-10-26.
+
+**Findings:**
+
+- AGENTS.md is an open format, "a README for agents", stewarded by the Agentic AI Foundation and read by Codex, Jules, Aider, opencode, Cursor, Gemini CLI, Copilot's coding agent, and others. Suggested sections: overview, build and test commands, code style, testing, security. It complements the human README instead of cluttering it.
+- Diataxis organises documentation around distinct needs (tutorials, how-to guides, reference, explanation).
+- Keep a Changelog: an `Unreleased` section and Added, Changed, Deprecated, Removed, Fixed, Security groups.
+- Inference: the doc content lists were spread across four skills with no shared format, no owner for `AGENTS.md`, `DATABASE.md`, `CONTRIBUTING.md`, or changelogs, and no rule for when a doc should not exist.
+
+**Decision:** Build a `project-docs` skill with a documentation map (one question per file, a create-when rule, an owner skill), shared format rules (a `Purpose` and `Read when` line, one home per fact, about 200 lines per file), and one template per file; the owning skills now point to the templates instead of repeating content lists. The human-only explanation goes in `EXPLAINER.md` (`project-explainer`), following Diataxis's separation of explanation from reference.
+
+**Sources:**
+
+- Standards: [AGENTS.md](https://agents.md/); [Diataxis](https://diataxis.fr/); [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/).
+
+## Kaggle Session Limits (2026-10-26)
+
+**Brief:** the maximum run time of one Kaggle notebook session, to plan runs that finish their full scope in one session.
+
+**Scope:** Kaggle docs and secondary sources. Searched 2026-10-26. Kaggle's notebook docs page renders with JavaScript and could not be read directly.
+
+**Findings:**
+
+- 12 hours per session for CPU and GPU, 9 hours for TPU: a comparison page that cites Kaggle's docs, checked 4 August 2026, and a PyPI package description agree. Older posts citing 9 hours for all sessions are outdated.
+- The weekly GPU quota is about 30 hours and floats with demand; secondary sources disagree on whether the docs fix the number.
+
+**Decision:** `kaggle-jupyter-notebooks` plans against 12 hours (9 on TPU) minus a margin of at least 45 minutes, sizes elastic work from a runtime timing probe, and splits scope that cannot fit into independent notebooks without resuming. Confidence: medium, because no primary source was opened.
+
+**Sources:**
+
+- Secondary: [Clusy, Colab vs Kaggle](https://www.clusy.io/compare/colab-vs-kaggle) (claims checked 2026-08-04); [kgz on PyPI](https://pypi.org/p/kgz).
+
+## Windows Line Endings In Agent Diffs (2026-10-26)
+
+**Brief:** stop agents analysing line-ending-only diffs on Windows.
+
+**Scope:** local experiments with Git 2.54.0.windows.1 on 2026-10-26.
+
+**Findings:**
+
+- Git for Windows sets `core.autocrlf=true` in the system config. Formatters then write LF files and every touched file prints "LF will be replaced by CRLF the next time Git touches it".
+- With LF in the index, a CRLF or LF working file shows no change under `autocrlf=true` or `input`, but shows as modified under `false`.
+- With CRLF committed in the index, a file rewritten as LF shows as modified under every setting; only renormalising the repository fixes it.
+- `git diff --ignore-cr-at-eol --stat` omits files whose only change is line endings.
+
+**Decision:** `core.autocrlf=input` in the global config (LF checkouts, LF commits, existing CRLF checkouts stay clean), editors set to LF, `* text=auto eol=lf` plus a one-time `git add --renormalize .` per affected repository, and one `AGENTS.md` rule to triage diffs with `--ignore-cr-at-eol`. Alternative considered: `autocrlf=false` (rejected: existing CRLF checkouts would show every file as modified).

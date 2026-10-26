@@ -26,7 +26,7 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
    - Signature: at most one memorable visual or interaction idea tied to the subject.
 4. Critique the plan. Cut clutter, then revise anything that could fit an unrelated brief: cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, orbs, generic numbered sections, boilerplate heroes, fake dashboards.
 5. Implement the plan exactly, in repo conventions. Before building or changing any control, form, overlay, tooltip, or scrollable panel, read [references/custom-controls.md](references/custom-controls.md): every browser-native UI to replace and what may stay native.
-6. Write or update root `DESIGN.md`: palette with roles and light and dark values, references and libraries reused, type scale, spacing and grid, breakpoints, component inventory and states, icons, motion rules, copy terminology, signature idea, and decisions with reasons. Keep it in sync with the code.
+6. Write or update root `DESIGN.md` from the `project-docs` template, in sync with the code.
 7. Run Verification.
 
 ## Content

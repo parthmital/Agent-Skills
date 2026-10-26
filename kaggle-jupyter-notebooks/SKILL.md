@@ -1,6 +1,6 @@
 ---
 name: kaggle-jupyter-notebooks
-description: Creates, edits, refactors, validates, cleans, diffs, repairs, and merges Jupyter notebooks safely, targeting Kaggle GPU T4 x2 by default with full hardware use, per-cell explanations, logged progress and heartbeats, deadlock-safe multiprocessing, metrics, and an output zip. Use when work involves .ipynb files, notebook cells, Kaggle, Jupyter, JupyterLab, Colab, nbformat, notebook outputs, refactors or cleanup, notebook merge conflicts, or a Kaggle run that looks stuck, hangs, deadlocks, is slow, or shows no new log output. Notebooks are never executed locally.
+description: Creates, edits, refactors, validates, cleans, diffs, repairs, and merges Jupyter notebooks safely, targeting Kaggle GPU T4 x2 by default with full hardware use, a session runtime budget that finishes the full scope within Kaggle's time limit, per-cell explanations, logged progress and heartbeats, deadlock-safe multiprocessing, metrics, and an output zip. Use when work involves .ipynb files, notebook cells, Kaggle, Jupyter, JupyterLab, Colab, nbformat, notebook outputs, refactors or cleanup, notebook merge conflicts, run time, epochs, or session time limits, or a Kaggle run that looks stuck, hangs, deadlocks, times out, is slow, or shows no new log output. Notebooks are never executed locally.
 ---
 
 # Kaggle Jupyter Notebooks
@@ -27,10 +27,11 @@ No corrupted JSON, wrong-cell edits, hidden-state bugs, or noisy diffs; notebook
 7. Read from `/kaggle/input/` (read-only); write every output to `/kaggle/working/`.
 8. No silent stretches. A saved Kaggle run's log shows only stdout and stderr, not tqdm bars or `display()` output. Every stage logs its start, end and duration. Every long loop logs progress with an ETA, and the log never goes more than about 2 minutes without a line, so the log alone shows whether a step is running, stuck or failed.
 9. No fork after CUDA or threads. Process pools use a `spawn` context with worker functions in a `%%writefile` module, DataLoaders are created once per run, and every wait has a timeout. Forking Kaggle's multithreaded kernel deadlocks silently.
+10. One session, full scope. Every notebook runs start to finish in one session within the limit (12 hours CPU or GPU, 9 hours TPU) without manual steps or resuming, and never cuts required work to fit. Spare time goes only to work that improves results; scope that cannot fit is split into independent notebooks. Before creating a notebook, or changing epochs, folds, seeds, model size, or search budgets, read [references/runtime-budget.md](references/runtime-budget.md).
 
 ## Structure
 
-- First cell: markdown overview of goal, data sources, approach, model, hardware, outputs and `/kaggle/working/` layout, and required Kaggle settings (accelerator, attached datasets, Internet if `pip install` is used).
+- First cell: markdown overview of goal, data sources, approach, model, hardware, estimated run time against the session limit, outputs and `/kaggle/working/` layout, and required Kaggle settings (accelerator, attached datasets, Internet if `pip install` is used).
 - A markdown cell before every code cell: what it does, why, key choices, expected output. Update it when the code changes.
 - Numbered sections (setup, configuration, data, exploration, preprocessing, model, training, evaluation, visualisation, inference, export).
 - One configuration cell near the top for paths, seeds, hyperparameters, batch sizes, epochs.
@@ -63,6 +64,8 @@ Before creating a notebook or changing hardware setup, multiprocessing, training
 | "A quick local run would confirm it works" | Local hardware and paths differ from Kaggle; it proves nothing and installs runtime deps. |
 | "A regex on the JSON is faster"            | It corrupts escaping, IDs, and outputs.                                                   |
 | "One GPU is enough for this"               | T4 x2 idle capacity doubles run time; the authoring reference says how to use both.       |
+| "Fewer epochs will make it fit"            | Cutting required scope lowers quality; split into independent notebooks instead.          |
+| "Checkpoint and resume in a new session"   | Resuming needs manual steps; each notebook must finish in one session.                    |
 | "The tqdm bar shows progress"              | Not in a saved run's log; without log lines a slow step looks exactly like a deadlock.    |
 | "It's probably just slow"                  | Compare with earlier timings; far beyond them, treat it as a hang and find the cause.     |
 | "Fork worked last time"                    | It deadlocks once CUDA or a thread pool starts earlier; one unrelated change triggers it. |
@@ -85,5 +88,6 @@ Before creating a notebook or changing hardware setup, multiprocessing, training
 - [ ] Authoring reference followed: both GPUs, VRAM, CPU, RAM used; metrics and plots saved; final zip cell with download link.
 - [ ] Liveness: every stage logs start, end and duration; long loops use `progress`, long calls `heartbeat`; workers are relayed with 5-minute status lines, stall warnings, a `faulthandler` watchdog and fail-fast exit checks. Read top to bottom, no stretch of the notebook could leave the log silent for more than about 2 minutes.
 - [ ] Deadlocks: `check-kaggle` reports no fork-based pools; DataLoaders are created once; every wait has a timeout.
+- [ ] Runtime: required scope estimated within the budget or split into independent notebooks; elastic work sized from a timing probe; a deadline guard before every epoch, fold, seed, or trial; no resume across sessions.
 - [ ] Output policy applied; no secrets, tokens, or machine paths added.
-- [ ] Report: files and cells changed, outputs kept or cleared, check results, that runtime, speed, hardware use, and metrics are unverified until run on Kaggle GPU T4 x2, and Kaggle settings the user must set. For a stuck run, also report whether the diagnosis is proven by the log or inferred, and tell the user to stop the hung session before rerunning.
+- [ ] Report: files and cells changed, outputs kept or cleared, check results, the estimated run time against the session limit, that runtime, speed, hardware use, and metrics are unverified until run on Kaggle GPU T4 x2, and Kaggle settings the user must set. For a stuck run, also report whether the diagnosis is proven by the log or inferred, and tell the user to stop the hung session before rerunning.
