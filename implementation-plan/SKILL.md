@@ -22,6 +22,7 @@ plans/<slug>/              <slug>: kebab-case name of the change
   START-HERE.md            executor rules, commands, and prompts per tool
   CHECKLIST.md             ordered task list with checkboxes, blockers log
   tasks/NN-<task-slug>.md  one self-contained task per file, NN = 01, 02, ...
+  milestones/, tools/, files/   only when needed: later-phase specs (step 4), helper scripts, verified files (step 5)
 ```
 
 Templates for all three files are in [references/plan-templates.md](references/plan-templates.md); the prompts per tool are in [references/executor-prompts.md](references/executor-prompts.md). Read both before writing.
@@ -31,17 +32,18 @@ Templates for all three files are in [references/plan-templates.md](references/p
 1. Scope. Restate the goal as verifiable outcomes. Ask about every ambiguity that changes the result now: the executor cannot ask and will guess.
 2. Research with `research-driven-development` and read the codebase: entry points, conventions, the files to change, and the exact install, test, lint, type-check, build, and run commands. Run the checks to record the baseline (pass counts, known failures).
 3. Decide everything: libraries with exact versions, file layout, names, data shapes, interfaces, error handling, tests, and docs to update. Nothing is left as "choose", "appropriate", or "as needed".
-4. Split into tasks. Each task:
+4. Split into tasks. When the scope needs more than about 60 tasks, or later work depends on code not yet written, write only the first phase as tasks and each later phase as a milestone spec (scope, fixed decisions, interfaces, ordered task outline, acceptance criteria) behind an `Expand` checklist line, with an expansion prompt that writes its task files just before execution. Each task:
    - has one observable outcome and ends in one commit that leaves every check passing;
    - touches about 5 files and 200 changed lines at most, so a weak model finishes it in about 15 minutes;
    - is ordered so its dependencies come first; scaffolding and shared code come before their users, and the last task is an end-to-end verification and documentation pass.
 5. Write each task file from the template, self-contained: it repeats the context, decisions, and commands it needs instead of pointing to other tasks or a conversation.
-   - New files and any non-trivial logic: the complete code. Weak models fail at algorithms, not typing.
+   - New files and any non-trivial logic: the complete code. Weak models fail at algorithms, not typing. Long verified code goes in `<plan>/files/`, copied by the task and checked by SHA-256; mechanical multi-file edits go in a script in `<plan>/tools/`.
+   - Risky steps (dependency upgrades, edition or framework migrations): trial them in a throwaway `git worktree` first and write the exact errors and fixes into the task.
    - Edits: the unique anchor text to find, then the exact replacement.
    - Tests in the same task as the code, written first where the repo has tests.
    - A Verify table of exact commands and expected results, and an exact commit message.
 6. Write `CHECKLIST.md` and `START-HERE.md`, filling the prompts for the tools the user named, or all of them.
-7. Cold-read review: read each task as an executor holding only that file and `START-HERE.md`. Fix every reference to unwritten context ("as above", "similar to Task 3", "etc."), every undecided choice, and every path or command that neither exists now nor is created by an earlier task.
+7. Cold-read review: read each task as an executor holding only that file and `START-HERE.md`. Fix every reference to unwritten context ("as above", "similar to Task 3", "etc."), every undecided choice, and every path or command that neither exists now nor is created by an earlier task. Then dry-run the task sequence in a throwaway worktree with a script that applies each edit literally and runs its checks: an earlier task's formatter or refactor often breaks a later task's anchor.
 8. Report the folder, task count, first prompt to paste, and any assumption the user should confirm. Commit the plan only when asked (`git-commit-and-push`); the executor needs it committed before Task 01.
 
 ## Rules
