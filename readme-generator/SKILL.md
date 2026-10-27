@@ -38,7 +38,7 @@ Candidates: table of contents, quick start, overview, problem, goals, features, 
 - ASCII only, including Mermaid: no em or en dashes, smart quotes, emojis, or icons.
 - Never invent features, commands, metrics, URLs, credentials, or config values. No vague claims (fast, scalable, secure, lightweight, production-ready, optimised, easy) unless a verified metric supports them, given with its evidence. Badges only when verifiable.
 - Valid Markdown: clear heading hierarchy, short paragraphs, ordered steps, tables for structured data, language-tagged code blocks, relative links, working table-of-contents anchors.
-- Never duplicate other docs: the README is the entry point and ends with the documentation index required by `project-docs`; architecture, design, database, security, and research detail stays in its own file, linked. The beginner explanation of the whole project belongs in `EXPLAINER.md` (`project-explainer`).
+- Never duplicate other docs: the README is the entry point and ends with the documentation index required by `project-docs`; architecture, design, database, security, and research detail stays in its own file, linked.
 
 ## Section Requirements
 

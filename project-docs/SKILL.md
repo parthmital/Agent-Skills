@@ -13,7 +13,6 @@ Agents read these docs at the start of tasks, so every line costs context in eve
 
 - Creating, auditing, or standardising any file in the map below, or the whole set.
 - Other skills that write a file in the map follow its template here; their own steps decide the content.
-- Not for `EXPLAINER.md`, which is for humans (`project-explainer`).
 
 ## Documentation Map
 

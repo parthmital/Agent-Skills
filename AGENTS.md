@@ -15,8 +15,6 @@ Intent map:
 - `.ipynb` work: `kaggle-jupyter-notebooks`
 - README or onboarding docs: `readme-generator`
 - Other project docs (`AGENTS.md`, `ARCHITECTURE.md`, `DATABASE.md`, `DESIGN.md`, `SECURITY.md`, `RESEARCH.md`, `CONTRIBUTING.md`, `CHANGELOG.md`), their format, or a docs audit: `project-docs`
-- Explaining a whole project for humans, interviews, or pitches (`EXPLAINER.md`): `project-explainer`
-- Implementation plan for another model or session to execute: `implementation-plan`
 - Commit or push: `git-commit-and-push`
 - LaTeX research papers: `latex-research-papers`
 - Resume: `resume-tailoring`
@@ -41,7 +39,7 @@ Wrong thoughts: "this is too small for a skill", "I'll check skills after gather
 - Write the minimum code that fully completes the task and every fix. Add no unrequested features, abstractions, configurability, or premature optimisation.
 - Follow the existing style, naming, tooling, package manager, and tests, and the existing architecture unless the task is to change it. Add dependencies only when justified, installed inside the repository.
 - For every task, proactively identify and implement all relevant fixes, improvements, and necessary changes, including every issue found anywhere in the repository, even when unrelated to the task. Never leave known issues or unfinished work behind, and report each fix made. Where a fix needs an action the Ask rule above covers, or a skill's hard constraint forbids it, ask or report the issue instead of silently leaving it.
-- Update all documentation affected by every change in the same task: README (via `readme-generator`), other project docs (via `project-docs`), `EXPLAINER.md` if present, skill files, docstrings, comments, and help text.
+- Update all documentation affected by every change in the same task: README (via `readme-generator`), other project docs (via `project-docs`), skill files, docstrings, comments, and help text.
 - Remove unused code your changes introduce. Keep code focused, readable, and free of duplication.
 - Never pass backslashes or nested quotes through a shell command: on Windows the Bash tool turns `\\` into `\` even inside `<<'EOF'` heredocs (so `"\\fi"` reaches Python as a form feed), and `printf` and `echo -e` expand escapes. Write scripts, LaTeX, regexes, and JSON to a file with the Write tool and run that file, and change files with the Edit tool.
 

@@ -20,14 +20,12 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `frontend-design`              | Clean, intuitive, fully responsive frontend UI in light and dark modes, built on proven patterns and libraries, with custom components and no browser-native UI.                                                                          |
 | `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.                                                                                                                     |
-| `implementation-plan`          | Writes a plan folder of small, self-contained task files with exact code, checks, and commits, plus one prompt that makes a cheaper model run every task to the end; the planner never executes, and large scopes get milestone specs.    |
 | `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                                                                                                                              |
 | `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip.                                                                                                          |
 | `latex-research-papers`        | Picks the best-fit journal and uses its official LaTeX template; compiles via local Tectonic: no overflow, well-placed floats, peer-reviewed in-order references, clickable links, no semicolons, plus anonymised and no-references PDFs. |
 | `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 500 characters, using only supported claims.                                                                                                                                |
 | `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                                                                                           |
 | `project-docs`                 | One compact, agent-first format for the project doc set (`AGENTS.md`, `ARCHITECTURE.md`, `DATABASE.md`, and others), with one purpose per file and no duplication.                                                                        |
-| `project-explainer`            | Writes `EXPLAINER.md`: the whole project explained from scratch for humans, with every decision, alternative, term, metric, and notebook cell, plus interview preparation.                                                                |
 | `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                                                                                      |
 | `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                                                                                         |
 | `research-driven-development`  | Decides whether a task needs research; if so, finds existing libraries, projects, datasets, models, skills, and MCP servers to adopt or adapt before building.                                                                            |
@@ -39,7 +37,7 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 
 `skill-improvement` closes the loop. `AGENTS.md` tells the agent to search the skills for an error's text before debugging it, and to record every hard problem it solves in the skill that loads when the problem recurs. Fixes with no owning skill go in `skill-improvement/references/fixes.md`.
 
-`project-docs` owns the documentation format of target repositories: which file answers which question, when a file should exist, and one template per file. The skills that write `ARCHITECTURE.md`, `DESIGN.md`, `SECURITY.md`, and `RESEARCH.md` follow its templates, and `README.md` links the rest. `EXPLAINER.md` from `project-explainer` is the one document written for humans rather than agents.
+`project-docs` owns the documentation format of target repositories: which file answers which question, when a file should exist, and one template per file. The skills that write `ARCHITECTURE.md`, `DESIGN.md`, `SECURITY.md`, and `RESEARCH.md` follow its templates, and `README.md` links the rest.
 
 ## Installation
 
@@ -89,8 +87,6 @@ A harness that does not follow links needs a copy of the whole folder (`SKILL.md
 |   `-- agents/openai.yaml            optional harness metadata
 |-- frontend-design/
 |   `-- references/custom-controls.md  browser-native UI to replace with custom components
-|-- implementation-plan/
-|   `-- references/                 plan templates, executor prompts per tool
 |-- kaggle-jupyter-notebooks/
 |   |-- references/kaggle-authoring.md  hardware, progress, metrics, output layout, zip cell
 |   |-- references/runtime-budget.md  session time limit, elastic work, splitting notebooks
@@ -102,8 +98,6 @@ A harness that does not follow links needs a copy of the whole folder (`SKILL.md
 |   `-- references/local-launch.md    one-command npm run dev launcher rules
 |-- project-docs/
 |   `-- references/doc-templates.md   template per project doc
-|-- project-explainer/
-|   `-- references/domain-checklists.md  what to explain per project type
 |-- readme-generator/
 |   `-- references/notebook-walkthrough.md  cell-by-cell README rules for notebook repositories
 |-- resume-tailoring/
