@@ -27,7 +27,7 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 | `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 500 characters, using only supported claims.                                                                                                                                |
 | `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                                                                                           |
 | `project-docs`                 | One compact, agent-first format for the project doc set (`AGENTS.md`, `ARCHITECTURE.md`, `DATABASE.md`, and others), with one purpose per file and no duplication.                                                                        |
-| `project-explainer`            | Writes `EXPLAINER.md`: the whole project explained from scratch for humans, with every decision, alternative, term, and metric, plus interview preparation.                                                                               |
+| `project-explainer`            | Writes `EXPLAINER.md`: the whole project explained from scratch for humans, with every decision, alternative, term, metric, and notebook cell, plus interview preparation.                                                                |
 | `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                                                                                      |
 | `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                                                                                         |
 | `research-driven-development`  | Decides whether a task needs research; if so, finds existing libraries, projects, datasets, models, skills, and MCP servers to adopt or adapt before building.                                                                            |
@@ -43,7 +43,11 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 
 ## Installation
 
-There is no install script. Link each skill folder into the skills directory of your agent or harness (for Claude Code, `~/.claude/skills/`), keeping the folder name. A link keeps one source of truth: edits made by `skill-improvement` from any project land in this repository. On Windows a directory junction needs no administrator rights:
+There is no install script. Link each skill folder into the skills directory of your agent or harness, keeping the folder name. A link keeps one source of truth: edits made by `skill-improvement` from any project land in this repository.
+
+### Claude Code
+
+On Windows a directory junction needs no administrator rights:
 
 ```powershell
 foreach ($d in Get-ChildItem -Directory | Where-Object { Test-Path "$($_.FullName)\SKILL.md" }) {
@@ -51,7 +55,21 @@ foreach ($d in Get-ChildItem -Directory | Where-Object { Test-Path "$($_.FullNam
 }
 ```
 
-On POSIX use `ln -s "$PWD/<skill>" ~/.claude/skills/<skill>`. A harness that does not follow links needs a copy of the whole folder (`SKILL.md`, `agents/`, `references/`, `scripts/`, `assets/`); recopy it after every change.
+On POSIX use `ln -s "$PWD/<skill>" ~/.claude/skills/<skill>`.
+
+### Google Antigravity
+
+Link this repository as the global skills directory and link the global agent rules (`AGENTS.md`):
+
+```powershell
+# Global skills directory junction
+New-Item -ItemType Junction -Path "$HOME\.gemini\config\skills" -Target "$PWD"
+
+# Global agent rules symbolic link
+cmd.exe /c "mklink `"$HOME\.gemini\config\rules\AGENTS.md`" `"$PWD\AGENTS.md`""
+```
+
+A harness that does not follow links needs a copy of the whole folder (`SKILL.md`, `agents/`, `references/`, `scripts/`, `assets/`), recopying it after every change.
 
 `agents/openai.yaml` in each skill is optional metadata (`display_name`, `short_description`, `default_prompt`, `allow_implicit_invocation`) for harnesses that read it. Others ignore it.
 

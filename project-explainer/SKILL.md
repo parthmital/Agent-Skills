@@ -1,6 +1,6 @@
 ---
 name: project-explainer
-description: Writes EXPLAINER.md, a single beginner-friendly document at the repository root that explains the whole project from scratch for human readers, covering the problem, every component, how it works end to end, every term, method, dataset, model, hyperparameter, metric, and result, and every decision with its reasons, pros, cons, and alternatives, plus likely interview questions. Use when the user asks to explain a repository, project, or codebase end to end, or to prepare for an interview, viva, presentation, demo, or pitch about a project.
+description: Writes EXPLAINER.md, a single beginner-friendly document at the repository root that explains the whole project from scratch for human readers, covering the problem, every component, how it works end to end, every term, method, dataset, model, hyperparameter, metric, and result, every notebook cell by cell with its outputs, and every decision with its reasons, pros, cons, and alternatives, plus likely interview questions. Use when the user asks to explain a repository, project, or codebase end to end, or to prepare for an interview, viva, presentation, demo, or pitch about a project.
 ---
 
 # Project Explainer
@@ -29,12 +29,13 @@ description: Writes EXPLAINER.md, a single beginner-friendly document at the rep
 2. **Background**: the domain from zero, so the rest makes sense.
 3. **How it works, end to end**: a diagram (Mermaid or ASCII) and a walkthrough of one real input, request, or data item travelling through the whole system, with real values from the repo.
 4. **Every part explained**: one subsection per component, in the order data or control flows: what it does, how it works inside, its inputs and outputs, and why it exists.
-5. **Decisions**: one entry per decision with what was chosen, why, pros, cons, the main alternatives, and when an alternative would be the better choice.
-6. **Results and quality**: every metric with what it measures, how to read it, and what this project's values mean; how it was tested and validated; limitations, risks, and known issues.
-7. **Running and demoing it**: the shortest path to show it working, linking `README.md` for setup details.
-8. **What could come next**: improvements the evidence supports.
-9. **Interview and pitch preparation**: a 30-second and a 2-minute explanation; likely questions, including hard and critical ones ("why not X?", "what would break at scale?", "what was the hardest part?"), each with a short answer grounded in this document; for products, the user, value, and competitors.
-10. **Glossary**: every technical term, alphabetical, one or two plain sentences each.
+5. **Notebooks, cell by cell** (when the repository has notebooks): one subsection per notebook, then one entry per cell in order, markdown cells included. Each entry gives the cell's purpose, what every line or block does and why, every library call, parameter, and value it sets, and every saved output (printed text, logs, tables, metrics, warnings, errors, and figures, linking the image files) with what it shows and how to read it. Close each notebook with how its cells connect and what its final results mean.
+6. **Decisions**: one entry per decision with what was chosen, why, pros, cons, the main alternatives, and when an alternative would be the better choice.
+7. **Results and quality**: every metric with what it measures, how to read it, and what this project's values mean; how it was tested and validated; limitations, risks, and known issues.
+8. **Running and demoing it**: the shortest path to show it working, linking `README.md` for setup details.
+9. **What could come next**: improvements the evidence supports.
+10. **Interview and pitch preparation**: a 30-second and a 2-minute explanation; likely questions, including hard and critical ones ("why not X?", "what would break at scale?", "what was the hardest part?"), each with a short answer grounded in this document; for products, the user, value, and competitors.
+11. **Glossary**: every technical term, alphabetical, one or two plain sentences each.
 
 ## Writing Rules
 
@@ -60,9 +61,11 @@ description: Writes EXPLAINER.md, a single beginner-friendly document at the rep
 - A decision without alternatives, or a metric without an interpretation.
 - A number that does not appear in the repository's code, outputs, or docs.
 - A component in the coverage list with no subsection.
+- A notebook cell, or a saved output, skipped, summarised as a group, or explained without its values.
 
 ## Verification
 
+- [ ] Every notebook cell and saved output is explained individually, in order.
 - [ ] Every coverage list item and every domain checklist item is explained, or noted as absent from the repository.
 - [ ] Every number, name, and path checked against the repository.
 - [ ] Every decision has reasons, pros, cons, and alternatives; undocumented reasons are marked.

@@ -43,7 +43,7 @@ Read the sections that match the repository; most projects match more than one. 
 ## Research Papers And Notebooks
 
 - The research question, hypothesis, contribution, and related work.
-- Every experiment, cell group, figure, and table, with what it shows.
+- Every experiment, figure, and table, with what it shows. Notebooks are covered cell by cell in their own section of `EXPLAINER.md`.
 
 ## Every Project
 
