@@ -46,7 +46,7 @@ Candidates: table of contents, quick start, overview, problem, goals, features, 
 - Tech stack: name, version if known, purpose, where used, why needed, how it interacts with the rest.
 - Environment variables table: name, required or optional, purpose, format, safe example, default, security notes. Never real secrets or personal data.
 - API, only when endpoints exist, verified from code: method, route, purpose, auth, headers, parameters, body, validation, responses, status codes, example request and response.
-- Structure: ASCII tree with the purpose of every important directory and file.
+- Structure: plain ASCII tree in a `text` block with names only, no inline comments or descriptions (they drift out of alignment). Describe directories and files in prose, a table, or ARCHITECTURE.md instead.
 - Mermaid diagrams only when the repo holds enough information for an accurate one.
 - Troubleshooting table: problem, likely cause, diagnostic command, resolution.
 - Metrics only when they help readers: verifiable counts and limits with name, value, source file or command, notes. Never estimate; for an important unverifiable metric write exactly `Not measured in the current repository.`
