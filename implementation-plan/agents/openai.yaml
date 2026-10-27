@@ -1,6 +1,6 @@
 interface:
   display_name: "Implementation Plan"
-  short_description: "Task-by-task plans a cheaper model can execute"
-  default_prompt: "Use $implementation-plan to write a complete, self-contained, task-by-task implementation plan folder that a cheaper model can execute with the prompts it provides."
+  short_description: "Plans a cheaper model runs end to end from one prompt"
+  default_prompt: "Use $implementation-plan to write a complete, self-contained, task-by-task implementation plan folder that a cheaper model executes end to end from one prompt, without the planner executing any task."
 policy:
   allow_implicit_invocation: true
