@@ -44,6 +44,7 @@ Add `.venv/`, `.agent-local/`, and `.cache/` to the root `.gitignore` if missing
 ## Local Paths
 
 - Python: `python -m venv .venv`, then `.venv/bin/python -m pip install <pkg> --cache-dir .cache/pip` (Windows: `.venv\Scripts\python`). `PIP_CACHE_DIR=.cache/pip`, `UV_CACHE_DIR=.cache/uv`, `POETRY_VIRTUALENVS_IN_PROJECT=true` with `POETRY_CACHE_DIR=.cache/poetry`, `HF_HOME=.cache/huggingface`.
+- uv Python: `UV_PYTHON_INSTALL_DIR=.cache/python uv python install --no-bin <ver>`. Without `--no-bin`, uv writes `python<ver>.exe` into `%USERPROFILE%\.local\bin`, outside the repo.
 - Node: `node_modules/.bin`, package scripts, or exec commands; a dev dependency for repeated tools. `npm_config_cache=.cache/npm` (PowerShell: `$env:npm_config_cache = ".cache\npm"`); `pnpm install --store-dir .cache/pnpm` or `store-dir` in project `.npmrc`; Yarn's repo-local cache where supported.
 - Playwright: `PLAYWRIGHT_BROWSERS_PATH=.cache/playwright`; disposable profiles under `.agent-local/tmp/`, never a personal profile.
 - Maven `-Dmaven.repo.local=.cache/maven`; Gradle `GRADLE_USER_HOME=.cache/gradle`; Go `GOCACHE=.cache/go-build`, `GOMODCACHE=.cache/go-mod`; Rust `CARGO_HOME=.cache/cargo` when compatible; .NET `NUGET_PACKAGES=.cache/nuget`; Ruby `bundle config set path vendor/bundle`.

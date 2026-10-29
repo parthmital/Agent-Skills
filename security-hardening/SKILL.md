@@ -22,7 +22,7 @@ Find, fix, and prove fixes for every exploitable weakness. No code is provably a
    - Secrets and history: `gitleaks`, `trufflehog`.
    - Dependencies: `osv-scanner` plus the native auditor (`npm audit`, `pip-audit`, `cargo audit`, `govulncheck`).
    - Static: `semgrep`, plus `bandit`, `gosec`, `brakeman`, or CodeQL.
-   - Infrastructure and CI: `trivy`, `checkov`, `hadolint`, `zizmor`.
+   - Infrastructure and CI: `trivy`, `checkov`, `hadolint`, `zizmor`. Scanner and CI-job quirks: `references/scanner-fixes.md`.
 3. Review every checklist category by hand, tracing untrusted input from source to sink. Scanners miss logic and authorisation flaws.
 4. Confirm each finding with a concrete attack path; drop false positives. Rate Critical, High, Medium, or Low and tag the CWE.
 5. Fix highest severity first; add a regression test reproducing each attack.

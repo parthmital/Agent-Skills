@@ -10,6 +10,12 @@ Tool and environment problems that no other skill owns. Search by symptom text. 
 
 - **`next dev` prints "Your version of Next.js is affected by a known security vulnerability" and exits**: `node_modules` is older than `package-lock.json` (often after a merged dependency bump), so the installed `next` is the vulnerable one. Run `npm ci`. Check: `npm ls next` shows no `invalid`, and `next dev` stays up.
 - **npm 12 warns "install scripts blocked because they are not covered by allowScripts"** (prisma, @prisma/engines, esbuild, unrs-resolver): npm 12 skips dependency lifecycle scripts by default. Prisma 7, tsx, vitest, and Next build work without them, so leave them blocked unless a tool fails. Check: `npx prisma generate`, `npm test`, and `npm run build` pass.
+- **`npm ci` fails with ERESOLVE "peer react@"^19.3.1" from react-dom@19.3.1"**: a bumped package needs a newer version of a sibling that is still on the old version. Bump the sibling in the same change (react and react-dom). Check: `npm ci` passes on the combined change.
+- **`npm ci` fails with ERESOLVE "peer typescript@">=4.8.4 <6.1.0"" from typescript-eslint**: typescript-eslint caps the TypeScript major, so a bump past the cap conflicts. Hold that bump until the linter supports it. Check: `npm view typescript-eslint@latest peerDependencies` lists the new range.
+
+## Python dependencies
+
+- **`pip install --require-hashes` fails: "all requirements must have their versions pinned with ==" for `setuptools` (or `pip`) "from pip-tools"**: pip-tools needs setuptools, and `pip-compile` without `--allow-unsafe` leaves setuptools and pip out of the lock. A Python 3.11 venv ships setuptools, which hides the gap; a fresh Python 3.12 venv does not. Recompile with `pip-compile --allow-unsafe --generate-hashes`. Check: `pip uninstall -y setuptools` in a fresh venv, then the hash-checked install succeeds.
 
 ## Git
 

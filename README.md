@@ -102,6 +102,8 @@ A harness that does not follow links needs a copy of the whole folder (`SKILL.md
 |   `-- references/notebook-walkthrough.md  cell-by-cell README rules for notebook repositories
 |-- resume-tailoring/
 |   `-- assets/Resume.tex             single-page LaTeX resume template
+|-- security-hardening/
+|   `-- references/scanner-fixes.md  checkov, gitleaks, and zizmor quirks in CI
 `-- skill-improvement/
     `-- references/fixes.md           tool and environment fixes no other skill owns
 ```
