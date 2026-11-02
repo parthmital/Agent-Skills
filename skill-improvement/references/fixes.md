@@ -24,7 +24,7 @@ Tool and environment problems that no other skill owns. Search by symptom text. 
 ## Shell
 
 - **A file's other uncommitted changes vanish while comparing one file with HEAD**: `git stash` stashes the whole working tree, not one path. Use `git show HEAD:<path> > <tmp>` and compare the copy. Check: `git stash list` is empty and `git status` shows every earlier change.
-- **A Python edit turns an LF file into CRLF on Windows**: `Path.write_text` and text-mode `open` translate `\n` to `\r\n`. Pass `newline="\n"` when writing. Check: `file <path>` reports no CRLF terminators.
+- **A Python edit turns an LF file into CRLF on Windows**: `Path.write_text`, text-mode `open` and `nbformat.write` translate `\n` to `\r\n`. Pass `newline="\n"` when writing (for notebooks, `open(path, "w", encoding="utf-8", newline="\n").write(nbformat.writes(nb) + "\n")`). Check: `file <path>` reports no CRLF terminators.
 - **`python -I` on Windows fails with `UnicodeEncodeError: 'charmap' codec can't encode character` even with `PYTHONIOENCODING=utf-8`**: `-I` implies `-E`, which ignores every `PYTHON*` variable, so stdout stays cp1252. Add `-X utf8`, or call `sys.stdout.reconfigure(encoding="utf-8")` in the script. Check: the script prints non-ASCII text.
 
 ## Documents

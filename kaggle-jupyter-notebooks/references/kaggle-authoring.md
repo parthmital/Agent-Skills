@@ -185,6 +185,8 @@ When the user reports a run that shows no new output:
 
 ## Final Zip Cell
 
+Run every stage after the expensive training or GPU work, and every metric, plot and export cell, inside a `guard(name)` context manager that logs the traceback, appends it to a `FAILURES` list written to the manifest, and continues: an uncaught exception in a late analysis cell otherwise ends the saved run before this cell, and its outputs are never zipped.
+
 The last cell zips everything in `/kaggle/working/` except caches and shows a download link. Its markdown cell should mention that the zip also appears in the notebook's Output tab after a saved run. Adapt this pattern (`log` and `progress` come from the configuration cell):
 
 ```python

@@ -32,6 +32,7 @@ Never fill time with work that cannot change the outputs: repeated identical run
 - Compute the plan from the measurements: `units = min(max_useful, floor((BUDGET - elapsed - reserve) / unit_seconds))` for epochs, folds, seeds, or trials. Log it, for example `Plan: 5 folds x 18 epochs, estimated 8.7 h, finishing at +10.9 h of 12 h`.
 - Schedules that need the total step count (cosine, OneCycle) take it from the plan, computed before training starts.
 - Order work so required units come first and elastic units after them.
+- A short pilot's throughput is noisy, and costing concurrent sessions whose steps are sequential (agent or dialogue turns) at the pilot's full-load latency overestimates them about 2x: with many sessions open the server is throughput-bound. Plan conservatively, then grow the sample in prefix steps whose cost is projected from the per-job rates of the stages already run, stopping on elapsed time only, never on results.
 - Before each epoch, fold, seed, or trial, check that elapsed time plus that unit plus the reserve stays within `BUDGET`. Otherwise stop it, log why, and continue with the best checkpoint so every later cell still runs. A guard stop inside the required scope means the estimate was wrong: report it.
 
 ## Splitting Into Several Notebooks

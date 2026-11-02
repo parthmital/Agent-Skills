@@ -21,7 +21,7 @@ No corrupted JSON, wrong-cell edits, hidden-state bugs, or noisy diffs; notebook
 1. Never execute notebooks locally: no `nbconvert --execute`, local kernels, training, or installs of the notebook's runtime dependencies. Never claim a notebook runs, its speed, or its metrics; those need a Kaggle run.
 2. Never edit raw notebook JSON with text replacement; use `nbformat` or `<doctor>`.
 3. Back up before mutating unless the file is clean in version control (`--backup` writes to `<repo>/.agent-local/backups/`).
-4. Preserve cell IDs, order, types, attachments, and unknown metadata unless the task or a fix requires a change. Clear execution counts; never renumber them.
+4. Preserve cell IDs, order, types, attachments, and unknown metadata unless the task or a fix requires a change. Clear execution counts; never renumber them. A notebook downloaded from a Kaggle run has new cell IDs: when its sources match the committed copy, restore the committed IDs by position.
 5. Every cell works in a fresh top-to-bottom Kaggle run, with no state from earlier runs.
 6. Self-contained: no imports of local modules absent on Kaggle, unless via a Kaggle utility script or dataset.
 7. Read from `/kaggle/input/` (read-only); write every output to `/kaggle/working/`.
