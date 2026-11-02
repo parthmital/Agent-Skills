@@ -16,22 +16,22 @@ Reusable, model- and harness-neutral agent skills. Each skill is a folder with a
 
 ## Skills
 
-| Skill                          | Purpose                                                                                                                                                                                                                                   |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `frontend-design`              | Clean, intuitive, fully responsive frontend UI in light and dark modes, built on proven patterns and libraries, with custom components and no browser-native UI.                                                                          |
-| `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.                                                                                                                     |
-| `internet-research`            | Current, source-based research, comparison, validation, and recommendations.                                                                                                                                                              |
-| `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip.                                                                                                          |
-| `latex-research-papers`        | Picks the best-fit journal and uses its official LaTeX template; compiles via local Tectonic: no overflow, well-placed floats, peer-reviewed in-order references, clickable links, no semicolons, plus anonymised and no-references PDFs. |
-| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 500 characters, using only supported claims.                                                                                                                                |
-| `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                                                                                           |
-| `project-docs`                 | One compact, agent-first format for the project doc set (`AGENTS.md`, `ARCHITECTURE.md`, `DATABASE.md`, and others), with one purpose per file and no duplication.                                                                        |
-| `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                                                                                      |
-| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                                                                                         |
-| `research-driven-development`  | Decides whether a task needs research; if so, finds existing libraries, projects, datasets, models, skills, and MCP servers to adopt or adapt before building.                                                                            |
-| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                                                                                                                         |
-| `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                                                                                                                                |
-| `skill-improvement`            | Records each solved hard problem in the skill that loads when it recurs, merging rather than appending, so every problem is solved once.                                                                                                  |
+| Skill                          | Purpose                                                                                                                                                                                                                                                                          |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `frontend-design`              | Clean, intuitive, fully responsive frontend UI in light and dark modes, built on proven patterns and libraries, with custom components and no browser-native UI.                                                                                                                 |
+| `git-commit-and-push`          | Docs check and full local CI until green, then factual commits, `.gitignore` upkeep, strict message format, and push.                                                                                                                                                            |
+| `internet-research`            | Current, source-based research, fact-checking, comparison, and recommendations, weighing every source on its evidence rather than who publishes it.                                                                                                                              |
+| `kaggle-jupyter-notebooks`     | Safe notebook editing for Kaggle GPU T4 x2, with full hardware use, per-cell explanations, progress, metrics, and an output zip.                                                                                                                                                 |
+| `latex-research-papers`        | Picks the best-fit journal and uses its official LaTeX template; fact-checks every claim and reference; compiles via local Tectonic: no overflow, well-placed floats, peer-reviewed in-order references, clickable links, no semicolons, plus anonymised and no-references PDFs. |
+| `linkedin-project-description` | Turns a project README into a LinkedIn description of at most 500 characters, using only supported claims.                                                                                                                                                                       |
+| `production-architecture`      | Whole-repo re-architecture for production readiness, scalability, modularity, zero redundancy, and a one-command `npm run dev`.                                                                                                                                                  |
+| `project-docs`                 | One compact, agent-first format for the project doc set (`AGENTS.md`, `ARCHITECTURE.md`, `DATABASE.md`, and others), with one purpose per file and no duplication.                                                                                                               |
+| `readme-generator`             | Verified README generation; notebook repositories get a cell-by-cell walkthrough with every metric and output image.                                                                                                                                                             |
+| `repo-local-workspace`         | Keeps tools, caches, helper scripts, logs, outputs, and temp files in a Git-ignored folder inside the repository.                                                                                                                                                                |
+| `research-driven-development`  | Decides whether a task needs research; if so, finds existing libraries, projects, datasets, models, skills, and MCP servers to adopt or adapt before building.                                                                                                                   |
+| `resume-tailoring`             | Writes or tailors a single-page LaTeX resume from ground-truth Education, Experience, and Projects documentation.                                                                                                                                                                |
+| `security-hardening`           | Scans the whole repository and its history for every class of vulnerability, then fixes and verifies them.                                                                                                                                                                       |
+| `skill-improvement`            | Records each solved hard problem in the skill that loads when it recurs, merging rather than appending, so every problem is solved once.                                                                                                                                         |
 
 `research-driven-development` is the entry point for new work. `AGENTS.md` routes non-trivial tasks to it, and `frontend-design`, `production-architecture`, and `kaggle-jupyter-notebooks` use it for library, architecture, model, and dataset choices. It picks a tier from the task's complexity, scope, and novelty: Skip (small, well-understood changes), Quick (one bounded choice), or Full (new project, unfamiliar domain, or stack choice). It judges sources by the `internet-research` rules and records lasting decisions in a `RESEARCH.md` at the target repository's root. The prior art behind this design is in this repository's [RESEARCH.md](RESEARCH.md).
 
@@ -136,11 +136,11 @@ On POSIX shells use `./.venv/bin/python` and forward slashes.
 
 ## Paper Checker
 
-[latex-research-papers/scripts/paper_check.py](latex-research-papers/scripts/paper_check.py) needs Python 3 and a Tectonic binary. It uses `--tectonic <path>`, else `$TECTONIC`, else `tectonic` on `PATH`, else `tectonic.exe` in the paper folder, its parents, and their direct subfolders. The PDF checks need `pypdf`, and `--render` also needs `pypdfium2`; without them those checks are skipped. Install both into a repository-local virtual environment:
+[latex-research-papers/scripts/paper_check.py](latex-research-papers/scripts/paper_check.py) needs Python 3 and a Tectonic binary. It uses `--tectonic <path>`, else `$TECTONIC`, else `tectonic` on `PATH`, else `tectonic.exe` in the paper folder, its parents, and their direct subfolders. The PDF checks need `pypdf`, and `--render` also needs `pypdfium2` and `pillow`; without them those checks are skipped. Install them into a repository-local virtual environment:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python -m pip install pypdf pypdfium2 --cache-dir .cache\pip
+.\.venv\Scripts\python -m pip install pypdf pypdfium2 pillow --cache-dir .cache\pip
 .\.venv\Scripts\python .\latex-research-papers\scripts\paper_check.py <paper>\main.tex --render .agent-local\output\paper-pages
 ```
 
@@ -194,7 +194,7 @@ npx --yes prettier@3 --check "**/*.{md,json,yaml}"
 
 ## Known Limitations
 
-- No automated tests, CI, licence file, or dependency manifest. `nbformat`, `pypdf`, and `pypdfium2` are not version-pinned and no Python version is declared.
+- No automated tests, CI, licence file, or dependency manifest. `nbformat`, `pypdf`, `pypdfium2`, and `pillow` are not version-pinned and no Python version is declared.
 - `notebook_doctor.py` is not a secret scanner. Review notebooks manually before sharing them.
 
 ## Documentation

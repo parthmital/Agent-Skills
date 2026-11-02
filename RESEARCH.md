@@ -138,3 +138,17 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 - `git diff --ignore-cr-at-eol --stat` omits files whose only change is line endings.
 
 **Decision:** `core.autocrlf=input` in the global config (LF checkouts, LF commits, existing CRLF checkouts stay clean), editors set to LF, `* text=auto eol=lf` plus a one-time `git add --renormalize .` per affected repository, and one `AGENTS.md` rule to triage diffs with `--ignore-cr-at-eol`. Alternative considered: `autocrlf=false` (rejected: existing CRLF checkouts would show every file as modified).
+
+## Source Weighting And Paper Fact-Checking (2026-11-02)
+
+**Brief:** stop `internet-research` ranking sources by status, and make `latex-research-papers` fact-check every claim and reference before journal submission.
+
+**Scope:** user direction on 2026-11-02. No external search was run for this decision.
+
+**Findings:**
+
+- Owners publish self-interested claims about their own outcomes. The user's example: a university's official placement statistics contradicted by student-run, student-reported placement data (such as [a student-run placements tracker](https://placements-tracker-btech2026.streamlit.app/)) and Reddit threads. Not independently verified here.
+- The old rule "Primary sources first" and "Forums and issues are anecdotal" let status stand in for evidence quality.
+- Journal reviewers check claims, numbers, and citations, so a citation that does not support its claim, or wrong metadata, is a rejection risk.
+
+**Decision:** sources are weighed on transparency, verifiability, independence and incentives, recency, and relevance. First-party sources stay authoritative for what their owner defines but are checked against independent evidence on their own outcomes. Conflicts are reported with their evidence, never settled by authority. Research extracts full content (browser automation, PDFs, datasets) within legal access. Papers get a fact-check step: every claim traced to a result file or opened source, every reference checked for existence, access, metadata, retraction, and passage-level support. The reference list itself still holds only peer-reviewed papers, a venue convention, not a judgement of truth. Alternative considered: keeping a fixed source hierarchy with forums demoted (rejected: rewards status over evidence).
