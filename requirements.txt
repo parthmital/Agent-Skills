@@ -1,0 +1,12 @@
+# Helper scripts: notebook_doctor.py needs nbformat; paper_check.py PDF checks need pypdf,
+# and its --render option needs pypdfium2 and pillow.
+nbformat==5.11.1
+pypdf==6.21.4
+pypdfium2==5.14.0
+pillow==13.0.0
+
+# Repository checks (README "Checks"): tests, Python lint, skill lint, repo conventions.
+pytest==9.2.0
+ruff==0.17.3
+skillsaw==0.22.0
+PyYAML==6.0.3

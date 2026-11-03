@@ -8,7 +8,7 @@ Content and depth follow `readme-generator`. It ends with a `## Documentation` t
 
 ## AGENTS.md
 
-Loaded by most agents in every session, so keep it to what most tasks need, ideally under 60 lines.
+Loaded by most agents in every session, so keep it to what most tasks need, under about 60 lines.
 
 ```markdown
 # Agent Guide

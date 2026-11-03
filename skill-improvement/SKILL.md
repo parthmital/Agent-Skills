@@ -58,5 +58,5 @@ Skills are the agent's memory. Each hard problem is solved once, then written wh
 - [ ] Fix verified before it was recorded.
 - [ ] Skills searched first; an existing entry was corrected rather than duplicated.
 - [ ] Entry sits in the cheapest location loaded when the problem recurs, in the entry format.
-- [ ] Budgets hold; README, `agents/openai.yaml`, and `RESEARCH.md` updated as needed; repository checks pass.
+- [ ] Budgets hold; README, `agents/openai.yaml`, and `RESEARCH.md` updated wherever the change affects them; repository checks pass.
 - [ ] Installed skills match the source repository.

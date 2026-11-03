@@ -9,7 +9,7 @@ description: Creates, edits, refactors, validates, cleans, diffs, repairs, and m
 
 No corrupted JSON, wrong-cell edits, hidden-state bugs, or noisy diffs; notebooks that run on Kaggle GPU T4 x2, use all its hardware, explain every step, show realtime progress, report detailed metrics and plots, and end with one downloadable zip.
 
-`<doctor>` is the absolute path to this skill's `scripts/notebook_doctor.py`, run with the repo-local Python that has `nbformat`.
+`<doctor>` is the absolute path to this skill's [scripts/notebook_doctor.py](scripts/notebook_doctor.py), run with a repo-local Python 3.11 or later that has `nbformat`.
 
 ## When to Use
 

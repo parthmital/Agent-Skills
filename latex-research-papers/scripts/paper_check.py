@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile a LaTeX paper with Tectonic and report layout, reference, citation, and link problems.
+r"""Compile a LaTeX paper with Tectonic and report layout, reference, citation, and link problems.
 
 Usage: python paper_check.py main.tex [--tectonic PATH] [--outdir DIR] [--allow REGEX]...
                              [--render DIR] [--check-links]
@@ -17,7 +17,7 @@ a bibliography entry cited only by that document is not reported as uncited.
 template-internal overfull box already checked in the PDF) to accepted.
 Figures and tables in the appendix are exempt from the placement check. Underfull boxes and other
 warnings are listed but never fail the check.
-PDF checks need pypdf; --render also needs pypdfium2. Without them they are skipped.
+PDF checks need pypdf; --render also needs pypdfium2 and pillow. Without them they are skipped.
 """
 
 from __future__ import annotations
@@ -58,7 +58,12 @@ def repo_root(start: Path) -> Path | None:
 
 def find_tectonic(explicit: str | None, tex: Path) -> Path:
     if explicit or os.environ.get("TECTONIC"):
-        return Path(explicit or os.environ["TECTONIC"])
+        given = Path(explicit or os.environ["TECTONIC"])
+        if not given.is_file():
+            raise SystemExit(
+                f"tectonic not found at {given} (from --tectonic or TECTONIC)."
+            )
+        return given
     on_path = shutil.which("tectonic")
     if on_path:
         return Path(on_path)
@@ -147,8 +152,9 @@ def source_files(tex: Path) -> list[Path]:
         seen.append(path)
         text = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
         for name in re.findall(r"\\(?:input|include|subfile)\{([^}]+)\}", text):
-            child = tex.parent / name
-            queue.append(child if child.suffix == ".tex" else child.with_suffix(".tex"))
+            # TeX appends .tex to any name not ending in it, so `intro.v2` means `intro.v2.tex`.
+            child = tex.parent / (name if name.endswith(".tex") else name + ".tex")
+            queue.append(child)
     return seen
 
 
@@ -270,6 +276,23 @@ def bib_targets(entries: dict[str, str], cited: list[str]) -> dict[str, str]:
     return targets
 
 
+def link_status(uri: str) -> int | str:
+    """HTTP status of a link: HEAD first, then GET when the server rejects HEAD."""
+    status: int | str = "?"
+    for method in ("HEAD", "GET"):
+        try:
+            request = urllib.request.Request(
+                uri, method=method, headers={"User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return response.status
+        except Exception as exc:  # report every link, never stop
+            status = getattr(exc, "code", type(exc).__name__)
+            if status not in (403, 405, 501):
+                return status
+    return status
+
+
 def pdf_checks(
     pdf: Path,
     floats: list[tuple[str, str, str, str]],
@@ -319,7 +342,7 @@ def pdf_checks(
         if index is None or (appendix_index is not None and index >= appendix_index):
             continue
         mention = re.compile(
-            rf"{words[kind]}\s*(?:[\w.]+\s*(?:,|and|to|–|-)\s*)*{re.escape(number)}(?![\w.]*\d)"
+            rf"{words[kind]}\s*(?:[\w.]+\s*(?:,|and|to|\u2013|-)\s*)*{re.escape(number)}(?![\w.]*\d)"
         )
         first = next((i for i, text in enumerate(texts) if mention.search(text)), index)
         if index - first > 1:
@@ -356,21 +379,15 @@ def pdf_checks(
         )
     if check_links:
         for uri in sorted(external):
-            try:
-                request = urllib.request.Request(
-                    uri, method="HEAD", headers={"User-Agent": "Mozilla/5.0"}
-                )
-                status = urllib.request.urlopen(request, timeout=30).status
-            except Exception as exc:  # report every link, never stop
-                status = getattr(exc, "code", type(exc).__name__)
-            report.append(f"  [{status}] {uri}")
+            report.append(f"  [{link_status(uri)}] {uri}")
 
     if render:
         try:
+            import PIL  # noqa: F401  (pypdfium2's to_pil needs pillow)
             import pypdfium2 as pdfium
         except ImportError:
             report.append(
-                "Render skipped: pypdfium2 is not installed in this environment."
+                "Render skipped: pypdfium2 or pillow is not installed in this environment."
             )
         else:
             render.mkdir(parents=True, exist_ok=True)
@@ -394,6 +411,8 @@ def main() -> int:
     args = parser.parse_args()
 
     tex = args.tex.resolve()
+    if not tex.is_file():
+        raise SystemExit(f"{tex} not found.")
     root = repo_root(tex.parent) or tex.parent
     outdir = (args.outdir or root / ".agent-local" / "tmp" / "latex-build").resolve()
     tectonic = find_tectonic(args.tectonic, tex)
@@ -475,7 +494,7 @@ def main() -> int:
         sequence = [int(numbers[k]) for k in in_list]
         out_of_order = [
             f"{k} is [{numbers[k]}]"
-            for k, n, e in zip(in_list, sequence, sorted(sequence))
+            for k, n, e in zip(in_list, sequence, sorted(sequence), strict=True)
             if n != e
         ][:10]
         order_note = "ok" if not out_of_order else "out of order"

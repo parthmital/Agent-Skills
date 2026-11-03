@@ -1,6 +1,6 @@
 ---
 name: research-driven-development
-description: Decides whether a task needs research before building and, when it does, finds and evaluates existing libraries, frameworks, open-source projects, templates, datasets, models, APIs, agent skills, and MCP servers to adopt, adapt, or learn from instead of building from scratch. Use at the start of a new project, feature, integration, or component, before choosing a library, framework, architecture, dataset, or model, or when the domain or technology is unfamiliar or fast-moving. Skips research for small, well-understood changes.
+description: Decides whether a task needs research before building and, when it does, finds and evaluates existing libraries, frameworks, open-source projects, templates, datasets, models, APIs, agent skills, and MCP servers to adopt, adapt, or learn from instead of building from scratch. Use when starting a new project, feature, integration, or component, when choosing a library, framework, architecture, dataset, or model, or when the domain or technology is unfamiliar or fast-moving. Skips research for small, well-understood changes.
 ---
 
 # Research-Driven Development

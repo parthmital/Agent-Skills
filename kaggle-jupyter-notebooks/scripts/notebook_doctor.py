@@ -61,10 +61,17 @@ def backup_file(path: Path) -> Path:
 
 
 def atomic_write(nb, path: Path) -> None:
+    """Validate, then write LF line endings on every OS (text mode would write CRLF on Windows)."""
     nbformat.validate(nb)
     tmp = path.with_suffix(path.suffix + ".tmp")
-    nbformat.write(nb, tmp)
+    with tmp.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(nbformat.writes(nb) + "\n")
     tmp.replace(path)
+
+
+def has_cell_ids(nb) -> bool:
+    """Cell IDs are part of the format from nbformat 4.5; older notebooks have none."""
+    return (nb.nbformat, nb.nbformat_minor) >= (4, 5)
 
 
 def source_text(cell: Any) -> str:
@@ -104,7 +111,7 @@ def inspect_notebook(path: Path) -> int:
             markdown_cells += 1
 
     duplicates = sorted(value for value, n in Counter(ids).items() if value and n > 1)
-    missing_ids = sum(value is None for value in ids)
+    missing_ids = sum(value is None for value in ids) if has_cell_ids(nb) else 0
     non_monotonic = any(b <= a for a, b in itertools.pairwise(numeric_counts))
 
     print(f"File: {path}")
@@ -158,6 +165,8 @@ def repair_notebook(path: Path, make_backup: bool) -> int:
     nb = nbformat.convert(nb, 4)
     _, normalized = nbformat.validator.normalize(nb)
     nb = nbformat.from_dict(normalized)
+    # Adding IDs to a 4.0-4.4 notebook is only valid once it declares format 4.5.
+    nb.nbformat_minor = max(nb.nbformat_minor, 5)
     seen: set[str] = set()
     for cell in nb.cells:
         cell_id = cell.get("id")
@@ -200,7 +209,7 @@ def export_code(path: Path, output: Path) -> int:
         source = source_text(cell)
         chunks.append(f"# %% [cell {index}, id={cell_id}]\n{source.rstrip()}\n")
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text("\n".join(chunks), encoding="utf-8")
+    output.write_text("\n".join(chunks), encoding="utf-8", newline="\n")
     print(f"Exported {len(chunks)} code cells to {output}")
     return 0
 
@@ -243,8 +252,11 @@ def fork_pool_lines(tree: ast.AST) -> list[int]:
         if not isinstance(node, ast.Call):
             continue
         name = call_name(node)
-        executor = name == "ProcessPoolExecutor" and not any(
-            keyword.arg == "mp_context" for keyword in node.keywords
+        # mp_context is the second positional parameter of ProcessPoolExecutor.
+        executor = (
+            name == "ProcessPoolExecutor"
+            and len(node.args) < 2
+            and not any(keyword.arg == "mp_context" for keyword in node.keywords)
         )
         pool = name == "Pool" and (
             isinstance(node.func, ast.Name)

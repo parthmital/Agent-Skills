@@ -152,3 +152,27 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 - Journal reviewers check claims, numbers, and citations, so a citation that does not support its claim, or wrong metadata, is a rejection risk.
 
 **Decision:** sources are weighed on transparency, verifiability, independence and incentives, recency, and relevance. First-party sources stay authoritative for what their owner defines but are checked against independent evidence on their own outcomes. Conflicts are reported with their evidence, never settled by authority. Research extracts full content (browser automation, PDFs, datasets) within legal access. Papers get a fact-check step: every claim traced to a result file or opened source, every reference checked for existence, access, metadata, retraction, and passage-level support. The reference list itself still holds only peer-reviewed papers, a venue convention, not a judgement of truth. Alternative considered: keeping a fixed source hierarchy with forums demoted (rejected: rewards status over evidence).
+
+## Skill Linting, Tests, And CI (2026-11-03)
+
+**Brief:** add automated checks so skill metadata, README consistency, and the two helper scripts cannot silently break, with Python 3.11 tooling, a permissive licence, and no account or paid service.
+
+**Scope:** Agent Skills specification, PyPI and GitHub pages of `skills-ref`, `skillsaw`, and `skillscheck`, and a local trial of all three on this repository. Searched and run 2026-11-03.
+
+**Findings:**
+
+- The [Agent Skills specification](https://agentskills.io/specification) fixes `name` (1 to 64 lowercase letters, digits, and single hyphens, matching the folder) and `description` (1 to 1024 characters), recommends `SKILL.md` under 500 lines, and names `skills-ref validate` as its validator.
+- `skills-ref` 0.1.1 (Apache-2.0, released 2026-01-10) says in its README it is "intended for demonstration purposes only" and "not meant to be used in production".
+- `skillsaw` 0.22.0 (Apache-2.0, released 2026-10-16, about 1,575 commits, 17 contributors) checks spec front matter, broken internal references, unreferenced files, and content rules, with per-rule disabling in `.skillsaw.yaml`. On this repository: 0 errors and 4 warnings, of which 3 were false positives (it treats prose semicolon rules as Prettier-enforced) and 1 was real (the `research-driven-development` description lacked "Use when").
+- `skillscheck` 0.9.7 reported 18 warnings, mostly "user-centric trigger" on `Use when the user asks`, a phrasing Anthropic's own spec examples use. Too opinionated for this repository.
+- No linter knows this repository's own conventions: only `name` and `description` in front matter, the required body sections, `agents/openai.yaml` fields, and the README Skills table and folder count. The README said 16 skill folders while there were 14.
+- Writing tests exposed six script bugs: `notebook_doctor.py` wrote CRLF on Windows, `repair` crashed on format 4.4 notebooks, `inspect` flagged missing IDs on 4.4 notebooks, and positional `mp_context` was flagged as a fork pool; `paper_check.py` resolved `\input{a.v2}` to `a.tex` and crashed on a missing `--tectonic` path. A non-raw docstring also printed `\ref` as a carriage return.
+
+**Decision:** Adopt `skillsaw` for spec and content linting, with two noisy rules disabled and their reasons in `.skillsaw.yaml`. Build `scripts/check_repo.py` for the repository-specific conventions only. Add pytest tests for both scripts, ruff, pinned `requirements.txt`, a SHA-pinned GitHub Actions workflow running every check, and Dependabot. Alternatives considered: `skills-ref` (rejected: demonstration only, spec checks only), `skillscheck` (rejected: opinionated warnings contradict the spec's own examples), the skillsaw GitHub Action (rejected: posts PR comments and needs write permissions, while a plain CLI step needs only `contents: read`).
+
+**Sources:**
+
+- Standards: [Agent Skills specification](https://agentskills.io/specification).
+- Registries: [skills-ref on PyPI](https://pypi.org/project/skills-ref/); [skillsaw on PyPI](https://pypi.org/project/skillsaw/); [skillscheck on PyPI](https://pypi.org/project/skillscheck/).
+- Repositories: [agentskills/agentskills skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref); [stbenjam/skillsaw](https://github.com/stbenjam/skillsaw).
+- Docs: [skillsaw configuration](https://skillsaw.org/configuration/).
