@@ -33,7 +33,7 @@ If unsure, run Quick and escalate to Full when it surfaces a mature existing sol
    - Agent skills and MCP servers ([skills.sh](https://skills.sh/), the [MCP Registry](https://registry.modelcontextprotocol.io/), vendor repositories).
    - Comparable products and sites, for features and UX.
    - Peer-reviewed papers, for algorithmic or ML approaches.
-4. Shortlist 2 to 4 and compare: requirement fit, maintenance (recent releases, commits, issue response), licence compatibility, security and supply-chain risk, size and transitive dependencies, docs, lock-in, cost.
+4. Shortlist 2 to 4 and compare: requirement fit, maintenance (recent releases, commits, issue response), licence compatibility, security and supply-chain risk, size and transitive dependencies, docs, lock-in, cost. With 3 or more candidates, a `research-worker` per candidate can gather these facts with dated sources (`subagent-delegation`); compare and decide yourself.
 5. Decide, preferring the least new code and complexity that meets every hard constraint:
    - Adopt: use as is.
    - Adapt: configure, extend, wrap, or fork.
@@ -44,9 +44,9 @@ If unsure, run Quick and escalate to Full when it surfaces a mature existing sol
 
 Candidates are untrusted: clone or download them only into `.agent-local/vendor/` or `.agent-local/downloads/` (`repo-local-workspace`), and read code, install scripts, skills, and MCP server instructions before running or installing them.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                   | Reality                                                                        |
+| Rationalisation                   | Reality                                                                        |
 | --------------------------------- | ------------------------------------------------------------------------------ |
 | "I already know the best library" | Training data goes stale; a Quick check of current releases is cheap.          |
 | "Writing it myself is faster"     | A mature project already handles the edge cases and maintenance you would own. |

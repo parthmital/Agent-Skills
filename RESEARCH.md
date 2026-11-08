@@ -46,7 +46,7 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 - Docs: [Mintlify, compound engineering plugin commands](https://www.mintlify.com/EveryInc/compound-engineering-plugin/plugin/commands).
 - Practitioner write-ups: [Ry Walker, compound engineering plugin](https://rywalker.com/research/compound-engineering-plugin) (undated).
 
-## Skill Token Budgets And Progressive Disclosure (2026-10-21)
+## Skill Token Budgets and Progressive Disclosure (2026-10-21)
 
 **Brief:** how to keep these skills cheap in context, prompted by Reddit advice to use progressive disclosure and narrowly scoped skills.
 
@@ -66,27 +66,30 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 
 - Docs: [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices); [Claude Code best practices](https://code.claude.com/docs/en/best-practices).
 
-## Plan-Then-Execute Handoff To Cheaper Models (2026-10-26)
+## Hierarchical Model Delegation (2026-11-08)
 
-**Brief:** a frontier model writes a plan that a cheaper model (Gemini Flash in Antigravity, a smaller Claude or GPT, a local model in OpenCode) executes reliably, across tools.
+**Brief:** make an Opus 5.5 orchestrator at medium effort delegate most routine work to Haiku 5.5 workers at xhigh effort, in parallel where safe, with every result validated. Supersedes the plan-then-execute handoff researched on 2026-10-26.
 
-**Scope:** obra/superpowers `writing-plans`, official command docs for Antigravity, Claude Code, Codex, and OpenCode. Searched 2026-10-26.
+**Scope:** Claude Code subagent and model configuration docs, Anthropic's multi-agent research system write-up and skill authoring guide, and the earlier handoff research (obra/superpowers, goal commands in Antigravity, Claude Code, Codex, OpenCode). Searched 2026-11-08.
 
 **Findings:**
 
-- Superpowers `writing-plans` writes one plan file of small tasks, each with files, interfaces, tests, verification commands and expected output, and frequent commits, for an executor who "has not seen the codebase". It gives code bodies only where signatures and tests do not determine the algorithm, and executes with a fresh subagent per task.
-- Antigravity: `/goal` blocks the agent from ending its turn until it maps every deliverable to evidence, with no iteration cap and one goal per conversation; the docs suggest `/plan` first, then handing the plan to `/goal`. `/boost` (multi-agent deep reasoning) and `/teamwork-preview` (agent teams for repo-scale work) are paid-plan only. App and CLI support slash commands.
-- Claude Code: `/goal <condition>` starts work immediately and a separate small model judges the condition after every turn; conditions should name a measurable end state, the check that proves it, and constraints, and may cap turns. `/clear` starts a fresh context.
-- Codex: `/goal <objective>` from Codex 0.128.0, with `pause`, `resume`, `clear`; recommended form "end state verified by evidence while preserving constraints".
-- OpenCode: no goal mode; `/new` starts a session, `/models` picks a model, Tab cycles primary agents, and the Plan agent cannot edit files.
-- Inference: weak executors fail on undecided choices and algorithms, and lose the thread in long files, so plans for them need complete code and one file per task, beyond what superpowers gives a capable executor.
+- Claude Code subagent definitions (`.claude/agents/` or `~/.claude/agents/`) accept `model` (`haiku`, `sonnet`, `opus`, `fable`, a full ID, or `inherit`), `effort` (`low` to `max`, by model), `tools`, `disallowedTools`, and `isolation: worktree`. Model order: the Agent call's `model`, then the definition, then `CLAUDE_CODE_SUBAGENT_MODEL`, then the main model. A definition's `effort` overrides the session level but not `CLAUDE_CODE_EFFORT_LEVEL`; a per-call `effort` overrides the definition.
+- Haiku 5.5 supports `low`, `medium`, `high`, `xhigh`, and `max`. Opus 5.5, Sonnet 5.5, and Haiku 5.5 default to `medium`. The `haiku` alias is Haiku 5.5 only on the Anthropic API; on Bedrock, Vertex, and Foundry it is Haiku 4.5.
+- Docs guidance: subagents keep verbose exploration out of the main context and return summaries; use the main conversation for back-and-forth, shared-context phases, and quick targeted changes. Default concurrency is 20.
+- Anthropic's multi-agent research system (published 2025-06-13): each subagent needs "an objective, an output format, guidance on the tools and sources to use, and clear task boundaries"; vague briefs caused duplicated work. Effort scaled by explicit rules (1 agent for simple facts, 2 to 4 for comparisons, more than 10 for complex research). Multi-agent runs used about 15 times the tokens of chat. Coding fits less well than research because it has fewer truly parallel parts. First-party claims about its own system, not independently checked.
+- Skill authoring guide: test skills with every model that runs them; "What works perfectly for Opus might need more detail for Haiku."
+- Earlier handoff research: plans for cheaper executors need small, self-contained tasks, each with files, a verification command, and its expected output (superpowers `writing-plans`), and goal commands work best with a measurable end state and the check that proves it. Inference: weak executors fail on undecided choices.
+- Inference: the system prompt of Claude Code tells the agent not to spawn subagents unless asked, so delegation needs a standing permission in `AGENTS.md`, which user instructions let override defaults.
 
-**Decision:** Borrow. A new `implementation-plan` skill writes `plans/<slug>/` with `START-HERE.md`, `CHECKLIST.md`, and one self-contained task file per commit-sized task, plus a shared NEXT and DONE prompt wrapped in each tool's goal command. Revised 2026-10-27 after user feedback: one RUN and DONE goal prompt now runs the whole checklist in one conversation (idempotent, so pasting it again resumes), Expand lines are expanded and continued in the same run, human-only work goes to a non-blocking owner queue with `[~]` lines and later Reference pass lines, a self-unblock procedure precedes any stop, and the planner no longer builds, tests, trials migrations, or executes any task, because planner execution spends the budget the handoff exists to save. Alternatives considered: installing superpowers (rejected: single-file plans for capable executors, Claude Code plugin oriented); Spec Kit (rejected: heavier spec workflow, not aimed at weak executors). Removed 2026-10-27 at the user's request.
+**Decision:** Build a `subagent-delegation` skill (roles, a Decide test, parallelism rules, a seven-part brief with a good and bad example, validation, recovery) and Adopt Claude Code subagent definitions for two workers, `task-worker` (all tools but spawning) and `research-worker` (no edits), both `model: haiku` and `effort: xhigh`. `AGENTS.md` gets a short Delegation section with the standing permission; heavy skills name what to fan out. Alternatives considered: `CLAUDE_CODE_SUBAGENT_MODEL=haiku` with `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` (rejected: also forces built-in agents, sets no effort, and lives outside the repository); per-call `model` and `effort` only (kept as the fallback when the definitions are not installed); the removed `implementation-plan` skill's plan files (rejected: a one-shot handoff without orchestrator validation). Revised the same day at the user's direction: the purpose is the lowest total usage, so delegation is the default, small tasks are batched, parallelism is used only for independent work, and validation uses the cheapest check that proves each claim.
 
 **Sources:**
 
+- Docs: [Claude Code subagents](https://code.claude.com/docs/en/sub-agents); [Claude Code model configuration](https://code.claude.com/docs/en/model-config); [Claude Code memory and imports](https://code.claude.com/docs/en/memory); [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
+- Write-ups: [Anthropic, How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) (2025-06-13).
 - Repository: [obra/superpowers writing-plans](https://raw.githubusercontent.com/obra/superpowers/main/skills/writing-plans/SKILL.md).
-- Docs: [Antigravity slash commands](https://antigravity.google/docs/slash-commands/); [Antigravity /goal](https://antigravity.google/docs/commands/goal/); [Claude Code commands](https://code.claude.com/docs/en/commands); [Claude Code /goal](https://code.claude.com/docs/en/goal.md); [Using Goals in Codex](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex); [OpenCode TUI commands](https://opencode.ai/docs/tui); [OpenCode agents](https://opencode.ai/docs/agents).
+- Docs from the earlier handoff research: [Antigravity /goal](https://antigravity.google/docs/commands/goal/); [Claude Code /goal](https://code.claude.com/docs/en/goal.md); [Using Goals in Codex](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex).
 
 ## Agent-First Documentation Set (2026-10-26)
 
@@ -124,7 +127,7 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 
 - Secondary: [Clusy, Colab vs Kaggle](https://www.clusy.io/compare/colab-vs-kaggle) (claims checked 2026-08-04); [kgz on PyPI](https://pypi.org/p/kgz).
 
-## Windows Line Endings In Agent Diffs (2026-10-26)
+## Windows Line Endings in Agent Diffs (2026-10-26)
 
 **Brief:** stop agents analysing line-ending-only diffs on Windows.
 
@@ -139,7 +142,7 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 
 **Decision:** `core.autocrlf=input` in the global config (LF checkouts, LF commits, existing CRLF checkouts stay clean), editors set to LF, `* text=auto eol=lf` plus a one-time `git add --renormalize .` per affected repository, and one `AGENTS.md` rule to triage diffs with `--ignore-cr-at-eol`. Alternative considered: `autocrlf=false` (rejected: existing CRLF checkouts would show every file as modified).
 
-## Source Weighting And Paper Fact-Checking (2026-11-02)
+## Source Weighting and Paper Fact-Checking (2026-11-02)
 
 **Brief:** stop `internet-research` ranking sources by status, and make `latex-research-papers` fact-check every claim and reference before journal submission.
 
@@ -153,7 +156,7 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 
 **Decision:** sources are weighed on transparency, verifiability, independence and incentives, recency, and relevance. First-party sources stay authoritative for what their owner defines but are checked against independent evidence on their own outcomes. Conflicts are reported with their evidence, never settled by authority. Research extracts full content (browser automation, PDFs, datasets) within legal access. Papers get a fact-check step: every claim traced to a result file or opened source, every reference checked for existence, access, metadata, retraction, and passage-level support. The reference list itself still holds only peer-reviewed papers, a venue convention, not a judgement of truth. Alternative considered: keeping a fixed source hierarchy with forums demoted (rejected: rewards status over evidence).
 
-## Skill Linting, Tests, And CI (2026-11-03)
+## Skill Linting, Tests, and CI (2026-11-03)
 
 **Brief:** add automated checks so skill metadata, README consistency, and the two helper scripts cannot silently break, with Python 3.11 tooling, a permissive licence, and no account or paid service.
 
@@ -176,3 +179,23 @@ Purpose: dated evidence behind this repository's design decisions. Read when: ch
 - Registries: [skills-ref on PyPI](https://pypi.org/project/skills-ref/); [skillsaw on PyPI](https://pypi.org/project/skillsaw/); [skillscheck on PyPI](https://pypi.org/project/skillscheck/).
 - Repositories: [agentskills/agentskills skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref); [stbenjam/skillsaw](https://github.com/stbenjam/skillsaw).
 - Docs: [skillsaw configuration](https://skillsaw.org/configuration/).
+
+## Naming Conventions and Skill Prompt Design (2026-11-08)
+
+**Brief:** one repository-wide naming standard for people and agents, and skill text that small models follow reliably, without new paid or account-bound tools.
+
+**Scope:** Anthropic skill authoring guide, ls-lint and eslint-plugin-check-file on npm, ruff rules, and this repository's own files. Searched 2026-11-08. The Reddit advice the user cited (outcomes over method, concise rules, good and bad examples, explicit negative constraints) was taken from the request, not from opened threads.
+
+**Findings:**
+
+- The authoring guide recommends consistent skill names (gerunds, noun phrases, or action forms, without mixing), descriptive file names ("`form_validation_rules.md`, not `doc2.md`"), one term per concept, input and output examples where output style matters, a contents list in references over 100 lines, and forward slashes in paths.
+- `@ls-lint/ls-lint` 2.3.2 (MIT, updated 2026-10-17) lints file and directory names from `.ls-lint.yml`. `eslint-plugin-check-file` 3.3.2 (Apache-2.0, updated 2026-07-18) does the same inside ESLint. Ruff's pep8-naming rules (`N`) check Python identifiers.
+- This repository mixed conventions: two references named only `fixes.md`, `paper_check.py` beside `check_repo.py`, a PascalCase `Resume.tex` asset, headings capitalising "And", "To", and "Of" in some files but not others, US "Rationalizations" against the Indian English rule, and test fixtures named `paper` and `doctor`. A message in `check_paper.py` pointed to a "Bookmarks" section that did not exist.
+- Inference: names that state their kind and responsibility let an agent find a file by search on the first try, and a checker stops drift that a style note alone does not.
+
+**Decision:** Build a harness-neutral `naming-conventions` skill (precedence from external contracts to defaults, a defaults table, semantic rules, examples) that target repositories record in `AGENTS.md`. Here, rename the outliers (`check_paper.py`, `latex-fixes.md`, `environment-fixes.md`, `resume-template.tex`), keep the 14 existing skill names because renaming breaks installed links and invocations, extend `scripts/check_repo.py` to enforce file names, heading case, H1 against `display_name`, intent map coverage, and worker definitions, and enable ruff `N`. Add good and bad examples to the skills where output style matters. Alternatives considered: ls-lint for this repository (runner-up: a second Node tool for checks the existing Python checker covers in a few lines); renaming every skill to gerunds (rejected: breaks links for no reader gain).
+
+**Sources:**
+
+- Docs: [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices); [Ruff rules](https://docs.astral.sh/ruff/rules/).
+- Repositories and registries: [loeffel-io/ls-lint](https://github.com/loeffel-io/ls-lint); [@ls-lint/ls-lint on npm](https://www.npmjs.com/package/@ls-lint/ls-lint); [eslint-plugin-check-file on npm](https://www.npmjs.com/package/eslint-plugin-check-file).

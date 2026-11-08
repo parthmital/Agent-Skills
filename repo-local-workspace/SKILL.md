@@ -13,6 +13,7 @@ Nothing goes into global Python or Node, the user home, OS temp, system package 
 
 - Any install, download, helper script, log, output, cache, or temp file.
 - Use `.agent-local/` even when the harness offers its own scratch or temp directory, unless the user says otherwise.
+- Subagent briefs name this layout, so workers write to the same folders.
 - If a tool cannot be made repo-local, or needs a global SDK or system package not already installed, ask first and state what global path or state it would touch.
 
 ## Layout
@@ -52,16 +53,16 @@ Add `.venv/`, `.agent-local/`, and `.cache/` to the root `.gitignore` if missing
 
 Never: `pip install` outside a venv or with `--user`, `npm install -g`, `yarn global`, `pnpm add -g`, `pipx install`, `uv tool install`, `gem install`, system package managers, user- or system-level config writes (`npm config set`, `git config --global`, `pip config set`) unless project-scoped, or files in the user profile, OS temp, desktop, or downloads folder.
 
-## Scripts And Outputs
+## Scripts and Outputs
 
-- Name scripts by purpose (`extract_pdf_tables.py`, never `script.py` or `tmp.py`), with a header comment giving purpose, inputs, outputs, and run command. Take paths and options as arguments.
+- Name scripts per `naming-conventions`: snake_case, verb first (`extract_pdf_tables.py`, never `script.py` or `tmp.py`), with a header comment giving purpose, inputs, outputs, and run command. Take paths and options as arguments.
 - Update `.agent-local/README.md` whenever a script is added, renamed, or removed.
 - Results go in `.agent-local/output/<task>/` unless the user names another path; durable project code goes in the project.
 - Never store secrets in scripts, logs, or outputs.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                      | Reality                                                         |
+| Rationalisation                      | Reality                                                         |
 | ------------------------------------ | --------------------------------------------------------------- |
 | "The harness scratch folder is fine" | It is lost after the session; scripts cannot be reused.         |
 | "One global install is harmless"     | It pollutes the machine and hides the dependency from the repo. |

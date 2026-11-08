@@ -20,7 +20,7 @@ Establish what is actually true. Use external evidence where it materially impro
 
 1. Brief: the decision, constraints, keywords, competitors, user segment, freshness, and evidence needed.
 2. Search every layer that fits, none ranked above another by who publishes it. Layers: official docs and standards, papers, repositories, registries, and examples, comparable products, pricing, launch posts, and case studies, community and independent sources (Reddit, Hacker News, GitHub issues, Stack Overflow, forums, user- or student-run trackers and datasets), and, when recency matters, news, release notes, advisories, benchmarks, and changelogs.
-3. Open promising sources and extract their full content, never stopping at search snippets: fetch pages, use Playwright or other browser automation for JavaScript-rendered pages, dashboards, and pagination, and download and extract PDFs, tables, and datasets (installs per `repo-local-workspace`). Stay technically and legally permissible: no bypassing paywalls, logins, CAPTCHAs, or access controls, and respect site terms and rate limits. Cite only sources you opened.
+3. Open promising sources and extract their full content, never stopping at search snippets: fetch pages, use Playwright or other browser automation for JavaScript-rendered pages, dashboards, and pagination, and download and extract PDFs, tables, and datasets (installs per `repo-local-workspace`). Stay technically and legally permissible: no bypassing paywalls, logins, CAPTCHAs, or access controls, and respect site terms and rate limits. Cite only sources you opened. For several independent sub-questions or source layers, brief one `research-worker` each (`subagent-delegation`) to return claims with URL, date, and quote, then open the sources behind the recommendation yourself before citing them.
 4. Extract repeated patterns, tradeoffs, warnings, maintenance and adoption signals, and implementation details.
 5. Synthesise options around the user's decision, each with supporting and missing evidence.
 6. Write or update root `RESEARCH.md` from the `project-docs` template: one dated section per topic, updated rather than duplicated, with superseded findings marked.
@@ -43,9 +43,9 @@ With no web tool, say so, answer from known information, and flag what may be ou
 
 Shortest format that supports the decision: scope searched and search date; strong signals; weak or anecdotal signals; recommendation with reasons and alternatives that win under other constraints; sources grouped by type. If evidence is thin, say so and what would raise confidence.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                              | Reality                                            |
+| Rationalisation                              | Reality                                            |
 | -------------------------------------------- | -------------------------------------------------- |
 | "I already know this"                        | Training data goes stale; verify anything current. |
 | "The snippet in the search result is enough" | Snippets lose context and dates. Open the source.  |

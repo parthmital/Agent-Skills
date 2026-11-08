@@ -1,5 +1,5 @@
 interface:
-  display_name: "Git Commit And Push"
+  display_name: "Git Commit and Push"
   short_description: "Docs check and local CI until green, then commit and push"
   default_prompt: "Use $git-commit-and-push to create a detailed commit for the current changes and push it."
 policy:

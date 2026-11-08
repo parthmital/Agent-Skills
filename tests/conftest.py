@@ -21,10 +21,15 @@ def load_script(relative: str):
 
 
 @pytest.fixture(scope="session")
-def doctor():
+def notebook_doctor():
     return load_script("kaggle-jupyter-notebooks/scripts/notebook_doctor.py")
 
 
 @pytest.fixture(scope="session")
-def paper():
-    return load_script("latex-research-papers/scripts/paper_check.py")
+def check_paper():
+    return load_script("latex-research-papers/scripts/check_paper.py")
+
+
+@pytest.fixture(scope="session")
+def check_repo():
+    return load_script("scripts/check_repo.py")

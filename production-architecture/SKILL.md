@@ -18,11 +18,11 @@ The scope is the whole repository: moving, merging, splitting, renaming, and del
 
 ## Process
 
-1. Map: manifests, entry points, runtime model, dependency graph, data stores, tests, CI, docs, change hotspots (`git log --stat`).
+1. Map: manifests, entry points, runtime model, dependency graph, data stores, tests, CI, docs, change hotspots (`git log --stat`). Delegate this map and step 3's inventory by area to parallel `research-worker`s that return findings with `path:line` (`subagent-delegation`); decide the architecture yourself.
 2. Decide the architecture that fits now and at the next growth stage, using `research-driven-development` for unfamiliar stacks, patterns, or tooling; list mismatches with file evidence.
 3. Inventory duplicates, monoliths, cycles, boundary leaks, production gaps, scaling limits, and dead code, files, dependencies, and docs. Leave Git-ignored work areas such as `.agent-local/` alone.
 4. Design the target: single-responsibility modules with small public APIs, allowed dependency directions, and where new code goes. Keep the language and framework unless they are the problem.
-5. Migrate in phases that each leave the repo green. Add characterisation tests before moving uncovered code.
+5. Migrate in phases that each leave the repo green. Add characterisation tests before moving uncovered code. A phase may go to `task-worker`s with disjoint file scopes and the phase's checks as their done-when check; check each phase's checks and diff stat before starting the next.
 6. Enforce boundaries with tooling (`dependency-cruiser` or `eslint-plugin-boundaries`, `import-linter`, ArchUnit, Nx, Go `internal`) and a clone detector in CI.
 7. Write `ARCHITECTURE.md` from the `project-docs` template, recording allowed duplication exceptions and growth signals for the next pass. Update docs referencing moved paths.
 
@@ -38,12 +38,12 @@ Merge into one named abstraction in the lowest module all callers may depend on,
 - Small explicit public API per module; internals private.
 - Acyclic dependencies pointing from volatile details (UI, transport, persistence, vendors) towards domain rules.
 - Thin entry points; side effects (IO, network, time, env, globals) behind interfaces at the edges.
-- No `utils`, `helpers`, `common`, or `misc` drawers; name shared code by responsibility.
+- Names per `naming-conventions`: no `utils`, `helpers`, `common`, or `misc` drawers; name shared code by responsibility.
 - Organise feature-first, domain-first, layer-first, or as packages, whichever matches how changes flow.
 - Notebooks: one job per cell; move logic into `.py` modules only for non-Kaggle notebooks with a matching package.
 - Split into services only on evidence (independent scaling, ownership, fault isolation), but keep modules extractable.
 
-## Production Readiness And Scale
+## Production Readiness and Scale
 
 - Config from environment, validated at startup, with an example file.
 - Errors handled consistently at boundaries, nothing swallowed, user messages separate from internals.
@@ -61,9 +61,9 @@ Merge into one named abstraction in the lowest module all callers may depend on,
 - Never weaken or delete tests to pass; move tests with their code.
 - Ask before changing published APIs, public URLs, live database schemas, or deployment topology.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                                                   | Reality                                               |
+| Rationalisation                                                   | Reality                                               |
 | ----------------------------------------------------------------- | ----------------------------------------------------- |
 | "These two functions differ slightly, so they are not duplicates" | Parameterise the variation; near clones drift apart.  |
 | "I'll keep the old path as a wrapper"                             | Forwarding wrappers are duplication with extra steps. |

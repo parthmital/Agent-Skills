@@ -1,5 +1,7 @@
 # Doc Templates
 
+Contents: README.md, AGENTS.md, ARCHITECTURE.md, DATABASE.md, DESIGN.md, SECURITY.md, RESEARCH.md, CONTRIBUTING.md, CHANGELOG.md.
+
 Every file starts with its H1, then `Purpose: ... Read when: ...` and `Last verified: YYYY-MM-DD.` as in the examples. Omit any section with nothing to say for this repository.
 
 ## README.md
@@ -22,7 +24,7 @@ Install, run, test (all, and one file), lint, format, type-check, build: one lin
 
 ## Conventions
 
-Rules the code follows that a linter does not enforce: naming, error handling, file placement, test style.
+Naming table from `naming-conventions` (kind, convention, example, exceptions), then rules the code follows that a linter does not enforce: error handling, file placement, test style.
 
 ## Gotchas
 
@@ -90,7 +92,7 @@ Table per entity or one table: entity, key, important columns, relations. Point 
 
 Rules the data must always satisfy, and where each is enforced (constraint, code, or both).
 
-## Indexes And Queries
+## Indexes and Queries
 
 Hot queries and the indexes that serve them.
 
@@ -152,7 +154,7 @@ Scanners, guardrails, and protections in place, and where each lives.
 
 Table: ID, severity, CWE, status, location, fix. No exploit details for unfixed findings.
 
-## Residual Risks And Required Actions
+## Residual Risks and Required Actions
 
 What remains, and what the owner must do (rotate credentials, change settings).
 ```

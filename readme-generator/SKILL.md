@@ -16,7 +16,7 @@ Write the root `README.md` so a new developer understands and runs the project w
 
 ## Process
 
-1. Build a fact ledger from source, config, dependency files, scripts, env var usage, tests, existing docs, API routes, schemas, migrations, seeds, CI/CD, Docker, and hosting files.
+1. Build a fact ledger from source, config, dependency files, scripts, env var usage, tests, existing docs, API routes, schemas, migrations, seeds, CI/CD, Docker, and hosting files. For a large repository, split the ledger by area across parallel `research-worker`s that return facts with `path:line` (`subagent-delegation`), and verify every fact you publish.
 2. Never run destructive, deployment, database reset, migration, or seed commands, or commands needing secrets, unless asked. Verify them from files and say they were not executed.
 3. Choose depth (below) and write. When updating, keep accurate project-specific content and remove stale, unverifiable, duplicated, or misleading claims.
 4. Run Verification, then write `README.md` at the root.
@@ -51,9 +51,9 @@ Candidates: table of contents, quick start, overview, problem, goals, features, 
 - Troubleshooting table: problem, likely cause, diagnostic command, resolution.
 - Metrics only when they help readers: verifiable counts and limits with name, value, source file or command, notes. Never estimate; for an important unverifiable metric write exactly `Not measured in the current repository.`
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                   | Reality                                                          |
+| Rationalisation                   | Reality                                                          |
 | --------------------------------- | ---------------------------------------------------------------- |
 | "Every README needs all sections" | Empty or padded sections hide the useful ones.                   |
 | "This command obviously works"    | Verify it against scripts and config, or say it was not run.     |

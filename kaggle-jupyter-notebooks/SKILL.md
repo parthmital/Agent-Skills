@@ -48,6 +48,7 @@ Before creating a notebook or changing hardware setup, multiprocessing, training
    - Large refactor: `python <doctor> export-code nb.ipynb --output .agent-local/tmp/notebook_cells.py` for review, define shared functions once in an early cell, keep markdown in step. Only non-Kaggle notebooks with a matching package may move logic into `.py` modules.
    - Stuck or silent run (the user pastes a log that stopped, or says a run is slow or hanging): follow "Diagnosing a Run That Looks Stuck" in the authoring reference. Locate the silent stretch after the last logged line, compare it with earlier runs' timings, and diff against the last version that got past it. Fix the root cause, add logging to every stage in that stretch, and apply the liveness and deadlock rules to the whole notebook, not only the cell that hung.
    - Every edit: bring the cells you touch up to rules 8 and 9 as well.
+   - Delegation: mechanical edits (markdown explanations, logging calls, path fixes) may go to a `task-worker` whose done-when check is `validate` and `check-kaggle` (`subagent-delegation`). Runtime budgets, hardware and multiprocessing design, and stuck-run diagnosis stay with the orchestrator.
 3. Fix hidden state: names used before their defining cell, irregular execution counts, `globals()`, `locals()`, `exec`, `eval`, `%run` or cross-notebook dependencies, mutable globals changed across cells, late imports, paths outside `/kaggle/input/` and `/kaggle/working/`, cells relying on a previously displayed object. Reorder, initialise explicitly, or merge coupled cells.
 4. Apply the output policy:
    - Source-controlled Kaggle notebook: clear outputs and counts before committing unless the user wants Kaggle outputs kept.
@@ -57,9 +58,9 @@ Before creating a notebook or changing hardware setup, multiprocessing, training
 5. Merge conflicts: never resolve as plain JSON. Keep every version, summarise each per cell, merge by cell ID and meaning, rebuild with `nbformat`. For teams, suggest `nbdime config-git --enable` for notebook-aware diffs and `nbstripout --install` when outputs need not be kept, both installed in `.venv` and repo-scoped (no `--global` unless asked), and never stripping intentional output deliverables.
 6. Run `validate` and `check-kaggle` again.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                            | Reality                                                                                   |
+| Rationalisation                            | Reality                                                                                   |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------- |
 | "A quick local run would confirm it works" | Local hardware and paths differ from Kaggle; it proves nothing and installs runtime deps. |
 | "A regex on the JSON is faster"            | It corrupts escaping, IDs, and outputs.                                                   |

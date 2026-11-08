@@ -23,9 +23,9 @@ Find, fix, and prove fixes for every exploitable weakness. No code is provably a
    - Dependencies: `osv-scanner` plus the native auditor (`npm audit`, `pip-audit`, `cargo audit`, `govulncheck`).
    - Static: `semgrep`, plus `bandit`, `gosec`, `brakeman`, or CodeQL.
    - Infrastructure and CI: `trivy`, `checkov`, `hadolint`, `zizmor`. When a scanner or its CI job fails or misbehaves, read [references/scanner-fixes.md](references/scanner-fixes.md).
-3. Review every checklist category by hand, tracing untrusted input from source to sink. Scanners miss logic and authorisation flaws.
+3. Review every checklist category by hand, tracing untrusted input from source to sink. Scanners miss logic and authorisation flaws. Scanner runs and per-category reviews may run as parallel `research-worker`s grouped by category, each returning leads with `path:line` (`subagent-delegation`). Confirm every finding, its attack path, and its severity yourself in step 4.
 4. Confirm each finding with a concrete attack path; drop false positives. Rate Critical, High, Medium, or Low and tag the CWE.
-5. Fix highest severity first; add a regression test reproducing each attack.
+5. Fix highest severity first; add a regression test reproducing each attack. Fixes stay with the orchestrator, except mechanical ones (dependency bumps, header or config changes) that a `task-worker` may make with the regression test as its done-when check.
 6. Re-scan until nothing new appears.
 7. Add guardrails: secret-scanning pre-commit hook, Dependabot or Renovate, CI security scans, SHA-pinned least-privilege actions.
 8. Write or update root `SECURITY.md` from the `project-docs` template, with checklist status under Controls. Never secrets or exploit details for unfixed findings.
@@ -59,9 +59,9 @@ Find, fix, and prove fixes for every exploitable weakness. No code is provably a
 - Upgrade dependencies via the package manager after checking changelogs; otherwise mitigate or replace and record why.
 - Never silence scanners or weaken tests; each suppression names its rule and reason inline.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                | Reality                                                       |
+| Rationalisation                | Reality                                                       |
 | ------------------------------ | ------------------------------------------------------------- |
 | "The scanners came back clean" | Scanners miss authorisation and logic flaws; review by hand.  |
 | "That endpoint is internal"    | Internal services get reached through SSRF and stolen tokens. |

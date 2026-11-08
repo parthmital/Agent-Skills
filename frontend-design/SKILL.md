@@ -25,7 +25,7 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
    - Layout: grid, hierarchy, responsive behaviour, navigation, and what is left out.
    - Signature: at most one memorable visual or interaction idea tied to the subject.
 4. Critique the plan. Cut clutter, then revise anything that could fit an unrelated brief: cream editorial pages, dark neon dashboards, purple-blue gradients, glassmorphism, floating cards, orbs, generic numbered sections, boilerplate heroes, fake dashboards.
-5. Implement the plan exactly, in repo conventions. Before building or changing any control, form, overlay, tooltip, or scrollable panel, read [references/custom-controls.md](references/custom-controls.md): every browser-native UI to replace and what may stay native.
+5. Implement the plan exactly, in repo conventions, naming files and components per `naming-conventions`. The orchestrator owns the brief, plan, critique, and screenshot review; independent components or screens may go to `task-worker`s with the written plan and disjoint files (`subagent-delegation`). Before building or changing any control, form, overlay, tooltip, or scrollable panel, read [references/custom-controls.md](references/custom-controls.md): every browser-native UI to replace and what may stay native.
 6. Write or update root `DESIGN.md` from the `project-docs` template, in sync with the code.
 7. Run Verification.
 
@@ -56,9 +56,9 @@ Build the usable experience asked for. Clarity, fast comprehension, and task com
 - Match the existing framework, styling stack, icon library, state management, data loading, and routing. Create only the primitives this UI needs. Keep CSS specificity predictable; no broad overriding selectors.
 - 3D or canvas: use the repo's rendering library; the canvas must be nonblank, framed, animating or interactive as intended, and usable on mobile.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                                   | Reality                                                                                   |
+| Rationalisation                                   | Reality                                                                                   |
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | "A native `<select>` is accessible enough"        | It looks different on every browser and breaks the system. Build a custom accessible one. |
 | "Sample metrics make the dashboard feel complete" | Fake data is the clearest AI tell and misleads users.                                     |

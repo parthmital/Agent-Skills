@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 r"""Compile a LaTeX paper with Tectonic and report layout, reference, citation, and link problems.
 
-Usage: python paper_check.py main.tex [--tectonic PATH] [--outdir DIR] [--allow REGEX]...
-                             [--render DIR] [--check-links]
+Usage: python check_paper.py main.tex [--tectonic PATH] [--outdir DIR] [--allow REGEX]...
+                              [--render DIR] [--check-links]
 Exits 1 when anything blocking remains: TeX errors, overfull boxes, missing glyphs,
 undefined or duplicate labels, BibTeX warnings, missing or uncited bibliography
 entries, book or preprint entries (book types, arXiv, bioRxiv, medRxiv, SSRN,
@@ -75,7 +75,7 @@ def find_tectonic(explicit: str | None, tex: Path) -> Path:
             if candidates:
                 return candidates[0]
     raise SystemExit(
-        "tectonic not found: pass --tectonic PATH, set TECTONIC, or install it into the project (see references/fixes.md, Install Tectonic)."
+        "tectonic not found: pass --tectonic PATH, set TECTONIC, or install it into the project (see references/latex-fixes.md, Install Tectonic)."
     )
 
 
@@ -322,7 +322,7 @@ def pdf_checks(
     bookmarks = len(reader.outline)
     report.append(f"Top-level PDF bookmarks: {bookmarks}")
     if bookmarks == 0:
-        problems.append("PDF has no bookmarks (see references/fixes.md, Bookmarks)")
+        problems.append("PDF has no bookmarks (see references/latex-fixes.md, Links)")
 
     labels = list(reader.page_labels)
 

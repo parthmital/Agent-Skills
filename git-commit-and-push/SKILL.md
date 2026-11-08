@@ -3,7 +3,7 @@ name: git-commit-and-push
 description: Runs the full local CI until it passes, then makes accurate Git commits from inspected diffs in a strict hyphenated-body format, keeps .gitignore current, and pushes. Use when the user asks to commit, stage and commit, commit and push, push after committing, write or amend a commit message, or verify the latest commit message.
 ---
 
-# Git Commit And Push
+# Git Commit and Push
 
 ## Overview
 
@@ -31,6 +31,24 @@ Co-authored-by: Name <email>
 - Every line comes from the inspected diff, with precise nouns, not "misc updates". Mention validation only if it ran. Never invent tests, migrations, deployments, or fixes.
 - No empty commits unless asked.
 
+Bad: a vague subject and a prose body.
+
+```text
+Updates
+
+Fixed some stuff in the parser and the tests.
+```
+
+Good:
+
+```text
+Reject expired tokens in session middleware
+
+- Return 401 when the JWT `exp` claim is in the past.
+- Add regression tests for expired and missing `exp` claims.
+- Document the 401 response in the README API table.
+```
+
 ## Process
 
 1. Read `git status --short`, `git diff --stat`, `git diff --cached --stat`, and targeted diffs until the behavioural scope is clear.
@@ -47,7 +65,7 @@ Co-authored-by: Name <email>
 ## Local CI
 
 1. Find every check: CI workflows (`.github/workflows/`, `.gitlab-ci.yml`, `azure-pipelines.yml`, `Jenkinsfile`, `.circleci/`), task runners and manifests (`package.json` scripts, `Makefile`, `justfile`, `tox.ini`, `noxfile.py`, `pyproject.toml`), pre-commit hooks, and documented check commands in the README or contributing docs.
-2. Run every CI job's steps locally, plus every test, lint, format, type, and build check found, with the same commands and options CI uses.
+2. Run every CI job's steps locally, plus every test, lint, format, type, and build check found, with the same commands and options CI uses. A long or verbose suite may run in a `task-worker` that fixes failures and returns only the failing output (`subagent-delegation`); the orchestrator still runs the final full pass itself.
 3. Fix every failure, including ones the requested changes did not cause, and rerun everything, not just the failing check, until all pass in one run. Commit the fixes with body lines describing them.
 4. A job that cannot run locally (deploy steps, required secrets, unavailable OS or service, or notebook execution, which `kaggle-jupyter-notebooks` forbids locally) blocks the commit: report it and ask before committing without it. With no tests or CI at all, say so and run whatever checks exist.
 
@@ -62,9 +80,9 @@ Run on every commit, including staged-only ones.
 5. Ignoring does not untrack. Ask before `git rm --cached <path>`: it deletes the file for everyone who pulls.
 6. A staged secret is unstaged, not committed. If one is already committed or pushed, stop and tell the user that history still holds it and it must be rotated.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                  | Reality                                                               |
+| Rationalisation                  | Reality                                                               |
 | -------------------------------- | --------------------------------------------------------------------- |
 | "`git add -A` is faster"         | It sweeps in unrelated work, build output, and secrets.               |
 | "The subject says enough"        | Reviewers need the body to see what changed without reading the diff. |

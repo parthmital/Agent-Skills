@@ -29,7 +29,7 @@ A single-page LaTeX resume in which every claim traces to the user's ground-trut
 
 ## Process
 
-1. Find this layout in the current directory, else ask where it is. If none exists, create it, copy [assets/Resume.tex](assets/Resume.tex) to `<workspace>/Resume.tex`, and ask the user to add documentation first.
+1. Find this layout in the current directory, else ask where it is. If none exists, create it, copy [assets/resume-template.tex](assets/resume-template.tex) to `<workspace>/Resume.tex`, and ask the user to add documentation first.
 2. The target is the `.tex` file, whatever its name; if there are several, ask.
 3. Read every relevant file in `Education/`, `Experience/`, and `Projects/` before editing.
 4. A job description only guides which ground-truth content and keywords to choose and order. Never add a skill or claim because it asks for it; list unsupported important keywords for the user.
@@ -56,6 +56,10 @@ A single-page LaTeX resume in which every claim traces to the user's ground-trut
 9. ATS-parseable: standard headings (`Education \& Certifications`, `Experience`, `Projects \& Research`, `Technical Skills`), `Role/Degree`, `Organisation`, `Dates`, `Location` hierarchy, `Month Year -- Month Year` dates, single column.
 10. No em dashes; `--` for ranges; escape `\%`, `\&`, `\_`, `\$`, `\#`; official spelling of tool names; zero spelling, grammar, or LaTeX errors.
 
+Bad: `\resumeItem{Worked on a machine learning model using Python and TensorFlow and improved it.}`
+
+Good, when ground truth documents the numbers: `\resumeItem{Engineered a TensorFlow defect classifier for 40k PCB images \& deployed it on an edge GPU, \textbf{cutting inspection time by 62\%}}`
+
 ## Fitting
 
 Over one page: compress, never drop a listed item. In order, recompiling after each step:
@@ -67,9 +71,9 @@ Over one page: compress, never drop a listed item. In order, recompiling after e
 
 If it still does not fit, stop and ask the user what to cut, listing the candidates; never decide silently.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                                                   | Reality                                                              |
+| Rationalisation                                                   | Reality                                                              |
 | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
 | "The job description wants Kubernetes, and they probably used it" | Undocumented claims fail interviews. List it as unsupported instead. |
 | "An estimated metric is better than none"                         | Invented numbers are fabrication.                                    |

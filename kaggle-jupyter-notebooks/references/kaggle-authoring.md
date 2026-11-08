@@ -1,5 +1,7 @@
 # Kaggle Notebook Authoring
 
+Contents: Hardware Check, Use Both GPUs, Use All VRAM, Keep the GPUs Fed, Monitor and Protect, Realtime Output and Liveness, Prevent Deadlocks, Watch Worker Processes, Diagnosing a Run That Looks Stuck, Metrics and Plots, Output Layout, Final Zip Cell.
+
 Target: the highest throughput and shortest run time on two T4 GPUs, with every CPU core and all RAM used where they help.
 
 ## Hardware Check
@@ -22,7 +24,7 @@ In the first code cell after imports, print the GPU count, names, and VRAM per G
 - Log peak memory per GPU with `torch.cuda.max_memory_allocated(device)` after the first steps and at the end of each epoch.
 - **`OutOfMemoryError` in a post-training cell (Grad-CAM, inference) with GBs "reserved but unallocated"**: the notebook process fragments memory and stacks every model on one GPU. Set `os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"` in the first cell before importing torch (workers too), spread models over both GPUs, and per item retry once after `gc.collect()` and `empty_cache()` outside the `except`, then skip with a warning. Grad-CAM: freeze weights, return `output.detach().requires_grad_()` from the forward hook and take `torch.autograd.grad(target, leaf)`, which gives identical maps without the encoder graph or weight gradients. Check: compare maps with the full-backward version on CPU.
 
-## Keep The GPUs Fed
+## Keep the GPUs Fed
 
 - `DataLoader`: `num_workers` from `os.cpu_count()` (divided between DDP processes), `pin_memory=True`, `persistent_workers=True`, and a suitable `prefetch_factor`, created once per run, not per epoch.
 - Cache decoded or preprocessed data in RAM when it fits. Move heavy augmentation to the GPU when the CPU is the bottleneck.
@@ -30,7 +32,7 @@ In the first code cell after imports, print the GPU count, names, and VRAM per G
 - Use `torch.compile` only when it saves more time than it takes to compile within the session.
 - Parallelise CPU-only stages, such as feature engineering and file decoding, across all cores with `joblib`, `multiprocessing`, or vectorised libraries.
 
-## Monitor And Protect
+## Monitor and Protect
 
 - Show per-GPU utilisation and memory each epoch, in the progress bar postfix or a log line, using `torch.cuda` memory functions or `nvidia-smi`. An idle GPU is a bug to fix.
 - Report throughput in samples per second and time per epoch.
@@ -161,7 +163,7 @@ When the user reports a run that shows no new output:
 5. Fix the root cause, and also add the logging above to every stage in the silent stretch, so the next run localises any remaining stall to one stage.
 6. Tell the user to stop the current session and rerun. Say whether the cause is proven by the log or inferred.
 
-## Metrics And Plots
+## Metrics and Plots
 
 - Classification: accuracy, precision, recall, and F1 per class and averaged, confusion matrix, ROC and PR curves, and the competition metric. Regression: RMSE, MAE, R2, a residual plot, and predicted versus actual. Other tasks: the standard metrics plus the competition metric.
 - Track train and validation metrics per epoch and fold, with the cross-validation mean and standard deviation.

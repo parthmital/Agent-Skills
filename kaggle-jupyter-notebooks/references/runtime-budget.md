@@ -24,7 +24,7 @@ Ordered by typical value. Pick what helps this task, and stop each once it stops
 
 Never fill time with work that cannot change the outputs: repeated identical runs, epochs after early stopping triggers, waiting, or redundant evaluation.
 
-## Size It At Runtime
+## Size It at Runtime
 
 - `RUN_START` must be the session start: if any cell, such as `pip install`, runs before the configuration cell, set `RUN_START = time.time()` in the first code cell and remove it from the logging helpers.
 - After the batch-size probe, time a short run (a few hundred steps or a small fraction of an epoch) and log seconds per step and per epoch.
@@ -35,7 +35,7 @@ Never fill time with work that cannot change the outputs: repeated identical run
 - A short pilot's throughput is noisy, and costing concurrent sessions whose steps are sequential (agent or dialogue turns) at the pilot's full-load latency overestimates them about 2x: with many sessions open the server is throughput-bound. Plan conservatively, then grow the sample in prefix steps whose cost is projected from the per-job rates of the stages already run, stopping on elapsed time only, never on results.
 - Before each epoch, fold, seed, or trial, check that elapsed time plus that unit plus the reserve stays within `BUDGET`. Otherwise stop it, log why, and continue with the best checkpoint so every later cell still runs. A guard stop inside the required scope means the estimate was wrong: report it.
 
-## Splitting Into Several Notebooks
+## Splitting into Several Notebooks
 
 When the required scope cannot finish in one session:
 

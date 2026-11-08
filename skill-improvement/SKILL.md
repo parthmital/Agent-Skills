@@ -27,19 +27,19 @@ Skills are the agent's memory. Each hard problem is solved once, then written wh
    | Only some runs of a skill                     | Entry in its `references/<topic>.md`, with a pointer in `SKILL.md` if new |
    | A script or check can catch it                | The skill's script, plus a one-line rule                                  |
    | The skill did not trigger                     | Missing trigger words added to its `description`                          |
-   | A recurring workflow no skill covers          | New skill, per the README's Writing And Maintaining Skills                |
-   | Tool or environment quirk with no owner skill | [references/fixes.md](references/fixes.md)                                |
+   | A recurring workflow no skill covers          | New skill, per the README's Writing and Maintaining Skills                |
+   | Tool or environment quirk with no owner skill | [references/environment-fixes.md](references/environment-fixes.md)        |
    | Every task, every repository                  | One line in `AGENTS.md`                                                   |
 
 4. Merge, never append: rewrite the rule or entry that already covers the area, and delete rules that proved wrong or redundant. Aim for no net growth.
-5. Write entries as `- **<symptom>**: <cause>. <fix>. Check: <how>.` in one to three lines.
-6. Keep budgets: description at most 1024 characters, `SKILL.md` well under 500 lines, references one level deep.
+5. Write entries as `- **<symptom>**: <cause>. <fix>. Check: <how>.` in one to three lines, like the entries in [references/environment-fixes.md](references/environment-fixes.md). Never a session narrative, a machine path, or a rule without searchable symptom text.
+6. Keep budgets: description at most 1024 characters, `SKILL.md` well under 500 lines, references one level deep. Write for the least capable model that runs the skill, including Haiku workers: explicit steps, a concrete good and bad example where output style matters, and stated negative constraints, without explaining what any model already knows.
 7. Edit the source repository of the skills. If the installed skill folders are not links to it, copy the changed folders over and confirm with a recursive diff. Update its README, `agents/openai.yaml`, and `RESEARCH.md` as the change requires, and run its checks. Commit only when asked (`git-commit-and-push`).
 8. Report in one line what was recorded and where.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                        | Reality                                                                   |
+| Rationalisation                        | Reality                                                                   |
 | -------------------------------------- | ------------------------------------------------------------------------- |
 | "I will remember next time"            | The next session starts empty; only loaded text persists.                 |
 | "Add a new section, it is safer"       | Appending duplicates rules and costs context in every later run; merge.   |

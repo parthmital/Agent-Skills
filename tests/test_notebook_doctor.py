@@ -30,61 +30,65 @@ def write_notebook(path, cells, minor=4, ids=None):
     return path
 
 
-def test_repair_upgrades_old_notebook_and_adds_ids(doctor, tmp_path):
+def test_repair_upgrades_old_notebook_and_adds_ids(notebook_doctor, tmp_path):
     path = write_notebook(tmp_path / "old.ipynb", KAGGLE_OK, minor=4)
-    assert doctor.repair_notebook(path, make_backup=False) == 0
+    assert notebook_doctor.repair_notebook(path, make_backup=False) == 0
     saved = json.loads(path.read_text(encoding="utf-8"))
     assert saved["nbformat_minor"] >= 5
     ids = [cell["id"] for cell in saved["cells"]]
     assert all(ids) and len(set(ids)) == len(ids)
 
 
-def test_repair_replaces_duplicate_ids(doctor, tmp_path):
+# The fixture duplicates IDs on purpose, so nbformat warns while validating it.
+@pytest.mark.filterwarnings("ignore:Non-unique cell id")
+def test_repair_replaces_duplicate_ids(notebook_doctor, tmp_path):
     cells = KAGGLE_OK[:2]
     path = write_notebook(tmp_path / "dup.ipynb", cells, minor=5, ids=["a", "a"])
-    assert doctor.repair_notebook(path, make_backup=False) == 0
-    assert doctor.validate_notebook(path) == 0
+    assert notebook_doctor.repair_notebook(path, make_backup=False) == 0
+    assert notebook_doctor.validate_notebook(path) == 0
 
 
-def test_writes_use_lf(doctor, tmp_path):
+def test_writes_use_lf(notebook_doctor, tmp_path):
     path = write_notebook(tmp_path / "nb.ipynb", KAGGLE_OK)
-    doctor.clean_notebook(path, make_backup=False, drop_widgets=False)
+    notebook_doctor.clean_notebook(path, make_backup=False, drop_widgets=False)
     assert b"\r\n" not in path.read_bytes()
     out = tmp_path / "cells.py"
-    doctor.export_code(path, out)
+    notebook_doctor.export_code(path, out)
     assert b"\r\n" not in out.read_bytes()
 
 
-def test_clean_clears_outputs_and_counts(doctor, tmp_path):
+def test_clean_clears_outputs_and_counts(notebook_doctor, tmp_path):
     path = write_notebook(tmp_path / "nb.ipynb", KAGGLE_OK)
-    doctor.clean_notebook(path, make_backup=False, drop_widgets=False)
+    notebook_doctor.clean_notebook(path, make_backup=False, drop_widgets=False)
     saved = json.loads(path.read_text(encoding="utf-8"))
     code = [cell for cell in saved["cells"] if cell["cell_type"] == "code"]
     assert all(cell["execution_count"] is None for cell in code)
 
 
-def test_inspect_does_not_require_ids_before_4_5(doctor, tmp_path, capsys):
+def test_inspect_does_not_require_ids_before_4_5(notebook_doctor, tmp_path, capsys):
     path = write_notebook(tmp_path / "old.ipynb", KAGGLE_OK, minor=4)
-    assert doctor.inspect_notebook(path) == 0
+    assert notebook_doctor.inspect_notebook(path) == 0
     assert "0 missing" in capsys.readouterr().out
 
 
-def test_backup_goes_to_agent_local_inside_git_repo(doctor, tmp_path):
+def test_backup_goes_to_agent_local_inside_git_repo(notebook_doctor, tmp_path):
     (tmp_path / ".git").mkdir()
     path = write_notebook(tmp_path / "nb.ipynb", KAGGLE_OK)
-    first, second = doctor.backup_file(path), doctor.backup_file(path)
+    first, second = notebook_doctor.backup_file(path), notebook_doctor.backup_file(path)
     assert first.parent == tmp_path / ".agent-local" / "backups"
     assert first.name == "nb.ipynb.bak" and second.name == "nb.ipynb.bak.1"
 
 
-def test_check_kaggle_passes_conforming_notebook(doctor, tmp_path):
+def test_check_kaggle_passes_conforming_notebook(notebook_doctor, tmp_path):
     path = write_notebook(tmp_path / "ok.ipynb", KAGGLE_OK)
-    assert doctor.check_kaggle(path) == 0
+    assert notebook_doctor.check_kaggle(path) == 0
 
 
-def test_check_kaggle_reports_missing_markdown_and_zip(doctor, tmp_path, capsys):
+def test_check_kaggle_reports_missing_markdown_and_zip(
+    notebook_doctor, tmp_path, capsys
+):
     path = write_notebook(tmp_path / "bad.ipynb", [("code", "x = 1")])
-    assert doctor.check_kaggle(path) == 1
+    assert notebook_doctor.check_kaggle(path) == 1
     out = capsys.readouterr().out
     assert "first cell is not a markdown overview" in out
     assert "does not create the output zip" in out
@@ -101,8 +105,8 @@ def test_check_kaggle_reports_missing_markdown_and_zip(doctor, tmp_path, capsys)
         ('get_context("spawn").Pool(4)', False),
     ],
 )
-def test_fork_pool_detection(doctor, source, flagged):
-    assert bool(doctor.fork_pool_lines(ast.parse(source))) is flagged
+def test_fork_pool_detection(notebook_doctor, source, flagged):
+    assert bool(notebook_doctor.fork_pool_lines(ast.parse(source))) is flagged
 
 
 @pytest.mark.parametrize(
@@ -113,25 +117,26 @@ def test_fork_pool_detection(doctor, source, flagged):
         ("for x in items:\n    pass", False),
     ],
 )
-def test_silent_progress(doctor, source, silent):
-    assert doctor.silent_progress(ast.parse(source)) is silent
+def test_silent_progress(notebook_doctor, source, silent):
+    assert notebook_doctor.silent_progress(ast.parse(source)) is silent
 
 
-def test_cell_python_masks_magics(doctor):
+def test_cell_python_masks_magics(notebook_doctor):
     assert (
-        doctor.cell_python("!pip install x\n%time y = 1\nz = 2") == "pass\npass\nz = 2"
+        notebook_doctor.cell_python("!pip install x\n%time y = 1\nz = 2")
+        == "pass\npass\nz = 2"
     )
-    assert doctor.cell_python("%%writefile lib.py\ndef f():\n    pass") == (
+    assert notebook_doctor.cell_python("%%writefile lib.py\ndef f():\n    pass") == (
         "def f():\n    pass"
     )
-    assert doctor.cell_python("%%writefile notes.txt\nhello") is None
-    assert doctor.cell_python("%%bash\nls") is None
+    assert notebook_doctor.cell_python("%%writefile notes.txt\nhello") is None
+    assert notebook_doctor.cell_python("%%bash\nls") is None
 
 
-def test_diff_reports_changes(doctor, tmp_path, capsys):
+def test_diff_reports_changes(notebook_doctor, tmp_path, capsys):
     before = write_notebook(tmp_path / "a.ipynb", KAGGLE_OK)
     changed = [*KAGGLE_OK[:-1], ("code", "print('changed')")]
     after = write_notebook(tmp_path / "b.ipynb", changed)
-    assert doctor.diff_notebooks(before, before) == 0
-    assert doctor.diff_notebooks(before, after) == 1
+    assert notebook_doctor.diff_notebooks(before, before) == 0
+    assert notebook_doctor.diff_notebooks(before, after) == 1
     assert "changed" in capsys.readouterr().out

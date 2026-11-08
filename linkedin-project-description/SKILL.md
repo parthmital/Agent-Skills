@@ -30,9 +30,21 @@ A short, factual LinkedIn description that recruiters and engineers both underst
 - If the source contradicts itself, use the most specific or current information without guessing.
 - Reply with only the description in one code block: no title, intro, or citations. Add one short line after it only when something needs attention, such as a contradiction, an unsupported claim left out, or a listed item that could not fit even after full compression.
 
-## Common Rationalizations
+## Example
 
-| Rationalization                    | Reality                               |
+Bad: `Built an innovative, cutting-edge AI platform using Python, React, Docker, AWS, and more.`
+
+Good, from a README stating these facts:
+
+```text
+Built a retrieval-augmented assistant that answers support questions over 12k past tickets.
+• Engineered hybrid BM25 & embedding retrieval with re-ranking behind a FastAPI service
+• Cut median answer time from 9 min to 40 s in a 3-week pilot with 25 agents
+```
+
+## Common Rationalisations
+
+| Rationalisation                    | Reality                               |
 | ---------------------------------- | ------------------------------------- |
 | "Rounding the metric reads better" | Changed numbers are invented numbers. |
 | "Listing every tool shows breadth" | Tech lists bury the impact.           |

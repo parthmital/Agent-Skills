@@ -1,0 +1,6 @@
+interface:
+  display_name: "Naming Conventions"
+  short_description: "One consistent, descriptive naming standard per repo"
+  default_prompt: "Use $naming-conventions to detect, decide, record, and enforce one consistent naming convention for every kind of identifier in this repository."
+policy:
+  allow_implicit_invocation: true

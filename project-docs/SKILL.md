@@ -43,15 +43,15 @@ Create a file only when it has real content for this repository. Never create st
 
 ## Process
 
-1. Inventory existing docs, including `docs/`, wiki-style folders, and long code comments that act as docs.
+1. Inventory existing docs, including `docs/`, wiki-style folders, and long code comments that act as docs. For a large set, a `research-worker` per doc group can return each section's facts and staleness with `path:line` (`subagent-delegation`).
 2. Map every section of every doc to one file in the map. Mark duplicates, contradictions, stale facts (check them against the code), and content that belongs in another file.
 3. Rewrite to the templates: keep each fact once in its home, link from elsewhere, delete stale and duplicate text, and fold orphan docs into their home or into `docs/<topic>.md`.
 4. Write the files this skill owns, using the templates. For a file another skill owns, run that skill when its content needs new work, such as a fresh security audit, and fix only the format here otherwise.
 5. Update `README.md`'s documentation index and every link affected by moved sections.
 
-## Common Rationalizations
+## Common Rationalisations
 
-| Rationalization                           | Reality                                                               |
+| Rationalisation                           | Reality                                                               |
 | ----------------------------------------- | --------------------------------------------------------------------- |
 | "Repeating it in two docs is safer"       | The copies drift, and agents pay to read both.                        |
 | "A full file inventory helps agents"      | Agents can list files themselves; document the rules they cannot see. |
