@@ -6,6 +6,9 @@ Read the section for the problem `check_paper.py` or the rendered pages show.
 
 Only after the user agrees. Save `https://drop-ps1.fullyjustified.net` (Windows) or `https://drop-sh.fullyjustified.net` (POSIX) to `.agent-local/downloads/`, read it, and run it from the folder the build expects (else the repo root) with `powershell -ExecutionPolicy Bypass -File <script>` or `sh <script>`, never piped to `iex` or `sh`. It unpacks `tectonic(.exe)` there, overwriting any copy, and pins its own version (0.17.0 in October 2026); report it. Never add it to `PATH`; Git-ignore it and `.cache/`. First runs download packages. Keep `--reruns 3`: Tectonic 0.15 otherwise loops to six passes.
 
+- **`check_paper.py` fails with `FileNotFoundError: [WinError 2]` at `compile_paper`**: a relative `--tectonic ./tectonic.exe` is resolved from another working directory. Pass an absolute path. Check: the log shows `$ tectonic.exe ...` followed by TeX output.
+- **`Undefined control sequence` at `\fpeval` or at `\usepackage{xfp}`**: Tectonic's bundle has neither. Compute derived numbers (differences, ratios, ranges) in the script that generates the values, not in TeX. Check: the PDF shows the number.
+
 ## Overflow
 
 - Figures: `\includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]`; `\columnwidth` in two columns. Crop with `trim`, `clip` (`\adjincludegraphics`).
