@@ -92,21 +92,50 @@ $import = "@" + ($PWD.Path -replace '\\', '/' -replace ' ', '\ ') + "/AGENTS.md"
 
 On POSIX use `ln -s "$PWD/<skill>" ~/.claude/skills/<skill>`, `ln -s "$PWD/claude-code-agents" ~/.claude/agents`, and an import line such as `@/path/to/Agent-Skills/AGENTS.md` in `~/.claude/CLAUDE.md`.
 
-### Google Antigravity
+### OpenCode
 
-Link this repository as the global skills directory and link the global agent rules (`AGENTS.md`):
+OpenCode reads `~/.claude/skills` for compatibility, so the skill junctions above cover it. It reads global rules only from `~/.config/opencode/AGENTS.md` and does not expand `@` imports, so link `AGENTS.md` itself:
 
 ```powershell
-# Global skills directory junction
-New-Item -ItemType Junction -Path "$HOME\.gemini\config\skills" -Target "$PWD"
-
-# Global agent rules symbolic link
-cmd.exe /c "mklink `"$HOME\.gemini\config\rules\AGENTS.md`" `"$PWD\AGENTS.md`""
+New-Item -ItemType SymbolicLink -Path "$HOME\.config\opencode\AGENTS.md" -Target "$PWD\AGENTS.md"
 ```
+
+A file symlink needs Windows Developer Mode or an elevated shell, unlike the junctions above. Inside this repository the project `AGENTS.md` loads too, so a session here sees the same rules twice.
+
+OpenCode V2 does not read `~/.claude/agents`, and its agent frontmatter differs from Claude Code's, so the worker definitions apply to Claude Code only.
+
+### Google Antigravity
+
+Skills and rules have separate global locations. Link one junction per skill folder, as for Claude Code:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.gemini\config\skills" | Out-Null
+foreach ($d in Get-ChildItem -Directory | Where-Object { Test-Path "$($_.FullName)\SKILL.md" }) {
+  $link = "$HOME\.gemini\config\skills\$($d.Name)"
+  if (-not (Test-Path $link)) { New-Item -ItemType Junction -Path $link -Target $d.FullName }
+}
+
+cmd.exe /c "mklink `"$HOME\.gemini\config\AGENTS.md`" `"$PWD\AGENTS.md`""
+```
+
+Antigravity loads `~/.gemini/config/AGENTS.md` as an always-on global rule. It discards a file in `~/.gemini/config/rules/` that lacks YAML frontmatter with a `trigger` value, so do not put these rules there. Antigravity custom agents use a different frontmatter schema (`name`, `description`, `tools`, `model` as `inherit`, `flash`, or `pro`), so `claude-code-agents/` is not linked into `~/.gemini/config/agents/`.
 
 A harness without subagents runs the `subagent-delegation` decomposition and validation inline. A harness that does not follow links needs a copy of each skill folder (`SKILL.md`, `agents/`, `references/`, `scripts/`, `assets/`), recopied after every change.
 
 `agents/openai.yaml` in each skill is optional metadata (`display_name`, `short_description`, `default_prompt`, `allow_implicit_invocation`) for harnesses that read it. Others ignore it.
+
+### Verify the Links
+
+Each skill folder should appear once as a junction in both global skills directories, `~/.claude/agents` should be a junction to `claude-code-agents/`, and the global rules files should resolve to this repository's `AGENTS.md`:
+
+```powershell
+Get-ChildItem "$HOME\.claude\skills", "$HOME\.gemini\config\skills" -Force |
+  Select-Object Directory, Name, LinkType, Target
+Get-Item "$HOME\.claude\agents", "$HOME\.claude\CLAUDE.md", "$HOME\.config\opencode\AGENTS.md", "$HOME\.gemini\config\AGENTS.md" |
+  Select-Object FullName, LinkType, Target
+```
+
+`~/.claude/skills/synced` is Claude Code's own cache, not part of this repository. `~/.claude/CLAUDE.md` is a regular file whose `@` import points at `AGENTS.md`.
 
 ## Repository Structure
 

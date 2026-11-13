@@ -2,6 +2,25 @@
 
 Purpose: dated evidence behind this repository's design decisions. Read when: changing a skill's approach or revisiting a decision below.
 
+## Global Harness Links (2026-11-14)
+
+**Brief:** which filesystem links make this repository's skills, worker agents, and rules global in Claude Code, OpenCode, and Google Antigravity, and where each harness actually reads them.
+
+**Scope:** Claude Code memory and skills docs, OpenCode V2 instructions, skills, and agents docs, and Antigravity skills, rules, customization discovery, and subagents docs. Searched 2026-11-14.
+
+**Findings:**
+
+- Claude Code reads personal skills from `~/.claude/skills/<name>/SKILL.md` and allows a skill folder to be a symlink. It reads subagents from `~/.claude/agents/` and expands `@path` imports in `~/.claude/CLAUDE.md`, with a backslash before each space in the path.
+- OpenCode V2 reads global rules only from `~/.config/opencode/AGENTS.md`. It does not expand `@` imports, so an import-only `~/.claude/CLAUDE.md` gives it no rules. It reads skills from `~/.claude/skills` as a compatibility source, but it does not read `~/.claude/agents`, and its agent frontmatter (`description`, `mode`, `model` as `provider/model`) differs from Claude Code's.
+- Antigravity reads global skills from `~/.gemini/config/skills/<name>/SKILL.md`, one level deep, and global rules from `~/.gemini/config/AGENTS.md`. It discards a file in `~/.gemini/config/rules/` that lacks YAML frontmatter with a `trigger`, so a plain `AGENTS.md` there never loaded. Its custom agents use `name`, `description`, `tools`, `model` (`inherit`, `flash`, or `pro`), and `subagent`, so Claude Code worker definitions are not reusable.
+- Windows directory junctions need no elevation and are transparent to all three harnesses. File symlinks need Developer Mode or an elevated shell.
+
+**Decision:** one junction per skill folder in `~/.claude/skills` and `~/.gemini/config/skills`, a junction for `~/.claude/agents`, an import-only `~/.claude/CLAUDE.md`, and file symlinks for `~/.config/opencode/AGENTS.md` and `~/.gemini/config/AGENTS.md`. Removed the stale `~/.gemini/config/rules/AGENTS.md` link, replaced the whole-repository junction at `~/.gemini/config/skills` with per-skill junctions, emptied the redundant `~/.gemini/config/skills.json` entries, and deleted the empty `readme-generator/` folder left by the 2026-11-13 merge. Alternative considered: an Antigravity `skills.json` absolute path, which also works and picks up new skills automatically, rejected to keep one link mechanism and a clean global skills directory.
+
+**Sources:**
+
+- Docs: [Claude Code memory](https://code.claude.com/docs/en/memory), [Claude Code skills](https://code.claude.com/docs/en/skills), [OpenCode V2 instructions](https://opencode.ai/docs/instructions/), [OpenCode V2 skills](https://opencode.ai/docs/skills/), [OpenCode V2 agents](https://opencode.ai/docs/agents/), [Antigravity skills](https://antigravity.google/docs/skills), [Antigravity rules](https://antigravity.google/docs/rules), [Antigravity customization discovery](https://antigravity.google/docs/customization-discovery/), and [Antigravity subagents](https://antigravity.google/docs/subagents).
+
 ## Research-Driven Development (2026-10-21)
 
 **Superseded 2026-11-13:** the skill was merged into `internet-research`, and research became the default for non-trivial work. See Skill Consolidation and Cost-Aware Delegation.
