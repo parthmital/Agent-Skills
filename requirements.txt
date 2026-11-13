@@ -1,4 +1,4 @@
-# Helper scripts: notebook_doctor.py needs nbformat; check_paper.py PDF checks need pypdf,
+# Helper scripts: notebook_doctor.py needs nbformat, and check_paper.py PDF checks need pypdf,
 # and its --render option needs pypdfium2 and pillow.
 nbformat==5.11.1
 pypdf==6.21.4

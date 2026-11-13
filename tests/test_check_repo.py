@@ -53,3 +53,22 @@ def test_intent_map_reports_missing_and_unknown_skills(check_repo):
     )
     assert any("no-such-skill" in p for p in problems)
     assert any("no route to `project-docs`" in p for p in problems)
+
+
+def test_punctuation_skips_markdown_code_only(check_repo):
+    semicolon, em_dash = chr(0x3B), chr(0x2014)
+    text = "\n".join(
+        [
+            f"Prose with a {semicolon} here.",
+            f"Inline `a{semicolon} b` is code.",
+            "```bash",
+            f"cd repo{semicolon} make",
+            "```",
+            f"A dash {em_dash} here.",
+        ]
+    )
+    assert check_repo.punctuation_problems(text, is_markdown=True) == [
+        (1, "semicolon"),
+        (6, "em dash"),
+    ]
+    assert (4, "semicolon") in check_repo.punctuation_problems(text, is_markdown=False)

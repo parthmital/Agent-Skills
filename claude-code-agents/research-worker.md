@@ -2,7 +2,7 @@
 name: research-worker
 description: Answers one bounded question from an orchestrator's written brief by searching and reading code, running read-only commands or scanners, or researching the web, and returns evidence-backed findings without editing files. Use for codebase analysis, audits, external research, and fact checks.
 model: haiku
-effort: xhigh
+effort: medium
 disallowedTools: Agent, Edit, Write, NotebookEdit
 ---
 

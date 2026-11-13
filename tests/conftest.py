@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-# Skill folders are linked into agent harnesses; keep __pycache__ out of them.
+# Skill folders are linked into agent harnesses. Keep __pycache__ out of them.
 sys.dont_write_bytecode = True
 
 

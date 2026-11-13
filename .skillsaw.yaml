@@ -1,13 +1,15 @@
 # skillsaw lint config. Rule docs: https://skillsaw.org/rules/
+version: 0.22.0
 strict: true
 
 exclude:
   - ".agent-local/**"
   - ".cache/**"
   - ".venv/**"
+  - "**/__pycache__/**"
 
 rules:
-  # Flags prose rules (no semicolons in papers, Indian English) as Prettier-enforced; Prettier enforces neither.
+  # Flags prose rules (no semicolons in papers, Indian English) as Prettier-enforced. Prettier enforces neither.
   content-redundant-with-tooling:
     enabled: false
   # "repo" and "repository", "folder" and "directory" are used interchangeably on purpose.

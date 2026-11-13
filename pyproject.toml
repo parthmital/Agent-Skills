@@ -2,7 +2,7 @@
 
 [tool.ruff]
 target-version = "py311"
-# Markdown is formatted by Prettier; ruff covers the Python helper scripts and tests.
+# Markdown is formatted by Prettier, and ruff covers the Python helper scripts and tests.
 extend-exclude = ["*.md"]
 
 [tool.ruff.lint]

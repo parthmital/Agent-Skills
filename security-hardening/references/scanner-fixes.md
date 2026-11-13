@@ -14,4 +14,4 @@ Quirks of the security scanners and their CI jobs. Search by symptom text. Entry
 
 ## `zizmor`
 
-- **zizmor prints `(N suppressed)` with no `zizmor: ignore` comment in the workflows**: the default persona hides pedantic findings. Run `zizmor --persona pedantic` to list them. A `permissions` entry with no comment is flagged (`undocumented-permissions`); put the reason on the same line. Check: `zizmor --persona pedantic` reports no findings.
+- **zizmor prints `(N suppressed)` with no `zizmor: ignore` comment in the workflows**: the default persona hides pedantic findings. Run `zizmor --persona pedantic` to list them. A `permissions` entry with no comment is flagged (`undocumented-permissions`). Put the reason on the same line. Check: `zizmor --persona pedantic` reports no findings.

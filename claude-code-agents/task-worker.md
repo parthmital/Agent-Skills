@@ -2,7 +2,7 @@
 name: task-worker
 description: Executes one well-scoped implementation, refactoring, test, documentation, or check-fixing task from an orchestrator's written brief and returns a short report with check results. Use for routine, checkable work the orchestrator has already decided and specified.
 model: haiku
-effort: xhigh
+effort: medium
 disallowedTools: Agent
 ---
 

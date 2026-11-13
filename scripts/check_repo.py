@@ -12,7 +12,9 @@ Exits 1 and lists every problem when:
 - the AGENTS.md intent map does not route to exactly the skill folders,
 - a Claude Code agent definition lacks `name` (matching its file), `description`,
   `model`, or `effort`, or is not listed in README.md,
-- the README skills table or skill folder count does not match the skill folders.
+- the README skills table or skill folder count does not match the skill folders,
+- any text file has an em dash, or a semicolon outside Markdown code (the AGENTS.md
+  Writing rule: this repository has no code that needs one).
 Spec checks (name format, description length, links) are left to skillsaw.
 """
 
@@ -28,6 +30,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SECTIONS = (
     "Overview",
     "When to Use",
+    "Process",
+    "Examples",
     "Common Rationalisations",
     "Red Flags",
     "Verification",
@@ -37,6 +41,10 @@ SUPPORT_DIRS = ("references", "scripts", "assets")
 AGENT_FIELDS = ("name", "description", "model", "effort")
 AGENTS_DIR = ROOT / "claude-code-agents"
 SKIPPED_DIRS = {".git", ".venv", ".cache", ".agent-local", "node_modules"}
+TEXT_SUFFIXES = {".md", ".py", ".tex", ".yaml", ".yml", ".toml", ".txt", ".json"}
+TEXT_NAMES = {".gitignore", ".gitattributes", ".prettierignore"}
+# Written as code points so this file does not contain the characters it bans.
+SEMICOLON, EM_DASH = chr(0x3B), chr(0x2014)
 KEBAB_FILE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*\.[a-z0-9]+$")
 PYTHON_FILE = re.compile(r"^[a-z][a-z0-9_]*\.py$")
 # Title case: these words stay lowercase unless they open the heading or follow a colon.
@@ -155,6 +163,37 @@ def check_headings() -> list[str]:
     return problems
 
 
+def punctuation_problems(text: str, is_markdown: bool) -> list[tuple[int, str]]:
+    """Return (line number, character name) for each banned character outside Markdown code."""
+    found, in_fence = [], False
+    for number, line in enumerate(text.splitlines(), 1):
+        if is_markdown and line.lstrip().startswith("```"):
+            in_fence = not in_fence
+            continue
+        if is_markdown and in_fence:
+            continue
+        prose = re.sub(r"`[^`]*`", "", line) if is_markdown else line
+        if EM_DASH in line:
+            found.append((number, "em dash"))
+        if SEMICOLON in prose:
+            found.append((number, "semicolon"))
+    return found
+
+
+def check_punctuation() -> list[str]:
+    problems = []
+    for path in sorted(ROOT.rglob("*")):
+        relative = path.relative_to(ROOT)
+        if SKIPPED_DIRS.intersection(relative.parts) or not path.is_file():
+            continue
+        if path.suffix not in TEXT_SUFFIXES and path.name not in TEXT_NAMES:
+            continue
+        text = path.read_text(encoding="utf-8")
+        for number, name in punctuation_problems(text, path.suffix == ".md"):
+            problems.append(f"{relative.as_posix()}:{number}: {name}")
+    return problems
+
+
 def check_intent_map(agents: str, names: list[str]) -> list[str]:
     routed = set(re.findall(r"^- .+: `([a-z0-9-]+)`", agents, re.MULTILINE))
     problems = [
@@ -212,6 +251,7 @@ def main() -> int:
     problems += check_intent_map(agents, names)
     problems += check_agent_definitions(readme)
     problems += check_headings()
+    problems += check_punctuation()
     for skill in skills:
         problems += check_skill(skill, readme)
     for problem in problems:

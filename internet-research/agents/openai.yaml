@@ -1,6 +1,6 @@
 interface:
   display_name: "Internet Research"
-  short_description: "Evidence-weighed internet research and fact-checking"
-  default_prompt: "Use $internet-research to research comparable projects and current external context."
+  short_description: "Current, cited research and reuse-before-build decisions"
+  default_prompt: "Use $internet-research to find current, cited evidence and the best existing solutions before deciding or building."
 policy:
   allow_implicit_invocation: true

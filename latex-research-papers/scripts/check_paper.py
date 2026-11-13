@@ -17,7 +17,7 @@ a bibliography entry cited only by that document is not reported as uncited.
 template-internal overfull box already checked in the PDF) to accepted.
 Figures and tables in the appendix are exempt from the placement check. Underfull boxes and other
 warnings are listed but never fail the check.
-PDF checks need pypdf; --render also needs pypdfium2 and pillow. Without them they are skipped.
+PDF checks need pypdf, and --render also needs pypdfium2 and pillow. Without them they are skipped.
 """
 
 from __future__ import annotations
@@ -113,7 +113,7 @@ def compile_paper(tectonic: Path, tex: Path, outdir: Path, root: Path) -> int:
 
 
 def joined_log_lines(log: str) -> list[str]:
-    """TeX wraps log lines at 79 characters; rejoin them so messages stay whole."""
+    """TeX wraps log lines at 79 characters. Rejoin them so messages stay whole."""
     lines, current = [], ""
     for raw in log.splitlines():
         current += raw
@@ -257,7 +257,7 @@ def label_anchors(aux: str) -> dict[str, str]:
 
 
 def appendix_page(aux: str) -> str | None:
-    """Page label where the appendix starts; its figures and tables may sit far from a body mention."""
+    """Page label where the appendix starts. Its figures and tables may sit far from a body mention."""
     match = re.search(
         r"\\contentsline \{\w+\}.*\}\{([^{}]*)\}\{appendix\.[^{}]*\}", aux
     )
@@ -419,7 +419,7 @@ def main() -> int:
     problems: list[str] = []
 
     if compile_paper(tectonic, tex, outdir, root):
-        problems.append("Tectonic failed; fix the first error shown above.")
+        problems.append("Tectonic failed. Fix the first error shown above.")
 
     log_path = outdir / f"{tex.stem}.log"
     log = (
@@ -488,7 +488,7 @@ def main() -> int:
     order_note = "skipped (no bibliography numbers in .aux)"
     out_of_order: list[str] = []
     if numbers and is_author_year(sources_text):
-        order_note = "skipped (author-year citations; the style orders the list)"
+        order_note = "skipped (author-year citations: the style orders the list)"
     elif numbers and all(numbers.get(k, "").isdigit() for k in cited if k in numbers):
         in_list = [k for k in cited if k in numbers]
         sequence = [int(numbers[k]) for k in in_list]
@@ -577,7 +577,7 @@ def main() -> int:
         problems.append("Citations not numbered in order of first appearance")
     print(f"hyperref loaded: {'yes' if hyperref else 'no'}")
     if not hyperref:
-        problems.append("hyperref not loaded; links are not clickable")
+        problems.append("hyperref not loaded. Links are not clickable")
 
     if pdf.exists():
         report, pdf_problems, placement = pdf_checks(

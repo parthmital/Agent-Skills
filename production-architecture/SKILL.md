@@ -1,6 +1,6 @@
 ---
 name: production-architecture
-description: "Re-architects a whole repository to be production ready, scalable, modular, and free of redundancy, with a one-command `npm run dev` launcher. Use when the user asks to make a codebase production ready, scalable, modular, or maintainable, restructure or re-architect a repo, deduplicate, split god files, fix circular imports or spaghetti code, organise a monorepo, or set up, fix, or change how the app starts locally. Broad and structural, not surgical; vulnerabilities belong to `security-hardening`."
+description: "Re-architects a whole repository to be production ready, scalable, modular, and free of redundancy, with a one-command `npm run dev` launcher. Use when the user asks to make a codebase production ready, scalable, modular, or maintainable, restructure or re-architect a repo, deduplicate, split god files, fix circular imports or spaghetti code, organise a monorepo, or set up, fix, or change how the app starts locally. Broad and structural, not surgical. Vulnerabilities belong to `security-hardening`."
 ---
 
 # Production Architecture
@@ -18,11 +18,11 @@ The scope is the whole repository: moving, merging, splitting, renaming, and del
 
 ## Process
 
-1. Map: manifests, entry points, runtime model, dependency graph, data stores, tests, CI, docs, change hotspots (`git log --stat`). Delegate this map and step 3's inventory by area to parallel `research-worker`s that return findings with `path:line` (`subagent-delegation`); decide the architecture yourself.
-2. Decide the architecture that fits now and at the next growth stage, using `research-driven-development` for unfamiliar stacks, patterns, or tooling; list mismatches with file evidence.
+1. Map: manifests, entry points, runtime model, dependency graph, data stores, tests, CI, docs, change hotspots (`git log --stat`). For a large repository, `subagent-delegation` decides whether `research-worker`s map areas and return findings with `path:line`. Decide the architecture yourself.
+2. Decide the architecture that fits now and at the next growth stage, researching current patterns and tooling for the stack with `internet-research`. List mismatches with file evidence.
 3. Inventory duplicates, monoliths, cycles, boundary leaks, production gaps, scaling limits, and dead code, files, dependencies, and docs. Leave Git-ignored work areas such as `.agent-local/` alone.
 4. Design the target: single-responsibility modules with small public APIs, allowed dependency directions, and where new code goes. Keep the language and framework unless they are the problem.
-5. Migrate in phases that each leave the repo green. Add characterisation tests before moving uncovered code. A phase may go to `task-worker`s with disjoint file scopes and the phase's checks as their done-when check; check each phase's checks and diff stat before starting the next.
+5. Migrate in phases that each leave the repo green. Add characterisation tests before moving uncovered code. A mechanical phase (moves, renames, import rewrites) may go to `task-worker`s with disjoint file scopes and the phase's checks as their done-when check. Check each phase's checks and diff stat before starting the next.
 6. Enforce boundaries with tooling (`dependency-cruiser` or `eslint-plugin-boundaries`, `import-linter`, ArchUnit, Nx, Go `internal`) and a clone detector in CI.
 7. Write `ARCHITECTURE.md` from the `project-docs` template, recording allowed duplication exceptions and growth signals for the next pass. Update docs referencing moved paths.
 
@@ -34,20 +34,20 @@ Merge into one named abstraction in the lowest module all callers may depend on,
 
 ## Modularity
 
-- One reason to change per file, class, function, and module; split mixed concerns or abstraction levels.
-- Small explicit public API per module; internals private.
+- One reason to change per file, class, function, and module. Split mixed concerns or abstraction levels.
+- Small explicit public API per module, internals private.
 - Acyclic dependencies pointing from volatile details (UI, transport, persistence, vendors) towards domain rules.
-- Thin entry points; side effects (IO, network, time, env, globals) behind interfaces at the edges.
-- Names per `naming-conventions`: no `utils`, `helpers`, `common`, or `misc` drawers; name shared code by responsibility.
+- Thin entry points, with side effects (IO, network, time, env, globals) behind interfaces at the edges.
+- Names per `naming-conventions`: no `utils`, `helpers`, `common`, or `misc` drawers. Name shared code by responsibility.
 - Organise feature-first, domain-first, layer-first, or as packages, whichever matches how changes flow.
-- Notebooks: one job per cell; move logic into `.py` modules only for non-Kaggle notebooks with a matching package.
+- Notebooks: one job per cell. Move logic into `.py` modules only for non-Kaggle notebooks with a matching package.
 - Split into services only on evidence (independent scaling, ownership, fault isolation), but keep modules extractable.
 
 ## Production Readiness and Scale
 
 - Config from environment, validated at startup, with an example file.
 - Errors handled consistently at boundaries, nothing swallowed, user messages separate from internals.
-- Structured logs with correlation IDs; metrics, tracing, and health checks for services.
+- Structured logs with correlation IDs, plus metrics, tracing, and health checks for services.
 - Timeouts on external calls, retries with backoff only when idempotent, graceful shutdown, idempotent jobs.
 - Versioned migrations, transactions for multi-step writes, indexes for real queries.
 - Formatter, linter, type checker, tests, and build runnable with one command and enforced in CI. Pinned runtime, committed lockfile, README setup works from a clean clone.
@@ -55,20 +55,34 @@ Merge into one named abstraction in the lowest module all callers may depend on,
 
 ## Rules
 
-- Move and rename with tooling; update every import, config, script, CI file, and doc.
+- Move and rename with tooling, and update every import, config, script, CI file, and doc.
 - Delete superseded code in the same phase. Shims only for external consumers of a published API, marked deprecated.
 - Change dependencies via the package manager, never by editing lockfiles.
-- Never weaken or delete tests to pass; move tests with their code.
+- Never weaken or delete tests to pass. Move tests with their code.
 - Ask before changing published APIs, public URLs, live database schemas, or deployment topology.
+
+## Examples
+
+Bad target: `Split the app into microservices and add a utils package for shared code.` (no evidence, a drawer module)
+
+Good target (illustrative):
+
+```text
+Shape now: one Express app, 61 files, routes call SQL directly, 4 near-identical pagination helpers, a cycle between orders/ and users/.
+Target: modular monolith. src/domain/<feature>/ (rules, no IO), src/http/ (routes), src/db/ (repositories). Dependencies point http -> domain <- db.
+Phase 1: characterisation tests for orders and users. Phase 2: extract repositories, break the cycle. Phase 3: one paginate() in src/db/pagination.ts, delete 4 copies.
+Enforced by: dependency-cruiser rules in npm run lint, jscpd in CI.
+Growth signal for the next pass: a team needing independent deploys, or one domain over about 40 files.
+```
 
 ## Common Rationalisations
 
 | Rationalisation                                                   | Reality                                               |
 | ----------------------------------------------------------------- | ----------------------------------------------------- |
-| "These two functions differ slightly, so they are not duplicates" | Parameterise the variation; near clones drift apart.  |
+| "These two functions differ slightly, so they are not duplicates" | Parameterise the variation. Near clones drift apart.  |
 | "I'll keep the old path as a wrapper"                             | Forwarding wrappers are duplication with extra steps. |
 | "A `utils` file is fine for now"                                  | Drawers grow into the next monolith.                  |
-| "We should split into microservices"                              | Only on evidence; modular code is enough until then.  |
+| "We should split into microservices"                              | Only on evidence. Modular code is enough until then.  |
 
 ## Red Flags
 
@@ -78,7 +92,7 @@ Merge into one named abstraction in the lowest module all callers may depend on,
 
 ## Verification
 
-- [ ] All available checks run after each phase; results and anything unverified stated.
+- [ ] All available checks run after each phase, with results and anything unverified stated.
 - [ ] Report: current shape and misfits with file references, target module map and rules, per-phase moves, merges, splits, and deletions with before and after file and line counts, duplicates removed and exceptions kept.
 - [ ] `npm run dev` verified on a fresh and a repeat run, with no leftover processes or ports, and the OS stated.
 - [ ] `ARCHITECTURE.md` matches the code.

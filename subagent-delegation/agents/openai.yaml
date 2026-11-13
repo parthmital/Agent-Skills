@@ -1,6 +1,6 @@
 interface:
   display_name: "Subagent Delegation"
-  short_description: "Orchestrate low-cost worker subagents and verify their work"
-  default_prompt: "Use $subagent-delegation to split this task into briefed worker subtasks, run independent ones in parallel, and validate every result before integrating it."
+  short_description: "Delegate to low-cost workers only when it lowers total usage"
+  default_prompt: "Use $subagent-delegation to decide which parts of this task are cheaper in a worker, brief them at the lowest fitting effort, and validate every result."
 policy:
   allow_implicit_invocation: true

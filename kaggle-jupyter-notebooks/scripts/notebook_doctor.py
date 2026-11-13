@@ -70,7 +70,7 @@ def atomic_write(nb, path: Path) -> None:
 
 
 def has_cell_ids(nb) -> bool:
-    """Cell IDs are part of the format from nbformat 4.5; older notebooks have none."""
+    """Cell IDs are part of the format from nbformat 4.5. Older notebooks have none."""
     return (nb.nbformat, nb.nbformat_minor) >= (4, 5)
 
 
@@ -315,7 +315,7 @@ def check_kaggle(path: Path) -> int:
         if not source.lstrip().startswith("%%") and silent_progress(tree):
             problems.append(
                 f"cell {index}: progress shown only by tqdm, which a saved Kaggle run's "
-                "log does not show; log progress lines too"
+                "log does not show. Log progress lines too"
             )
     all_code = "\n".join(source_text(cells[i]) for i in code_indices)
     if "tqdm" not in all_code:

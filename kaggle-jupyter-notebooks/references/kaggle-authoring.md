@@ -6,7 +6,7 @@ Target: the highest throughput and shortest run time on two T4 GPUs, with every 
 
 ## Hardware Check
 
-In the first code cell after imports, print the GPU count, names, and VRAM per GPU, `os.cpu_count()`, total and available RAM, and free disk space in `/kaggle/working/`. Assert that 2 GPUs are visible, failing with a message telling the user to select GPU T4 x2 as the accelerator. Detect hardware at runtime; never hardcode core counts or memory sizes.
+In the first code cell after imports, print the GPU count, names, and VRAM per GPU, `os.cpu_count()`, total and available RAM, and free disk space in `/kaggle/working/`. Assert that 2 GPUs are visible, failing with a message telling the user to select GPU T4 x2 as the accelerator. Detect hardware at runtime. Never hardcode core counts or memory sizes.
 
 ## Use Both GPUs
 

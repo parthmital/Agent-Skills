@@ -6,7 +6,18 @@ Every file starts with its H1, then `Purpose: ... Read when: ...` and `Last veri
 
 ## README.md
 
-Content and depth follow `readme-generator`. It ends with a `## Documentation` table of every other doc that exists: file and the question it answers.
+Depth follows the `project-docs` Process. Opens with the H1 and a one-paragraph overview (what it is, who it is for), then a table of contents when there are more than four sections. Candidate sections, in this order, only when the fact ledger supports them: Quick Start, Features, Tech Stack, Structure, Prerequisites, Installation, Configuration, Environment Variables, Running, Scripts, API, Testing, Build, Deployment, Troubleshooting, Known Limitations, Contributing, Licence, Documentation.
+
+- Quick Start, near the top: the minimum verified steps. For each command, what it does, where to run it, the expected result, and common errors with fixes.
+- Tech Stack: name, version, purpose, and where it is used.
+- Environment Variables table: name, required or optional, purpose, format, safe example, default, security notes. Never real secrets.
+- API, only when endpoints exist, verified from code: method, route, purpose, auth, parameters, body, responses, status codes, one example request and response.
+- Structure: a plain ASCII tree in a `text` block with names only. Describe directories in prose or a table, or link `ARCHITECTURE.md`.
+- Mermaid diagrams only when the repository holds enough information for an accurate one.
+- Troubleshooting table: problem, likely cause, diagnostic command, resolution.
+- Metrics only when verifiable: name, value, source file or command. For an important unmeasured metric write exactly `Not measured in the current repository.`
+- Badges only when they reflect real, working services.
+- Ends with a `## Documentation` table of every other doc that exists: file and the question it answers.
 
 ## AGENTS.md
 

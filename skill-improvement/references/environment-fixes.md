@@ -15,7 +15,7 @@ Tool and environment problems that no other skill owns. Search by symptom text. 
 
 ## Python Dependencies
 
-- **`pip install --require-hashes` fails: "all requirements must have their versions pinned with ==" for `setuptools` (or `pip`) "from pip-tools"**: pip-tools needs setuptools, and `pip-compile` without `--allow-unsafe` leaves setuptools and pip out of the lock. A Python 3.11 venv ships setuptools, which hides the gap; a fresh Python 3.12 venv does not. Recompile with `pip-compile --allow-unsafe --generate-hashes`. Check: `pip uninstall -y setuptools` in a fresh venv, then the hash-checked install succeeds.
+- **`pip install --require-hashes` fails: "all requirements must have their versions pinned with ==" for `setuptools` (or `pip`) "from pip-tools"**: pip-tools needs setuptools, and `pip-compile` without `--allow-unsafe` leaves setuptools and pip out of the lock. A Python 3.11 venv ships setuptools, which hides the gap, while a fresh Python 3.12 venv does not. Recompile with `pip-compile --allow-unsafe --generate-hashes`. Check: `pip uninstall -y setuptools` in a fresh venv, then the hash-checked install succeeds.
 
 ## Git
 

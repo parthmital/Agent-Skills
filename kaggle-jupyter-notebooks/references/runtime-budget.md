@@ -1,6 +1,6 @@
 # Runtime Budget
 
-A Kaggle session runs for at most 12 hours on CPU or GPU and 9 hours on TPU. When the limit hits, the session is killed and nothing after that point is saved. GPU sessions also use the weekly GPU quota (about 30 hours, floating). Figures checked 2026-10-26; see this repository's `RESEARCH.md`.
+A Kaggle session runs for at most 12 hours on CPU or GPU and 9 hours on TPU. When the limit hits, the session is killed and nothing after that point is saved. GPU sessions also use the weekly GPU quota (about 30 hours, floating). Figures checked 2026-10-26. See this repository's `RESEARCH.md`.
 
 Goal: one "Save & Run All" session completes the full required scope with every output, inside the limit, and spends any spare time only on work that improves the results. A task that needs 20 minutes runs for 20 minutes.
 
@@ -16,7 +16,7 @@ Goal: one "Save & Run All" session completes the full required scope with every 
 
 Ordered by typical value. Pick what helps this task, and stop each once it stops paying off:
 
-- More epochs while validation still improves. Early stopping with patience ends training; the budget only caps it.
+- More epochs while validation still improves. Early stopping with patience ends training, and the budget only caps it.
 - More folds, seeds, or models for the ensemble and a tighter cross-validation estimate.
 - A larger model, input resolution, or context length, when the timing probe shows it fits.
 - Hyperparameter search with a time limit from the budget, for example Optuna `study.optimize(objective, timeout=seconds)`.

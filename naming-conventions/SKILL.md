@@ -20,7 +20,7 @@ A reader, human or agent, should predict a name's casing from its kind and its r
 
 Follow the first source that decides the name:
 
-1. External contracts: names a framework or tool requires (`page.tsx`, `Dockerfile`, `SKILL.md`, `__init__.py`, `pyproject.toml`), published APIs, URLs, database objects in production, and environment variables other systems read. Keep them; renaming one needs the user's approval.
+1. External contracts: names a framework or tool requires (`page.tsx`, `Dockerfile`, `SKILL.md`, `__init__.py`, `pyproject.toml`), published APIs, URLs, database objects in production, and environment variables other systems read. Keep them. Renaming one needs the user's approval.
 2. The language's official style and its linter: PEP 8 (ruff `N` rules), Effective Go, Rust RFC 430, the Java and Kotlin conventions, and the established TypeScript style (`@typescript-eslint/naming-convention`).
 3. The repository's recorded conventions in the `Conventions` section of its `AGENTS.md`.
 4. The defaults below.
@@ -30,17 +30,17 @@ Follow the first source that decides the name:
 | Kind                                   | Convention                                                                        | Example                                   |
 | -------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------- |
 | Directories                            | kebab-case                                                                        | `payment-service/`                        |
-| Docs, assets, and other non-code files | kebab-case; root docs UPPERCASE                                                   | `deploy-guide.md`, `ARCHITECTURE.md`      |
-| Python modules, scripts, tests         | snake_case; single-purpose scripts start with a verb; tests `test_<module>.py`    | `parse_invoice.py`                        |
-| JavaScript and TypeScript files        | kebab-case; PascalCase component files only where the framework or repo does this | `date-format.ts`, `UserCard.tsx`          |
+| Docs, assets, and other non-code files | kebab-case, root docs UPPERCASE                                                   | `deploy-guide.md`, `ARCHITECTURE.md`      |
+| Python modules, scripts, tests         | snake_case, single-purpose scripts start with a verb, tests `test_<module>.py`    | `parse_invoice.py`                        |
+| JavaScript and TypeScript files        | kebab-case, PascalCase component files only where the framework or repo does this | `date-format.ts`, `UserCard.tsx`          |
 | Go packages and files                  | short lowercase package, snake_case file                                          | `invoice/invoice_parser.go`               |
 | Classes, types, interfaces, enums      | PascalCase noun                                                                   | `InvoiceParser`                           |
 | Functions and methods                  | the language's case, verb phrase                                                  | `parse_invoice`, `fetchUser`              |
 | Variables and parameters               | the language's case, noun phrase                                                  | `retry_count`, `activeUsers`              |
 | Booleans                               | `is`, `has`, `can`, or `should` prefix, stated positively                         | `is_enabled`, `hasAccess`                 |
-| Constants and environment variables    | UPPER_SNAKE_CASE; environment variables carry an app prefix                       | `MAX_RETRIES`, `BILLING_API_URL`          |
+| Constants and environment variables    | UPPER_SNAKE_CASE, environment variables carry an app prefix                       | `MAX_RETRIES`, `BILLING_API_URL`          |
 | JSON, YAML, and config keys            | the format's or API's existing convention, one per file                           | `camelCase` in a JSON API                 |
-| Database tables and columns            | snake_case; table plurality as the repository already uses                        | `order_items.created_at`                  |
+| Database tables and columns            | snake_case, table plurality as the repository already uses                        | `order_items.created_at`                  |
 | CSS classes, CLI flags, URL paths      | kebab-case, or the repository's CSS methodology                                   | `card-header`, `--dry-run`, `/user-files` |
 | Git branches                           | `<type>/<kebab-summary>`                                                          | `fix/login-timeout`                       |
 | Test names                             | the behaviour under test                                                          | `test_rejects_expired_token`              |
@@ -62,7 +62,7 @@ Follow the first source that decides the name:
 2. Decide each kind by Precedence. Record only the kinds that occur, as a compact table in the target repository's `AGENTS.md` `Conventions` section (format owned by `project-docs`), with every exception and its reason.
 3. Enforce what tools can: `ls-lint` for file and directory names, ruff `N`, `@typescript-eslint/naming-convention` or `eslint-plugin-check-file`, `golangci-lint`, `stylelint` `selector-class-pattern`. Add each to the repository's check command and CI.
 4. Rename only what breaks a convention or a semantic rule, with language-aware tooling (IDE or LSP rename, `git mv`, codemods), and update every reference in the same change: imports, config, scripts, CI, docs, links, tests. For a case-only rename on Windows or macOS, go through a temporary name (`git mv a.py tmp.py`, then `git mv tmp.py A.py`).
-5. Delegation: for a whole-repository pass, a `research-worker` inventories names per kind and `task-worker`s rename one kind or directory each, with disjoint file scopes. The orchestrator decides the conventions and runs the final checks (`subagent-delegation`).
+5. Large passes: for a whole-repository inventory or bulk rename, `subagent-delegation` decides whether workers are cheaper (a `research-worker` inventorying names per kind, `task-worker`s at `low` effort renaming one kind or directory each, with disjoint file scopes). The main session decides the conventions and runs the final checks.
 
 ## Examples
 
@@ -81,11 +81,11 @@ Follow the first source that decides the name:
 
 | Rationalisation                   | Reality                                                                                         |
 | --------------------------------- | ----------------------------------------------------------------------------------------------- |
-| "Renaming is cosmetic"            | Agents and people find code by name; inconsistent names hide code and breed duplicates.         |
+| "Renaming is cosmetic"            | Agents and people find code by name. Inconsistent names hide code and breed duplicates.         |
 | "The old name is used everywhere" | Rename with tooling and update every reference in one change, or record it as an exception.     |
 | "A short name is quicker"         | Names are read far more often than typed.                                                       |
 | "I prefer another style"          | The language style and the repository's record win over preference.                             |
-| "Rename the API field too"        | Contract names break their consumers; ask first, and keep a compatibility path if one is asked. |
+| "Rename the API field too"        | Contract names break their consumers. Ask first, and keep a compatibility path if one is asked. |
 
 ## Red Flags
 
@@ -98,5 +98,5 @@ Follow the first source that decides the name:
 
 - [ ] Conventions recorded once in the target repository's `AGENTS.md` and matching the code.
 - [ ] Every enforceable convention has a configured linter, and it passes.
-- [ ] `git grep -n <old-name>` shows no stale reference for any renamed item; tests and build pass.
-- [ ] Contract names unchanged unless approved; each exception recorded with its reason.
+- [ ] `git grep -n <old-name>` shows no stale reference for any renamed item, and tests and build pass.
+- [ ] Contract names unchanged unless approved, and each exception recorded with its reason.
